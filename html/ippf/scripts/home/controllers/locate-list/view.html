@@ -51,16 +51,18 @@
 
 			<ul class="collection">
 				<!-- <li class="collection-item" ng-repeat="item in places | filter:esRapido()"> -->
-				<li class="collection-item" ng-repeat="item in places | orderBy: events | filter:esFriendly()">
-					<div class="row info ">
+				<li class="collection-item center" ng-repeat="item in places | orderBy: events | filter:esFriendly()">
+					<div class="row">
+						<div class="col s8 center-detail">
+
+						<div class="row info ">
 						<div class="col s12 label">
 							<span class="title truncate">[[item.establecimiento]]</span>
-							<a ng-click="nextShowUp(item)" class="waves-effect waves-light right">
-								<i class="mdi-navigation-chevron-right right"></i></a>
+							
 						</div>
 					</div>
 
-					<div class="row info">
+							<div class="row info">
 						<div class="col s12 l8">
 							<i class="mdi-maps-place tiny"> </i>
 							<span class="address" ng-cloak ng-show="item.calle || item.altura || item.cruce">[[item.calle]] [[item.altura]] [[item.cruce]]<br></span>
@@ -92,6 +94,8 @@
 						</div>
 					</div>
 
+					
+
 					<!-- Carita con votacion -->
 					<div ng-cloak ng-show="item.cantidad_votos" class="row info Aligner-info-home-evaluation">
 						<img src="images/emojis/[[item.rate]]active.png">&nbsp
@@ -102,6 +106,16 @@
 						<span class="address" translate="without_evaluations"><br></span>
 					</div>
 
+						</div>
+						<div class="col s4">
+							<a ng-click="nextShowUp(item)" class="waves-effect waves-light right">
+								<!-- <a class="waves-effect waves-light btn-large">VESTER</a></a> -->
+								<div class="btn-position"><i class="mdi-navigation-chevron-right btn-new right">test</i></div></a>
+						</div>
+					</div>
+					
+
+					
 
 
 

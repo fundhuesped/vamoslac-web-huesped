@@ -1529,3 +1529,17 @@ div.list div.label {
 .country-image{
   max-width: 100%;
 }
+
+.btn-new {
+  background-color: #e7354d;
+  right: 0;
+  top: 0;
+}
+
+li.collection-item.center {
+    padding: 0;
+}
+
+.home .row .col.s8.center-detail {
+    padding: 10px 20px;
+}
