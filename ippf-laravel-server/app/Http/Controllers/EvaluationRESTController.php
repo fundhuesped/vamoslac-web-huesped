@@ -120,12 +120,16 @@ foreach ($dataSet as $provincia) {
 
 
 	public function showEvaluations($id){
-		return DB::table('evaluation')
+
+		$data = DB::table('evaluation')
 			->join('places', 'places.placeId', '=', 'evaluation.idPlace')
 			->where('evaluation.aprobado',1)
 			->where('evaluation.idPlace',$id)
 			->select('places.establecimiento','evaluation.comentario','evaluation.que_busca','evaluation.voto')
 			->get();
+
+
+		return json_encode($data);
 	}
 
 	public function showPanelEvaluations($id){ //id de un place
@@ -213,11 +217,11 @@ foreach ($dataSet as $provincia) {
 						'edad.required' => 'La edad es requerida',
 						'genero.required' => 'El género es requerido',
 						'serviceShortName.required' => 'El serviceShortName es requerido',
-						'voto.required' => 'Seleccione una carita');
+						'voto.required' => 'La recomendación es requerida');
 		}
 		else {
 			switch($request->serviceShortName){
-						case "sssr":
+						case "ssr":
 								$rules = array(
 									'que_busca' => 'required',
 									//'le_dieron' => 'required',
@@ -242,7 +246,7 @@ foreach ($dataSet as $provincia) {
 											//'comodo.required' => 'Te sentiste comodo? es requerido',
 											// 'informacion_vacunas.required' => 'Recibiste informacion de vacunas? es requerido',
 											'serviceShortName.required' => 'El serviceShortName es requerido',
-											'voto.required' => 'Seleccione una carita');
+											'voto.required' => 'La recomendación es requerida');
 						break;
 						case "ILE":
 								$rules = array(
@@ -269,7 +273,7 @@ foreach ($dataSet as $provincia) {
 											//'privacidad_ok.required' => 'Respetaron tu privacidad? es requerido',
 											'que_busca.required' => 'Que fuiste a buscar? es requerido',
 											'serviceShortName.required' => 'El serviceShortName es requerido',
-											'voto.required' => 'Seleccione una carita');
+											'voto.required' => 'Debe seleccionar un puntaje');
 						break;
 						case "cdi":
 								$rules = array(
@@ -296,7 +300,7 @@ foreach ($dataSet as $provincia) {
 											//'privacidad_ok.required' => 'Respetaron tu privacidad? es requerido',
 											'que_busca.required' => 'Que fuiste a buscar? es requerido',
 											'serviceShortName.required' => 'El serviceShortName es requerido',
-											'voto.required' => 'Seleccione una carita');
+											'voto.required' => 'Debe seleccionar un puntaje');
 						break;
 						case "vacunatorios":
 								$rules = array(
@@ -322,7 +326,7 @@ foreach ($dataSet as $provincia) {
 											'que_busca.required' => 'Que fuiste a buscar? es requerido',
 											'privacidad_ok.required' => 'Respetaron tu privacidad? es requerido',
 											'serviceShortName.required' => 'El serviceShortName es requerido',
-											'voto.required' => 'Seleccione una carita');
+											'voto.required' => 'Debe seleccionar un puntaje');
 						break;
 						case "prueba":
 								$rules = array(
@@ -348,7 +352,7 @@ foreach ($dataSet as $provincia) {
 											//'comodo.required' => 'Te sentiste comodo? es requerido',
 											//'es_gratuito.required' => 'Es gratuito? es requerido',
 											'serviceShortName.required' => 'El serviceShortName es requerido',
-											'voto.required' => 'Seleccione una carita');
+											'voto.required' => 'Debe seleccionar un puntaje');
 						break;
 						default: //condones
 								$rules = array(
@@ -374,12 +378,14 @@ foreach ($dataSet as $provincia) {
 											// 'privacidad_ok.required' => 'Respetaron tu privacidad? es requerido',
 											'que_busca.required' => 'Que fuiste a buscar? es requerido',
 											'serviceShortName.required' => 'El serviceShortName es requerido',
-											'voto.required' => 'Seleccione una carita');
+											'voto.required' => 'Debe seleccionar un puntaje');
 				}
 
 		}
 
-				$request_params = $request->all();
+			$request_params = $request->all();
+
+
       	$validator = Validator::make($request_params,$rules,$messages);
 
 		if ($validator->passes()){
@@ -397,8 +403,8 @@ foreach ($dataSet as $provincia) {
 	        $ev->idPlace = $request->idPlace;
 			$ev->service = $request->serviceShortName;
 			$ev->comodo = $request->comodo;
-			$ev->es_gratuito = $request->es_gratuito;
 			$ev->informacion_vacunas = $request->informacion_vacunas;
+			$ev->es_gratuito = 0;
 			$ev->name = $request->name;
 			$ev->tel = $request->tel;
 			$ev->email = $request->email;
@@ -435,12 +441,51 @@ foreach ($dataSet as $provincia) {
 
 	public function getAllEvaluations(Request $request){
 		try {
-		return DB::table('evaluation')->paginate(100);
+		return DB::table('evaluation')
+			->join('places', 'places.placeId', '=', 'evaluation.idPlace')
+			->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
+			->join('partido', 'partido.id', '=', 'places.idPartido')
+			->join('provincia', 'provincia.id', '=', 'places.idProvincia')
+			->join('pais', 'pais.id', '=', 'places.idPais')
+			->select('evaluation.*', 'places.establecimiento', 'ciudad.nombre_ciudad', 'partido.nombre_partido', 'provincia.nombre_provincia', 'pais.nombre_pais')
+			->paginate(100);
 		}
 		catch (Exception $e) {
 			return $e->getMessage();
 		}
 	}
 
+	public function getAllFileteredEvaluations(){
+		
+		$evaluations = DB::table('evaluation')
+		->join('places', 'places.placeId','=', 'evaluation.idPlace')
+		->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
+		->join('partido', 'partido.id', '=', 'places.idPartido')
+		->join('provincia', 'provincia.id', '=', 'places.idProvincia')
+		->join('pais', 'pais.id', '=', 'places.idPais')
+		->select('ciudad.nombre_ciudad','partido.nombre_partido','provincia.nombre_provincia','pais.nombre_pais', 'evaluation.*', 'places.establecimiento', 'places.placeId')
+		->get();
+		return $evaluations;
+	}
+
+	public function getAllByCity($paisId, $pciaId, $partyId, $cityId){
+		
+			$evaluations = DB::table('evaluation')
+				->join('places', 'places.placeId', '=', 'evaluation.idPlace')
+				->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
+				->join('partido', 'partido.id', '=', 'places.idPartido')
+				->join('provincia', 'provincia.id', '=', 'places.idProvincia')
+				->join('pais', 'pais.id', '=', 'places.idPais')
+				->where('ciudad.id', '=', $cityId)
+				->select('ciudad.nombre_ciudad','partido.nombre_partido','provincia.nombre_provincia','pais.nombre_pais', 'evaluation.*', 'places.establecimiento', 'places.placeId')
+				->get();
+				return $evaluations;
+		}
+
+	public function removeEvaluation($evalId){
+
+		$eval = Evaluation::find($evalId);
+		$eval->delete();
+	}
 
 }

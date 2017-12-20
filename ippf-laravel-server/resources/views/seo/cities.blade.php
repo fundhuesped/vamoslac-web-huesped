@@ -2,7 +2,8 @@
 @section('meta')
 
 {{-- <title>@lang('site.seo_meta_property_title') -  {{$pais}}. {{$provincia}} </title> --}}
-<title>@lang('site.seo_meta_property_title') -  <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia); ?> </title>
+{{-- <title>@lang('site.seo_meta_property_title') -  <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia); ?> </title--> --}}
+<title>VAMOS | vamoslac.org</title>
 <meta name="description" content="@lang('site.seo_meta_description_content') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia); ?> ">
 <meta name="author" content="@lang('site.seo_meta_author_content')">
 <link rel="canonical" href="@lang('site.seo_meta_canonicallink')"/>
@@ -20,7 +21,7 @@
       <a href="{{ url('/#/') }}" class="brand-logo"><img class="logoTop" src="/images/logo_blanco.svg"> </a>
       <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
       <ul class="right hide-on-med-and-down">
-           <li><a class="modal-trigger" href="#modal1"><i class="mdi-action-info"></i></a></li>
+           <li><a class="modal-trigger" href="#modal"><i class="mdi-action-info"></i></a></li>
            <li><a class="modal-trigger" href="/#/localizar/all/listado"><i class="mdi-maps-place left"></i></a></li>
            <li><a class="" href="/form"><i class="mdi-content-add-circle-outline"></i></a></li>
            <li><a class="" href="/listado-paises"><i class="mdi-action-language"></i></a></li>
@@ -69,7 +70,7 @@
 					<tbody>
 						@foreach ($partidos as $p)
 						<tr>
-							<td><a class="item-seo" href="partido/{{$p->nombre_partido}}/servicio">{{$p->nombre_partido}}</a></td>
+							<td><a class="item-seo" href="partido/{{$p->nombre_partido}}/ciudad">{{$p->nombre_partido}}</a></td>
 						</tr>
 						@endforeach
 					</tbody>

@@ -1,37 +1,58 @@
 dondev2App.controller('cityListController',
   function(placesFactory, copyService, NgMap, $scope, $rootScope, $routeParams, $location, $http) {
-
     $rootScope.navBar = $routeParams.servicio;
     $scope.checkbox = false;
     $scope.loading = true;
     $rootScope.main = false;
     $rootScope.geo = false;
+    $scope.legal = true;
     // $scope.events = "distance";
 
-    $scope.ciudad = $routeParams.ciudad.split('-')[1];
-    $scope.ciudadId = $routeParams.ciudad.split('-')[0];
+    try {
 
-    $scope.city = $routeParams.partido.split('-')[1];
-    $scope.cityId = $routeParams.partido.split('-')[0];
+      try {
+        $scope.ciudad = $routeParams.ciudad.split('-')[1];
+        $scope.ciudadId = $routeParams.ciudad.split('-')[0];
+      } catch (e) {
 
-    $scope.province = $routeParams.provincia.split('-')[1];
-    $scope.provinceId = $routeParams.provincia.split('-')[0];
+      }
 
-    $scope.country = $routeParams.pais.split('-')[1];
-    $scope.countryId = $routeParams.pais.split('-')[0];
+      $scope.city = $routeParams.partido.split('-')[1];
+      $scope.cityId = $routeParams.partido.split('-')[0];
+
+      $scope.partido = $routeParams.partido.split('-')[1];
+      $scope.partidoId = $routeParams.partido.split('-')[0];
+
+      $scope.province = $routeParams.provincia.split('-')[1];
+      $scope.provinceId = $routeParams.provincia.split('-')[0];
+
+      $scope.country = $routeParams.pais.split('-')[1];
+      $scope.countryId = $routeParams.pais.split('-')[0];
+    } catch (e) {
+    } finally {
+      // THIS INFO IS JUST FOR USER INFO PURPOSES
+      $scope.placeName = $scope.ciudad || $scope.partido;
+    }
 
     $scope.service = copyService.getFor($routeParams.servicio);
     $rootScope.navBar = $scope.service;
 
     var search = {
 
-      ciudad:     $scope.ciudadId,
-      partido:    $scope.cityId,
-      provincia:  $scope.provinceId,
-      pais:       $scope.countryId,
-      service:    $routeParams.servicio.toLowerCase(),
+      ciudad: $scope.ciudadId,
+      partido: $scope.cityId,
+      provincia: $scope.provinceId,
+      pais: $scope.countryId,
+      service: $routeParams.servicio.toLowerCase(),
 
     };
+
+    var eventName = 'listado_' + $routeParams.servicio;
+    gtag('event',eventName, {
+      'lugar':   $scope.country + ' - ' +   $scope.ciudad
+    }
+    );
+
     search[$routeParams.servicio.toLowerCase()] = true;
 
     //aca tengo logica para ocultar
@@ -40,48 +61,68 @@ dondev2App.controller('cityListController',
       $rootScope.places = $scope.places = data;
       $scope.cantidad = $scope.places.length;
 
-      if ($scope.country != null && $scope.country.length > 0){
+
+
+      if ($scope.country != null && $scope.country.length > 0) {
 
         $scope.countryImageTag = $scope.country.toLowerCase();
         $scope.countryImageTag = $scope.countryImageTag.trim();
         $scope.countryImageTag = $scope.countryImageTag.replace(/ +/g, "");
+        $scope.countryImageTag = removeAccents($scope.countryImageTag);
+
+        if ($scope.service.code == 'ile') {
+          if (
+            ($scope.countryImageTag == 'antiguaandbarbuda') ||
+            ($scope.countryImageTag == 'aruba') ||
+            ($scope.countryImageTag == 'curacao') ||
+            ($scope.countryImageTag == 'dominica') ||
+            ($scope.countryImageTag == 'jamaica') ||
+            ($scope.countryImageTag == 'honduras') ||
+            ($scope.countryImageTag == 'grenada') ||
+            ($scope.countryImageTag == 'suriname') ||
+            ($scope.countryImageTag == 'saintvincent') ||
+            ($scope.countryImageTag == 'paraguay') ||
+            ($scope.countryImageTag == 'panama') ||
+            ($scope.countryImageTag == 'republicadominicana') ||
+            ($scope.countryTextTag == 'trinidadandtobago')) {
+            $scope.legal = false;
+          }
+        } else {
+          $scope.legal = true;
+        }
 
         $scope.ileTag = "ile_" + $scope.countryImageTag;
+        $scope.notLegal = "ile_legal_" + $scope.countryImageTag;
         $scope.countryTextTag = "countryText_" + $scope.countryImageTag;
-        console.log("$scope.countryImageTag " + $scope.countryImageTag);
 
-      }
-
-      else if (typeof $rootScope.places[0] != 'undefined' && $rootScope.places[0].idPais != undefined) {
+      } else if (typeof $rootScope.places[0] != 'undefined' && $rootScope.places[0].idPais != undefined) {
         //busco el tag para ILE por país
         var url = "api/v2/getiletag/" + $rootScope.places[0].idPais;
         $http.get(url)
           .then(function(response) {
             $scope.ileTag = "ile_" + response.data[0].nombre_pais;
             $scope.countryTextTag = "countryText_" + response.data[0].nombre_pais;
-            console.log("countryTextTag " + $scope.countryTextTag);
 
           });
       }
 
       $scope.loading = false;
-      
+
     })
 
     $scope.nextShowUp = function(item) {
-      console.log("item");
-      console.log(item);
+
       var urlCount = "api/v2/evaluacion/cantidad/" + item.placeId;
       $http.get(urlCount)
         .then(function(response) {
-          item.votes = response.data[0];
+          item.votes = response.data;
         });
 
       // //aparte
       var urlRate = "api/v2/evaluacion/promedio/" + item.placeId;
       $http.get(urlRate)
         .then(function(response) {
-          item.rate = response.data[0];
+          item.rate = response.data;
           item.faceList = [{
               id: '1',
               image: '1',
@@ -144,11 +185,9 @@ dondev2App.controller('cityListController',
       //tengo que mostrar arriba en el map si es dekstop.
       $rootScope.centerMarkers.push($rootScope.currentMarker);
 
-      console.log($scope.ciudad);
-
       $location.path('/' + $scope.country + '/' +
         $scope.province + '/' +
-        $scope.city + '/' +   
+        $scope.city + '/' +
         $scope.ciudad + '/' +
         $routeParams.servicio + '/mapa');
 

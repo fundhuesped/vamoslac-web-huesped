@@ -5,7 +5,6 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
   .controller('panelImporterController', function($scope, $rootScope, $http, $interpolate) {
 
-    console.log('panelImporterController loaded');
     $scope.serverMode = "";
     $scope.disableCleardbModalButton = true;
     $scope.cleardDBClick = "";
@@ -52,9 +51,6 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
             $scope.cleardDBClick = $scope.showDisabledMessageCleardbModal;
 
           }
-        },
-        function(response) {
-
         });
 
   });

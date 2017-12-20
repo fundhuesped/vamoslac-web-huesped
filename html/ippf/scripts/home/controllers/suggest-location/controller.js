@@ -1,10 +1,8 @@
 dondev2App.controller('locationNewController',
   function($timeout, copyService, placesFactory, NgMap, $scope, $rootScope, $routeParams, $location, $http) {
-    
-    console.log('locationNewController')
-    
+
     $rootScope.navBar = $routeParams.servicio;
-    
+
     $scope.service = copyService.getFor($routeParams.servicio);
 
     var queryNavBar;
@@ -16,11 +14,15 @@ dondev2App.controller('locationNewController',
         case "Vacunatorios":
         queryNavBar = "Vacunatorio";
         break;
-        
+
         case "infectologia":
         queryNavBar = "infectologia";
         break;
 
+      }
+
+      $scope.addComa = function(data){
+        return data + ', ';
       }
 
 
@@ -33,7 +35,7 @@ dondev2App.controller('locationNewController',
       }
       else{
         next += "/" + postdata.originalObject.id +"-" + postdata.originalObject.nombre_partido;
-      }   
+      }
       next += "/" + $scope.navBar;
       next += "/listado";
 

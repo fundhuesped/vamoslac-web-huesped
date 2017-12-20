@@ -1,13 +1,14 @@
 @extends('layouts.clear')
 @section('meta')
 
-<title> @lang('site.seo_meta_placelist_title_1') <?php echo html_entity_decode($resu['titleCopySeo']);?> @lang('site.on') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido); ?>? </title>
-<meta name="description" content="@lang('site.seo_meta_description_content_2') <?php echo html_entity_decode($resu['descriptionCopy']);?> @lang('site.on') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido); ?>">
+{{-- <title> @lang('site.seo_meta_placelist_title_1') <?php echo html_entity_decode($resu['titleCopySeo']);?> @lang('site.on') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido)." , ".html_entity_decode($ciudad); ?>? </title> --}}
+<title>VAMOS | vamoslac.org</title>
+<meta name="description" content="@lang('site.seo_meta_description_content_2') <?php echo html_entity_decode($resu['descriptionCopy']);?> @lang('site.on') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido)." , ".html_entity_decode($ciudad); ?>">
 <meta name="author" content="@lang('site.seo_meta_author_content')">
 <link rel="canonical" href="@lang('site.seo_meta_canonicallink')"/>
 <meta property='og:locale' content="@lang('site.seo_meta_property_local')"/>
 <meta property='og:title' content="@lang('site.seo_meta_property_title')"/>
-<meta property="og:description" content="@lang('site.seo_meta_placelist_title_1') <?php echo html_entity_decode($resu['descriptionCopy']);?> @lang('site.on') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido); ?>" />
+<meta property="og:description" content="@lang('site.seo_meta_placelist_title_1') <?php echo html_entity_decode($resu['descriptionCopy']);?> @lang('site.on') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido)." , ".html_entity_decode($ciudad); ?>" />
 
 @stop
 
@@ -18,7 +19,7 @@
       <a href="{{ url('/#/') }}" class="brand-logo"><img class="logoTop" src="/images/logo_blanco.svg"> </a>
       <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
       <ul class="right hide-on-med-and-down">
-           <li><a class="modal-trigger" href="#modal1"><i class="mdi-action-info"></i></a></li>
+           <li><a class="modal-trigger" href="#modal"><i class="mdi-action-info"></i></a></li>
            <li><a class="modal-trigger" href="/#/localizar/all/listado"><i class="mdi-maps-place left"></i></a></li>
            <li><a class="" href="/form"><i class="mdi-content-add-circle-outline"></i></a></li>
            <li><a class="" href="/listado-paises"><i class="mdi-action-language"></i></a></li>
@@ -45,11 +46,6 @@
   </nav>
 
 
-
-
-
-
-
 @if (count($places) > 0 )
   <div class="result-seo">
     <div class="Aligner">
@@ -64,7 +60,7 @@
     <div class="Aligner">
       <div class="Aligner-item Aligner-item--top"><img width="50px" src="/images/{{$resu['icon']}}"></div>
       <div class="Aligner-item">
-        <span class="text-seo"><b>{{$partido}}</span>, <span class="text-seo">{{$provincia}}</span></b>
+        <b><span class="text-seo">{{$ciudad}}</span>, <span class="text-seo">{{$partido}}</span>, <span class="text-seo">{{$provincia}}</span></b>
       </div>
     </div>
 

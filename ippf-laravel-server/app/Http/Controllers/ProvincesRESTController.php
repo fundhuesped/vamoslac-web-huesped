@@ -103,8 +103,24 @@ class ProvincesRESTController extends Controller
             ->orderBy('nombre_provincia')
             ->select('nombre_provincia')
             ->get();
+            
         return view('seo.provinces',compact('provinces','pais'));
+
     }
+
+    public function showProvincesByIdPais($id){
+        //si filtro por id
+        // $provinces =  DB::table('provincia')->where('idPais', $id)->orderBy('nombre_provincia')->get();
+        $provinces =  DB::table('provincia')
+            ->join('pais', 'pais.id', '=', 'provincia.idPais')
+            ->where('idPais',$id)
+            ->orderBy('nombre_provincia')
+            ->select('provincia.nombre_provincia', 'provincia.id')
+            ->get();
+            
+        //return view('seo.provinces',compact('provinces','pais'));
+            return $provinces;
+    }    
 
     static public function showByProvincia($id)
     {
@@ -138,6 +154,5 @@ class ProvincesRESTController extends Controller
       ->select('localidad.nombre_localidad', 'localidad.id', 'provincia.nombre_provincia', 'localidad.hidden')
       ->get();
     }
-
 
 }

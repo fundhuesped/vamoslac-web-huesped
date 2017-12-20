@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="css/adhoc.css">
-<div class="home full new-home" style="padding-top: 25px">
+<div class="home full new-home" >
 
   <div class="container list">
 
@@ -7,7 +7,7 @@
 
       <a ng-if='!ciudadId' ng-href="#/[[countryId]]-[[country]]/[[provinceId]]-[[province]]/[[cityId]]-[[city]]/[[service.code]]/listado">[[country]] > [[province]] > [[city]]</a>
 
-      <a ng-if='ciudadId' ng-href="#/[[countryId]]-[[country]]/[[provinceId]]-[[province]]/[[cityId]]-[[city]]/[[ciudadId]]-[[ciudad]]/[[service.code]]/listado">[[country]] > [[province]] > [[city]] > [[ciudad]]</a>      
+      <a ng-if='ciudadId' ng-href="#/[[countryId]]-[[country]]/[[provinceId]]-[[province]]/[[cityId]]-[[city]]/[[ciudadId]]-[[ciudad]]/[[service.code]]/listado">[[country]] > [[province]] > [[city]] > [[ciudad]]</a>
 
     </p>
 
@@ -20,14 +20,18 @@
    </p>
 
  </div>
-  
+
   <div class="detail row wow fadeIn fadeInRight" ng-cloak ng-show="currentMarker">
 
     <h4>[[currentMarker.establecimiento]] </h4>
-    <p><b>[[currentMarker.calle]] [[currentMarker.altura]] [[currentMarker. piso_depto]]</b>
-     <br> [[currentMarker.partido_comuna]]
-     <span ng-show="currentMarker.provincia_region"> ,</span> [[currentMarker.provincia_region]]</p>
-     <p ng-show="currentMarker.tipo"><strong><span>[[currentMarker.tipo]]</span> </strong></p>
+    <p><b>[[currentMarker.calle]] [[currentMarker.altura]]
+      <span ng-show='currentMarker.cruce' translate="and"></span> <span ng-show='currentMarker.cruce'>[[currentMarker.cruce]]</span><br>
+      <span ng-show='currentMarker.piso_dpto'> [[currentMarker.piso_dpto]]</span><br>
+      [[currentMarker.barrio_localidad]]
+      <p ng-show="currentMarker.tipo">
+        <strong><span>[[currentMarker.tipo]]</span> </strong>
+      </p>
+    </b>
 
 
 
@@ -40,8 +44,6 @@
        <ul class="collection">
         <div ng-include="'scripts/home/controllers/city-map/detail/condones.html'"></div>
         <div ng-include="'scripts/home/controllers/city-map/detail/pruebas.html'"></div>
-    <!--    <div ng-include="'scripts/home/controllers/city-map/detail/infectologia.html'"></div>
-        <div ng-include="'scripts/home/controllers/city-map/detail/vacunacion.html'"></div>-->
         <div ng-include="'scripts/home/controllers/city-map/detail/mac.html'"></div>
         <div ng-include="'scripts/home/controllers/city-map/detail/ile.html'"></div>
         <div ng-include="'scripts/home/controllers/city-map/detail/ssr.html'"></div>
@@ -55,7 +57,7 @@
       socialshare
       socialshare-provider="whatsapp"
       socialshare-text= '[["social_share_text" | translate:{establecimiento: currentMarker.establecimiento, nombre_partido: currentMarker.nombre_partido}]]'
-      socialshare-url="https://ippf-staging.com.ar/share/[[currentMarker.placeId]]"  >
+      socialshare-url="https://ippf-staging.com.ar/share/[[selectedLanguage]]/[[currentMarker.placeId]]" >
     <i class="fa fa-whatsapp"></i>
   </a>
 
@@ -63,7 +65,7 @@
       <a class="hide-on-med-and-up btn-floating btn-large waves-effect waves-light share-buttons"
       socialshare
       socialshare-provider="facebook-messenger"
-      socialshare-url="https://ippf-staging.com.ar/share/[[currentMarker.placeId]" >
+      socialshare-url="https://ippf-staging.com.ar/share/[[selectedLanguage]]/[[currentMarker.placeId]]" >
         <i class="fa fa-messenger"></i>
 
       </a>
@@ -71,8 +73,10 @@
       <a class="btn-floating btn-large share-buttons"
       socialshare
       socialshare-provider="facebook"
+      socialshare-type="feed"
+      socialshare-via="1964173333831483"
       socialshare-text= '[["social_share_text" | translate:{establecimiento: currentMarker.establecimiento, nombre_partido: currentMarker.nombre_partido}]]'
-      socialshare-url="https://ippf-staging.com.ar/share/[[currentMarker.placeId]]">
+      socialshare-url="https://ippf-staging.com.ar/share/[[selectedLanguage]]/[[currentMarker.placeId]]">
       <i class="fa fa-facebook-square"></i>
     </a>
 
@@ -80,7 +84,7 @@
     socialshare
     socialshare-provider="twitter"
     socialshare-text= '[["social_share_text" | translate:{establecimiento: currentMarker.establecimiento, nombre_partido: currentMarker.nombre_partido}]]'
-    socialshare-url="https://ippf-staging.com.ar/share/[[currentMarker.placeId]]">
+    socialshare-url="https://ippf-staging.com.ar/share/[[selectedLanguage]]/[[currentMarker.placeId]]">
     <i class="fa fa-twitter"></i> </a>
 
     </div>  <!-- del row -->
@@ -92,21 +96,23 @@
 
             </div>
             <br>
-            <div class="evaluation-container">
+            <div ng-show='currentMarker.cantidad_votos' class="evaluation-container">
               <ul class="evaluation-preview-ul">
                 <li class="evaluation-header-li row valign-wrapper">
-                  <div class="col s6 valign">
-                    <p ng-cloak ng-show="currentMarker.cantidad_votos != 1" class="evaluation-votes">[[currentMarker.cantidad_votos]] Evaluaciones</p>
-                    <p ng-cloak ng-show="currentMarker.cantidad_votos == 1" class="evaluation-votes">[[currentMarker.cantidad_votos]] Evaluación</p>
+                  <div class="col s8 valign">
+                    <p ng-cloak ng-show="currentMarker.cantidad_votos != 1" class="evaluation-votes">[[currentMarker.cantidad_votos]] <span translate="evaluation_plural"></span></p>
+                    <p ng-cloak ng-show="currentMarker.cantidad_votos == 1" class="evaluation-votes">[[currentMarker.cantidad_votos]] <span translate="evaluation_singular"></span></p>
                   </div>
-                  <div class="col s6 valign blockImgPreview">
-                    <a ng-repeat="icon in currentMarker.faceList"><img src="images/emojis/[[icon.image]].png" alt="[[icon.image]]"></a>
+                  <div class="col s4">
+
+        				<div style="padding:1.5%; border-radius: 5px ;background-color: #E6344D; color: #fff;font-weight: 800">
+                            <span translate="point" translate-values="{ rate: '[[currentMarker.rate]]'}">
+                            </span><span ng-show='currentMarker.rate > 1'>s</span>
+                        </div>
+
                   </div>
                 </li>
-                <li class="evaluation-preview-li row" ng-repeat="comment in currentMarker.comments | limitTo: voteLimit" >
-                  <div class="col s1 evaluation-preview-left">
-                    <a href=""><img src="images/emojis/[[comment.voto]]active.png" alt="" style="cursor: default;"></a>
-                  </div>
+                <li class="evaluation-preview-li row" ng-repeat="comment in currentMarker.comments" >
                   <div class="col s11 evaluation-preview-right">
                     <p ng-text-truncate="comment.comentario" ng-tt-chars-threshold="136"></p>
                     <p class="evaluation-preview-info"><span  translate="city_map_comments_label_1"></span>
@@ -122,16 +128,19 @@
                 <a class="evaluation-more" ng-click="addComment()" class="waves-effect waves-light" translate="city_map_comments_label_2"></a>
               </div>
             </div>
-            <footer class="landing-service-footer home-footer-wrapper">
-                    <p translate="footer_text"></p>
-                </footer>
+            
 </div>
 
+
 </div>
 
-    <!-- //del home <div class="row home-footer-wrapper">
-        <footer class="landing-service-footer">
-            <p>Donde es una <b>plataforma colaborativa.</b> Si encontrarás un error en los datos o en el funcionamiento de la plataforma <a href="mailto:donde@huesped.org.ar"  target="_self">envianos un mensaje</a></p>
-        </footer>
+<div class="row home-footer-wrapper">
 
-    </div>  -->
+    <footer class="result-service-footer">
+
+        <p translate="footer_text"></p>
+
+    </footer>
+
+</div>
+

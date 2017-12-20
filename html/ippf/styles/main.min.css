@@ -67,7 +67,7 @@
     top: 100%;
     left: 50%;
     margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
-
+    font-size: .8rem;
     visibility: hidden;
     background-color: black;
     color: #fff;
@@ -550,9 +550,11 @@ select {
   }
 }*/
 .new-home {
-  height: 87vh;
+  /*height: 87vh;*/
+  height: 82vh;
   min-width: 100%;
   overflow-y: auto;
+  padding-top: 2%;
 }
 
 @media screen and (min-width: 600px) {
@@ -790,6 +792,13 @@ select {
   padding-right: 10px;
 }
 
+.btn-pin-geo{
+  text-align: center;
+  background-image: url('../images/place-off.png');
+  background-repeat:  no-repeat;
+  background-position: 50%;
+}
+
 .result-seo{
     margin-bottom: 70px;
     margin-top: 40px;
@@ -989,12 +998,14 @@ h3 {
 }
 
 h4 {
-  font-size: 1.5rem;
-  margin: 0px 0 14px 0;
+    font-size: 1.5rem;
+    margin: 0px 0 14px 0;
+    padding-top: 12px;
 }
 
 ng-map#mainMap {
-  height: 93.5vh !important;
+ /* height: 93.5vh !important;*/
+  height: 90vh !important;
   width: 100%;
   float: right;
 }
@@ -1327,8 +1338,8 @@ main .home .menuprincipal li p {
   main .places {
     /*box-sizing: inherit;*/
     min-height: 10vh !important;
-    height: 50vh;  /*66vh original*/
-    overflow-y: auto; /*scroll*/
+    height: auto;  /*66vh original*/
+    /*overflow-y: auto; /*scroll*/
   }
 }
 main .btn.tel {
@@ -1339,6 +1350,8 @@ main .view {
   width: 100%;
   float: left;
   overflow-y: auto;
+  height: 100vh;
+
 }
 @media screen and (min-width: 600px) {
   main .view {
@@ -1348,15 +1361,32 @@ main .view {
   }
 
   .select-wrapper {
-  			color: black;
+        color: #fff;
   }
 }
 
 @media screen and (max-width: 600px) {
   .select-wrapper {
-  			color: black;
+        color: #000;
   }
+  body{
+    height: auto;
+    overflow-y:auto;
+  }
+  .new-home{
+    overflow-y: hidden;
+  }
+  .home{
+    height: auto;
+    overflow-y: hidden;
+  }
+  main .view{
+    overflow-y: hidden;
+    height: auto;
+  }
+
 }
+
 
 
 @media screen and (min-width: 1290px) {
@@ -1366,7 +1396,7 @@ main .view {
     position: absolute;
   }
   .select-wrapper {
-  			color: white;
+        color: #fff;
   }
 }
 
@@ -1379,7 +1409,7 @@ main .view {
   }
 
   .select-wrapper {
-  			color: white;
+        color: #fff;
   }
 }
 /*
@@ -1388,7 +1418,7 @@ main .map {
   float: left;
 }
 */
-@media screen and (min-width: 600px) and (max-width: 1000px) {
+@media screen and (min-width: 600px) and (max-width: 992px) {
   main .map {
     padding-top: 0px;
     /*width: calc(100% - 350px);*/
@@ -1401,7 +1431,7 @@ main .map {
   }
 
   .select-wrapper {
-        color: black;
+        color: #000;
   }
 }
 
@@ -1421,7 +1451,7 @@ main .map {
   }
 
   .select-wrapper {
-        color: white;
+        color: #fff;
   }
 }
 
@@ -1471,17 +1501,22 @@ footer.page-footer {
   position: relative;
   padding: 0;
 }
-.modal h3 {
-  margin-top: 40px;
+#menu {
+  margin-top: 2em;
+}
+
+.back-button {
+  margin-bottom: 1em;
+  margin-top: 1em;
 }
 .modal h4 {
-  margin-top: 28px;
-  margin-bottom: -12px;
+  margin:1em 0em 1em 0em;
 }
 
 div.list {
   margin: 0;
   padding: 1em;
+  padding-top:0;
 }
 div.list div.services img {
   width: 50px;
@@ -1523,11 +1558,65 @@ div.list div.label {
   margin: 0;
 }
 .detail h4 {
-  text-align: center;
+  /*text-align: center;*/
 }
 
 .country-image{
-  max-width: 100%;
+    max-width: 225px;
+}
+
+.member-container {
+    font-size: 0.95em;
+}
+
+.container-logos{
+  padding: 1em;
+}
+.progress {
+    position: relative;
+    height: 10px;
+    display: block;
+    width: 100%;
+    background-color: rgba(230, 100, 47, 0.26);
+    border-radius: 24px;
+    margin: 0.5rem 0 1rem 0;
+    overflow: hidden;
+}
+
+.progress .indeterminate {
+    background-color: #e6642f;
+}
+
+#suggest .col.s3.m3
+{    border: 1px rgba(128, 128, 128, 0.25) solid;
+    border-radius: 25px;
+    box-shadow: 1px 1px 1px 1px rgba(136, 136, 136, 0.23);
+}
+#suggest .btn{
+  border: 1px rgba(128, 128, 128, 0.25) solid;
+    border-radius: 25px;
+    box-shadow: 1px 1px 1px 1px rgba(136, 136, 136, 0.23);
+    color:#ed2840;
+    background:white;
+}
+
+#suggest p {
+    margin: 0;
+    padding: 0;
+    color:#ed2840;
+}
+#suggest .card {
+    padding: 1em;
+}
+
+#suggest .card .card-title {
+  font-weight: 900;
+    font-size: 0.9em;
+}
+#suggest span.grey-text  {
+    font-weight: 100;
+    font-size: 0.9em;
+    color: #ed2840 !important;
 }
 
 .btn-new {
