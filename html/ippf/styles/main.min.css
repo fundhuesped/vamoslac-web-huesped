@@ -945,8 +945,8 @@ select {
 }
 
 .tRapLogo {
-  width: 50px !important;
-  height: 50px !important;
+  width: 2rem !important;
+  height: 2rem !important;
   margin-left: 3px;
 }
 @media (max-width: 287px) {
@@ -1519,7 +1519,7 @@ div.list {
   padding-top:0;
 }
 div.list div.services img {
-  width: 50px;
+  width: 2rem;
 }
 img.rapido {
   margin: 100px;
@@ -1619,16 +1619,27 @@ div.list div.label {
     color: #ed2840 !important;
 }
 
-.btn-new {
-  background-color: #e7354d;
-  right: 0;
-  top: 0;
+.arrow-btn {
+  color: white;
 }
 
 li.collection-item.center {
     padding: 0;
 }
 
-.home .row .col.s8.center-detail {
-    padding: 10px 20px;
+.col-container .center-col-services {
+    padding: 1rem 2rem;
+}
+
+.col-container {
+  display: flex;
+}
+
+.arrow-container {
+  height: auto;
+  background: #e7354d;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

@@ -52,15 +52,15 @@
 			<ul class="collection">
 				<!-- <li class="collection-item" ng-repeat="item in places | filter:esRapido()"> -->
 				<li class="collection-item center" ng-repeat="item in places | orderBy: events | filter:esFriendly()">
-					<div class="row">
-						<div class="col s8 center-detail">
+					<div class="row col-container">
+						<div class="col s11 center-col-services">
 
-						<div class="row info ">
-						<div class="col s12 label">
+							<div class="row info ">
+								<div class="col s12 label">
 							<span class="title truncate">[[item.establecimiento]]</span>
 							
+							</div>
 						</div>
-					</div>
 
 							<div class="row info">
 						<div class="col s12 l8">
@@ -107,10 +107,9 @@
 					</div>
 
 						</div>
-						<div class="col s4">
+						<div class="col s1 arrow-container">
 							<a ng-click="nextShowUp(item)" class="waves-effect waves-light right">
-								<!-- <a class="waves-effect waves-light btn-large">VESTER</a></a> -->
-								<div class="btn-position"><i class="mdi-navigation-chevron-right btn-new right">test</i></div></a>
+								<i class="mdi-navigation-chevron-right arrow-btn right"></i></a>
 						</div>
 					</div>
 					
