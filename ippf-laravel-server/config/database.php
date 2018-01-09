@@ -82,7 +82,7 @@ return [
             'prefix'    => '',
             'strict'    => false,
 */
-            
+
              'driver'    => 'mysql',
             'host'      => env('DB_HOST', 'localhost'),
              'database'  => env('DB_DATABASE', 'donde'),

@@ -7,9 +7,13 @@
 </div>
 <div class="collapsible-body">
     <div class="col s12 m12" ng-cloak ng-show="currentMarker.servicetype_dc">
-      <p><span translate="form_select_service_type_title"> </span> [[currentMarker.servicetype_dc]]
-        <p>
+      <span translate="form_select_service_type_title"> </span>&nbsp;[[currentMarker.servicetype_dc]]
     </div>
+
+    <div class="col s12 m12" ng-cloak ng-show="currentMarker.comentarios_dc">
+       <i class="mdi-action-info tiny"></i>[[currentMarker.comentarios_dc]]
+    </div>
+
     <div class="col s12 m12 " ng-cloak ng-show="currentMarker.horario_dc"><i class="mdi-action-query-builder tiny"> </i>[[currentMarker.horario_dc]]</div>
     <div class="col s12 m12" ng-cloak ng-show="currentMarker.responsable_dc"><i class="mdi-action-face-unlock tiny"> </i>[[currentMarker.responsable_dc]]</div>
     <div class="col s12 m12" ng-cloak ng-show="currentMarker.mail_dc">
@@ -25,7 +29,7 @@
           </a>
     </div>
     <!-- [[currentMarker.observaciones_mac]] -->
-    [[currentMarker.comentarios_dc]]
+
     <div class="col s12 m12 telefono">
       <a target="_blank" ng-cloak ng-show="currentMarker.tel_dc" ng-href="tel:[[currentMarker.tel_dc]]" class="tel"><i class="mdi-communication-call tiny"></i>
                                             [[currentMarker.tel_dc]]</a>

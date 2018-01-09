@@ -1,6 +1,5 @@
 dondev2App.controller('evaluationController',
   function(NgMap, vcRecaptchaService, placesFactory, $scope, $rootScope, $http, $interpolate, $location, $routeParams, $window, $compile, $translate) {
-    console.log('evaluationController');
     $scope.submiteable = false;
     $scope.voto = "";
     $scope.response = null;
@@ -23,16 +22,23 @@ dondev2App.controller('evaluationController',
     $scope.name = "";
     $scope.tel = "";
 
-    /*
-    > "Piqué".latinize();
-    "Pique"
-    > "Piqué".isLatin();
-    false
-    > "Pique".isLatin();
-    true
-    > "Piqué".latinise().isLatin();
-    true
-    */
+    $http.get('api/v2/places/' + $routeParams.id).then(function(data) {
+
+      $scope.establecimiento = data.data[0].establecimiento;
+
+      console.log(data.data[0].establecimiento);
+      console.log(data.data[0].placeId);
+      console.log(data.data[0].nombre_pais);
+      console.log(data.data[0].nombre_ciudad);
+
+      gtag('event', 'evaluando', { 
+            'lugar': data.data[0].nombre_pais + ' - ' + data.data[0].nombre_ciudad, 
+            'nombre_establecimiento': data.data[0].establecimiento,
+            'id_establecimiento': data.data[0].placeId
+      });     
+
+    });
+
     var Latinise = {};
     Latinise.latin_map = {
       "Á": "A",
@@ -899,7 +905,7 @@ dondev2App.controller('evaluationController',
     $scope.getAllQuestionsResponses();
     $scope.getServices($scope.placeId);
     $scope.model = {
-      key: '6Le6vhMUAAAAANvNw1nNOf6R_O8RuKFcCGv5IZzj'
+      key: '6LeDOjIUAAAAAEk3H4vXQVDqg6uDVwLuOEpu8HA-'
     };
 
     $scope.setResponse = function(response) {
@@ -922,8 +928,7 @@ dondev2App.controller('evaluationController',
     function unCheckedCaptcha() {
       var flagC = true;
       // if (grecaptcha.getResponse().length == 0){
-      if ((typeof $scope.captchaResponse === "undefined") || ($scope.captchaResponse == null) || ($scope.captchaResponse.length == 0)) {
-      } else {
+      if ((typeof $scope.captchaResponse === "undefined") || ($scope.captchaResponse == null) || ($scope.captchaResponse.length == 0)) {} else {
         flagC = false;
       }
       return flagC;
@@ -998,9 +1003,7 @@ dondev2App.controller('evaluationController',
           auxValid = false;
         } else if ($scope.evaluation.responses.length != $scope.selectedServiceQuestions.length) {
           auxValid = false;
-        }
-
-        else if (unCheckedCaptcha()) {
+        } else if (unCheckedCaptcha()) {
 
           auxValid = false;
         } else if (!$scope.checkboxValidator()) {
@@ -1020,20 +1023,10 @@ dondev2App.controller('evaluationController',
 
     }
 
-
     //para que funcione el select
     $(document).ready(function() {
       $('select').material_select();
     });
-
-
-    var urlCopy = "api/v2/evaluacion/comentarios/" + $routeParams.id;
-    $http.get(urlCopy).then(foundBacon);
-
-    function foundBacon(response) {
-      $scope.establecimiento = response.data[0].establecimiento;
-    };
-
 
     $scope.iconList = [{
         id: '1',
@@ -1120,7 +1113,7 @@ dondev2App.controller('evaluationController',
       }).indexOf("le_dieron");
       if (index >= 0) {
         qId = $scope.evaluation.responses[index].questionId;
-        $scope.respuestas.le_dieron = $("#selectbox_" + qId + " option:selected").val();
+        $scope.respuestas.le_dieron = 0;
       }
 
       $scope.respuestas.privacidad_ok = "";
@@ -1129,13 +1122,7 @@ dondev2App.controller('evaluationController',
       }).indexOf("privacidad_ok");
       if (index >= 0) {
         qId = $scope.evaluation.responses[index].questionId;
-        $scope.respuestas.privacidad_ok = $scope.responses[qId];
-        if ($scope.respuestas.privacidad_ok.length > 0) {
-          var value = $('input[name=radiobox_' + qId + ']:checked').val();
-          if (value == "evaluation_answeroption_7") $scope.respuestas.privacidad_ok = 1;
-          else $scope.respuestas.privacidad_ok = 0;
-
-        } else console.log("$scope.respuestas.privacidad_ok.length  no es > 0");
+        $scope.respuestas.privacidad_ok = 0;
       }
 
       $scope.respuestas.info_ok = "";
@@ -1144,15 +1131,8 @@ dondev2App.controller('evaluationController',
       }).indexOf("info_ok");
       if (index >= 0) {
         qId = $scope.evaluation.responses[index].questionId;
-        $scope.respuestas.info_ok = $scope.responses[qId];
-        if ($scope.respuestas.info_ok.length > 0) {
-          $scope.respuestas.info_ok = $scope.respuestas.info_ok.toLowerCase();
-          $scope.respuestas.info_ok = $scope.respuestas.info_ok.latinize();
+        $scope.respuestas.info_ok = 0;
 
-          var value = $('input[name=radiobox_' + qId + ']:checked').val();
-          if (value == "evaluation_answeroption_7") $scope.respuestas.info_ok = 1;
-          else $scope.respuestas.info_ok = 0;
-        }
       }
 
       $scope.respuestas.edad = "";
@@ -1161,10 +1141,9 @@ dondev2App.controller('evaluationController',
       }).indexOf("edad");
       if (index >= 0) {
         qId = $scope.evaluation.responses[index].questionId;
-        $scope.respuestas.edad = $("#selectbox_" + qId + " option:selected").val();
-        if ($scope.respuestas.edad == "evaluation_answeroption_16") $scope.respuestas.edad = $scope.exactAgeInput;
+        $scope.respuestas.edad = $("#number_" + qId).val();
 
-      } else console.log("index edad NO ES > 0");
+      }
 
       $scope.respuestas.genero = "";
       index = $scope.evaluation.responses.map(function(questions) {
@@ -1181,13 +1160,7 @@ dondev2App.controller('evaluationController',
       }).indexOf("es_gratuito");
       if (index >= 0) {
         qId = $scope.evaluation.responses[index].questionId;
-        $scope.respuestas.es_gratuito = $scope.responses[qId];
-        if ($scope.respuestas.es_gratuito.length > 0) {
-          var value = $('input[name=radiobox_' + qId + ']:checked').val();
-          if (value == "evaluation_answeroption_7") $scope.respuestas.es_gratuito = 1;
-          else $scope.respuestas.es_gratuito = 0;
-
-        } else console.log("$scope.respuestas.es_gratuito.length  no es > 0");
+        $scope.respuestas.es_gratuito = "ok";
       }
 
       $scope.respuestas.comodo = 0;
@@ -1196,16 +1169,8 @@ dondev2App.controller('evaluationController',
       }).indexOf("comodo");
       if (index >= 0) {
         qId = $scope.evaluation.responses[index].questionId;
-        $scope.respuestas.comodo = $scope.responses[qId];
-        if ($scope.respuestas.comodo.length > 0) {
-          var value = $('input[name=radiobox_' + qId + ']:checked').val();
-          if (value == "evaluation_answeroption_7") $scope.respuestas.comodo = 1;
-          else $scope.respuestas.comodo = 0;
-
-        } else console.log("$scope.respuestas.comodo.length  no es > 0");
+        $scope.respuestas.comodo = "ok";
       }
-
-
 
 
       $scope.respuestas.informacion_vacunas = 0;
@@ -1214,13 +1179,7 @@ dondev2App.controller('evaluationController',
       }).indexOf("informacion_vacunas");
       if (index >= 0) {
         qId = $scope.evaluation.responses[index].questionId;
-        $scope.respuestas.informacion_vacunas = $scope.responses[qId];
-        if ($scope.respuestas.informacion_vacunas.length > 0) {
-          var value = $('input[name=radiobox_' + qId + ']:checked').val();
-          if (value == "evaluation_answeroption_7") $scope.respuestas.informacion_vacunas = 1;
-          else $scope.respuestas.informacion_vacunas = 0;
-
-        } else console.log("$scope.respuestas.informacion_vacunas.length  no es > 0");
+        $scope.respuestas.informacion_vacunas = "ok";
       }
 
 
@@ -1236,12 +1195,8 @@ dondev2App.controller('evaluationController',
         $scope.respuestas.informacion_vacunas = $scope.responses[qId];
         if ($scope.respuestas.informacion_vacunas.length > 0) {
           $scope.respuestas.voto = $("#selectbox_" + qId + " option:selected").text();
-
-        } else console.log("$scope.respuestas.voto.length  no es > 0");
+        }
       }
-
-      //$scope.respuestas.voto = $scope.voto;
-
 
       $scope.respuestas.service = $scope.selectedService;
       $scope.services.forEach(function(service) {
@@ -1249,7 +1204,8 @@ dondev2App.controller('evaluationController',
           $scope.respuestas.serviceShortName = service.shortname.toLowerCase();
 
         }
-      })
+      });
+
       $scope.respuestas.comments = $("#comments").val();
       $scope.respuestas.name = $scope.name;
       $scope.respuestas.email = $scope.email;
@@ -1258,7 +1214,11 @@ dondev2App.controller('evaluationController',
       $http.post('api/v2/evaluacion/votar', $scope.respuestas)
         .then(function(response) {
             if (response.data.length === 0) {
-              Materialize.toast('Calificación enviada!', 5000);
+              var lang =  localStorage.getItem('lang');
+              if(lang == 'es')
+                  Materialize.toast('Calificación enviada!', 5000);
+              else
+                  Materialize.toast('Answer sent!', 5000);
               document.location.href = "#voted/" + $scope.respuestas.idPlace;
               queBuscaste = [];
               $scope.responses = [];
@@ -1280,6 +1240,7 @@ dondev2App.controller('evaluationController',
     $scope.actualQuestion = {};
 
     $scope.selectedServiceChange = function() {
+
       queBuscaste = [];
       $scope.responses = [];
       $scope.evaluation.responses = [];
@@ -1310,9 +1271,16 @@ dondev2App.controller('evaluationController',
             $('#selectbox_' + question.id + ' option[value="default"]').attr('selected', 'selected');
             $('#selectbox_' + question.id + ' option[value=default]').prop('selected', 'selected');
             question.options.forEach(function(option) {
-              var optionsHtml = '<option value="' + option.body + '" translate="' + option.body + '"></option> </select></div>';
-              var appendHtml = $compile(optionsHtml)($scope);
-              $("#selectbox_" + question.id).append(appendHtml);
+              if (question.evaluation_column == 'genero' && option.id != 46) {
+                var optionsHtml = '<option value="' + option.body + '" translate="' + option.body + '"></option> </select></div>';
+                var appendHtml = $compile(optionsHtml)($scope);
+                $("#selectbox_" + question.id).append(appendHtml);
+              }
+              if (question.evaluation_column != 'genero') {
+                var optionsHtml = '<option value="' + option.body + '" translate="' + option.body + '"></option> </select></div>';
+                var appendHtml = $compile(optionsHtml)($scope);
+                $("#selectbox_" + question.id).append(appendHtml);
+              }
             });
           } else if (question.type == 'checkbox') {
             var tittle = "";
@@ -1340,7 +1308,7 @@ dondev2App.controller('evaluationController',
             });
 
           } else if (question.type == 'number') {
-            var htmlQuestion = '<div class="block"><p class="blockTitle" translate="' + question.body + '"></p>	 <div class="blockContent"><input type="number" name="edad" id="number_' + question.id + '" placeholder="Escribí en números" ng-model="responses[' + question.id + ']" class="validate" ng-change="numberBoxChange(' + question.id + ',\'' + question.evaluation_column + '\')" required="required"/>						  </div></div>'
+            var htmlQuestion = '<div class="block"><p class="blockTitle" translate="' + question.body + '"></p>	 <div class="blockContent"><input type="number"  name="edad" id="number_' + question.id + '" placeholder="Escribí en números" ng-model="responses[' + question.id + ']" class="validate" ng-change="numberBoxChange(' + question.id + ',\'' + question.evaluation_column + '\')" required="required"/>						  </div></div>'
             var appendHtml = $compile(htmlQuestion)($scope);
             $("#evaluation").append(appendHtml);
           };
@@ -1451,7 +1419,6 @@ dondev2App.controller('evaluationController',
         var leDieronText = $("#selectbox_" + questionId + " option:selected").val();
         leDieronText = leDieronText.toLowerCase();
         leDieronText = leDieronText.latinize();
-        //if (leDieronText.indexOf("cerrado") >= 0) $scope.cerrado = true;*/
         if (leDieronText == "evaluation_answeroption_33") $scope.cerrado = true;
         else $scope.cerrado = false;
       }
@@ -1493,8 +1460,13 @@ dondev2App.controller('evaluationController',
     $scope.numberBoxChange = function(questionId, evaluation_column) {
       //var resp = $('input[name="' + aux + '"]:checked').val();
 
-      var number = $("#number_" + questionId).val();
 
+      var edad = $("input[name='edad']").val();
+      if (edad.length > 2) {
+        $("input[name='edad']").val(edad.slice(0, 2));
+      };
+
+      var number = $("#number_" + questionId).val();
       if ((typeof $scope.evaluation.responses != "undefined") && ($scope.evaluation.responses != "null") && ($scope.evaluation.responses.length > 0)) {
 
         var index = $scope.evaluation.responses.map(function(questions) {
@@ -1509,6 +1481,7 @@ dondev2App.controller('evaluationController',
             'evaluation_column': evaluation_column,
             'options': [number]
           };
+
         } else {
 
           $scope.evaluation.responses.push({
@@ -1519,7 +1492,6 @@ dondev2App.controller('evaluationController',
           });
         }
       } else {
-
         $scope.evaluation.responses = [{
           'questionId': questionId,
           'questionType': 'number',
@@ -1528,17 +1500,14 @@ dondev2App.controller('evaluationController',
         }];
       }
 
-
       if ($scope.cerrado) $scope.closedPlaceFormValidator();
       else $scope.formValidator();
     }
-
   });
 
 
 dondev2App.directive('checkBox', function() {
   return {
-
     templateUrl: './scripts/home/controllers/evaluation/my-checkbox.html'
   }
 });

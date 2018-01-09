@@ -25,19 +25,21 @@ class PlacesRESTController extends Controller
       echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
     }
 
-    public static function showAll($pais, $provincia, $partido, $service)
+    public static function showAll($pais, $provincia, $partido, $ciudad, $service)
     {
         $places = DB::table('places')
-      ->join('partido', 'places.idPartido', '=', 'partido.id')
-      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
-      ->join('pais', 'places.idPais', '=', 'pais.id')
-      ->where($service, '=', 1)
-      ->where('nombre_pais', $pais)
-      ->where('nombre_provincia', $provincia)
-      ->where('nombre_partido', $partido)
-      ->where('places.aprobado', '=', 1)
-      ->select()
-      ->get();
+          ->join('ciudad', 'places.idciudad', '=', 'ciudad.id')
+          ->join('partido', 'places.idPartido', '=', 'partido.id')
+          ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+          ->join('pais', 'places.idPais', '=', 'pais.id')
+          ->where($service, '=', 1)
+          ->where('nombre_ciudad', $ciudad)
+          ->where('nombre_pais', $pais)
+          ->where('nombre_provincia', $provincia)
+          ->where('nombre_partido', $partido)
+          ->where('places.aprobado', '=', 1)
+          ->select()
+          ->get();
       // dd($service);
 
       $resu = array();
@@ -256,7 +258,9 @@ class PlacesRESTController extends Controller
         }
         $cantidad = count($places);
 
-        return view('seo.placesList', compact('places', 'cantidad', 'pais', 'provincia', 'partido', 'resu'));
+        return json_encode(array('lugares' => $places, 'cantidad' => $cantidad, 'textos' => $resu));
+
+       // return view('seo.placesList', compact('places', 'cantidad', 'pais', 'provincia', 'partido','ciudad', 'resu'));
     }
 
 
@@ -274,6 +278,18 @@ class PlacesRESTController extends Controller
       ->get();
     }
 
+    public static function getPlaceById($id){
+     
+     $place = DB::table('places')
+      ->join('pais', 'pais.id', '=', 'places.idPais')
+      ->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
+      ->where('places.placeId', '=', $id)
+      ->select('places.*', 'pais.nombre_pais', 'ciudad.nombre_ciudad')
+      ->get();
+
+      return $place;
+    }
+
     public static function getScalarCampus($id)
     {
         return DB::table('places')
@@ -289,14 +305,15 @@ class PlacesRESTController extends Controller
               * cos( radians( places.latitude ) )
               * cos( radians( places.longitude ) - radians('.$lng.') )
               + sin( radians('.$lat.') )
-              * sin( radians( places.latitude ) ) ) ,2) * 22 AS distance'))
+              * sin( radians( places.latitude ) ) ) ,2) * 22 AS distance'), 'pais.nombre_pais', 'ciudad.nombre_ciudad')
                      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
                      ->join('partido', 'places.idPartido', '=', 'partido.id')
                      ->join('pais', 'places.idPais', '=', 'pais.id')
+                     ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
                      ->where('places.aprobado', '=', 1)
-                     ->having('distance', '<', 50000)
+                     ->having('distance', '<', 1000)
                      ->orderBy('distance')
-                     ->take(30)
+                     //->take(30)
                      ->get();
     }
 
@@ -325,7 +342,7 @@ class PlacesRESTController extends Controller
         ->join('pais', 'places.idPais', '=', 'pais.id')
         ->where($service,'=',1)
         ->where('places.idCiudad', $lid)
-        ->where('places.habilitado', '=', 1)
+        ->where('places.aprobado', '=', 1)
         ->select()
         ->get();
 
@@ -454,6 +471,38 @@ class PlacesRESTController extends Controller
       ->get();
     }
 
+    public static function showApprovedSearchActive($pid, $bid, $did, $cid)
+    {
+        return DB::table('places')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
+      ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+      ->join('pais', 'places.idPais', '=', 'pais.id')
+      ->where('places.idPais', $pid)
+      ->where('places.idProvincia', $bid)
+      ->where('places.idPartido', $did)
+      ->where('places.idCiudad', $cid)
+      ->where('places.aprobado', '=', 1)
+      ->select()
+      ->get();
+    }    
+
+    public static function showApprovedActive($pid, $cid, $did, $bid)
+    {
+        return DB::table('places')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+      ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->join('pais', 'places.idPais', '=', 'pais.id')
+      ->where('places.idPais', $pid)
+      ->where('places.idProvincia', $cid)
+      ->where('places.idPartido', $did)
+      ->where('places.idciudad', $bid)
+      ->where('places.aprobado', '=', 1)
+      ->select()
+      ->get();
+    }    
+
     public static function showApprovedFilterByService($paisId, $provinciaId, $partidoId, $servicios)
     {
         $places = DB::table('places')
@@ -502,57 +551,75 @@ class PlacesRESTController extends Controller
         return $places;
     }
 
-    public static function getAprobedPlaces($idPais, $idProvincia, $idPartido)
+  public static function getAprobedPlaces($idPais, $idProvincia, $idPartido, $idCiudad)
     {
-        if ((isset($idPais)) && ($idPais != "null") && (isset($idProvincia)) && ($idProvincia != "null") && (($idPartido == "null") || (!isset($idPais)))) {
-            $places = DB::table('places')
-      ->join('pais', 'places.idPais', '=', 'pais.id')
-      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+      
+     // Export filter by country
+     if ((isset($idPais)) && ($idPais != "null") && (($idProvincia == "null") || (!isset($idProvincia)))) {
+      $places = DB::table('places')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')  
       ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+      ->join('pais', 'places.idPais', '=', 'pais.id')
+      ->where('places.idPais', $idPais)
+      ->where('places.aprobado', '=', 1)
+      ->get();
+    }
+
+    // Export filter by country and province
+    if ((isset($idPais)) && ($idPais != "null") && (isset($idProvincia)) && ($idProvincia != "null") && (($idPartido == "null") || (!isset($idPartido)))) {
+      $places = DB::table('places')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')  
+      ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+      ->join('pais', 'places.idPais', '=', 'pais.id')
       ->where('places.idPais', $idPais)
       ->where('places.idProvincia', $idProvincia)
       ->where('places.aprobado', '=', 1)
       ->get();
-            return $places;
-        }
+    }
 
-
-        if ((isset($idPais)) && ($idPais != "null") && (isset($idProvincia)) && ($idProvincia != "null") && ((isset($idPartido)) && ($idPartido != "null"))) {
-            $places = DB::table('places')
-      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+    // Export filter by country, province and party
+    if ((isset($idPais)) && ($idPais != "null") && (isset($idProvincia)) && ($idProvincia != "null") && (isset($idPartido)) && ($idPartido != "null") && (($idCiudad == "null") || (!isset($idCiudad)))) {
+      $places = DB::table('places')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')  
       ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
       ->where('places.idPais', $idPais)
       ->where('places.idProvincia', $idProvincia)
       ->where('places.idPartido', $idPartido)
       ->where('places.aprobado', '=', 1)
       ->get();
-            return $places;
-        }
+    }
 
-        if ((isset($idPais)) && ($idPais != "null") && (($idProvincia == "null") || (!isset($idProvincia)))) {
-            $places = DB::table('places')
-      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+    // Export filter by country, province, party and city
+    if ((isset($idPais)) && ($idPais != "null") && (isset($idProvincia)) && ($idProvincia != "null") && (isset($idPartido)) && ($idPartido != "null") && (isset($idCiudad) && ($idCiudad != "null"))) {
+      $places = DB::table('places')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')  
       ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
       ->where('places.idPais', $idPais)
+      ->where('places.idProvincia', $idProvincia)
+      ->where('places.idPartido', $idPartido)
+      ->where('places.idCiudad', $idCiudad)
       ->where('places.aprobado', '=', 1)
       ->get();
-    //  dd($places);
-      return $places;
-        }
+    }
 
-        if ((($idPais == "null") || (!isset($idPais))) && (($idProvincia == "null") || (!isset($idProvincia))) && (($idPartido == "null") || (!isset($idPartido)))) {
-            $places = DB::table('places')
-      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+    // Export all
+    if ( $idPais == "null"  &&  $idProvincia == "null" && $idPartido == "null" && $idCiudad == "null") {
+      $places = DB::table('places')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')  
       ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
       ->where('places.aprobado', '=', 1)
       ->get();
-            return $places;
-        }
+    }
 
-        return "no entra por ninguno";
+        return $places;
     }
 
     public static function counters()
@@ -748,6 +815,20 @@ class PlacesRESTController extends Controller
         }
     }
 
+    public static function getCountryRanking()
+    {
+        
+            return
+              DB::table('places')
+                     ->select(
+                      DB::raw('count(*) as lugares, nombre_pais , id'))
+                     ->join('pais', 'places.idPais', '=', 'pais.id')
+                     ->orderBy('lugares', 'desc')
+                     ->groupBy('idPais')
+                     ->get();
+        
+    }
+
 
     public static function getNonGeoFilterByUser()
     {
@@ -930,6 +1011,7 @@ class PlacesRESTController extends Controller
     public function showPanel($id)
     {
         return DB::table('places')
+        ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -1138,6 +1220,18 @@ class PlacesRESTController extends Controller
         }
     }
 
+    public function getAllApproved(Request $request)
+    {
+        try {
+            return DB::table('places')
+              ->where('aprobado', '=' , 1) 
+              ->select('establecimiento')
+              ->get();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }    
+
     public function getAllPartidos(Request $request)
     {
         try {
@@ -1188,12 +1282,12 @@ class PlacesRESTController extends Controller
                             ->where('partido.nombre_partido', 'like', $param)
                             ->get();   
 
-              $multimedia = array_merge((array)$ciudades, (array)$partidos);                                  
+              $multimedia = array_merge((array)$partidos, (array)$ciudades);                             
 
               return response()->json($multimedia);
+              
            }
     }
-
 
     public function getpPlacesByParty($pid, $service){
 
@@ -1257,51 +1351,6 @@ class PlacesRESTController extends Controller
       return $text;
     }
 
- /*   public function calculateCenter($location){
-      // Calculate coordinate center
-      $result = $location->results[0];
-      $geo  = $result->geometry;
-      $viewport = $geo->viewport;
-
-      $ne = $viewport->northeast;
-      $latNE = $ne->lat;
-      $longNE = $ne->lng;
-
-      $sw = $viewport->southwest;
-      $latSW = $sw->lat;
-      $longSW = $sw->lng;
-
-      $diffLat = $latNE - $latSW;
-      $diffLong = $longNE - $longSW;
-
-      $centerLat = $latSW + ($diffLat/2);
-      $centerLong = $longSW + ($diffLong/2);
-
-      return array($centerLat, $centerLong);
-    }
-
-    public function getCoordinate($url){
-
-        try {
-
-          $ch = curl_init();
-          curl_setopt($ch, CURLOPT_URL, $url);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-          curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
-          curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-          curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-          $response = curl_exec($ch);
-          curl_close($ch);
-
-          $location = json_decode($response);
-          return $location;
-
-        }catch(Exception $e){
-          throw new ImporterException($e->getMessage());
-        }
-
-    }*/
-
     public function listAllAutocomplete(){
     // For the app
     $multimedia = array();
@@ -1327,55 +1376,6 @@ class PlacesRESTController extends Controller
 
   }
 
-    /*foreach ($partidos as $partido) {
-
-        $partidoName = urlencode($this->elimina_acentos($partido->nombre_partido));
-        $provinciaName = urlencode($this->elimina_acentos($partido->nombre_provincia));
-        $paisName = urlencode($this->elimina_acentos($partido->nombre_pais));
-
-        $url = "https://maps.googleapis.com/maps/api/geocode/json?components=administrative_area:".$partidoName."|administrative_area:".$provinciaName."|country:".$paisName."&key=AIzaSyBoXKGMHwhiMfdCqGsa6BPBuX43L-2Fwqs";
-
-        $location = $this->getCoordinate($url);
-
-        if ($location->status == "OK"){
-
-          $coordinates = $this->calculateCenter($location);
-          $partido = get_object_vars( $partido );
-          $partido['centerlatitude'] = $coordinates[0];
-          $partido['centerLongitude'] = $coordinates[1];
-          array_push($multimedia, $partido);
-
-        }
-
-      }*/
-
-
-  /*  foreach ($ciudades as $ciudad) {
-
-        $ciudadName = urlencode($this->elimina_acentos($ciudad->nombre_ciudad));
-        $partidoName = urlencode($this->elimina_acentos($ciudad->nombre_partido));
-        $provinciaName = urlencode($this->elimina_acentos($ciudad->nombre_provincia));
-        $paisName = urlencode($this->elimina_acentos($ciudad->nombre_pais));
-        $url = "https://maps.googleapis.com/maps/api/geocode/json?components=locality:".$ciudadName."|administrative_area:".$partidoName."|administrative_area:".$provinciaName."|country:".$paisName."&key=AIzaSyBoXKGMHwhiMfdCqGsa6BPBuX43L-2Fwqs";
-        
-        $location = $this->getCoordinate($url);
-
-        if ($location->status == "OK"){
-
-          $coordinates = $this->calculateCenter($location);
-          $ciudad = get_object_vars( $ciudad );
-          $ciudad['centerlatitude'] = $coordinates[0];
-          $ciudad['centerLongitude'] = $coordinates[1];
-          array_push($multimedia, $ciudad);
-
-        }
-
-      }      
-
-      return json_encode($multimedia);
-
-    }*/
-
     public static function getBestRatedPlaces($pid)
     {
         return DB::table('places')
@@ -1391,36 +1391,16 @@ class PlacesRESTController extends Controller
 
     public static function getPlaceEvaluationsFilterByService($placeId, $services)
     {
-        $evaluations = DB::table('evaluation')
+      $evaluations = DB::table('evaluation')
       ->where('evaluation.idPlace', $placeId)
-        ->join('places', 'evaluation.idPlace', '=', 'places.placeId')
-        ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
-        ->join('partido', 'places.idPartido', '=', 'partido.id')
-        ->join('pais', 'places.idPais', '=', 'pais.id')
-        /*->where(function ($query) use ($services) {
-      if (in_array("condones", $services)) {
-         $query->orWhere('evaluation.service','condones');
-       }
-       if (in_array("prueba", $services)) {
-         return "aaa";
-         $query->orWhere('evaluation.service','prueba');
-       }
-       if (in_array("vacunatorios", $services)) {
-       $query->orWhere('evaluation.service','vacunatorios');
-       }
-       if (in_array("CDI", $services)) {
-         $query->orWhere('evaluation.service','infectologia');
-       }
-       if (in_array("SSR", $services)) {
-         $query->orWhere('evaluation.service','ssr');
-       }
-       if (in_array("ile", $services)) {
-         $query->orWhere('evaluation.service','ile');
-       }
-     })*/
-    ->select('provincia.nombre_provincia', 'partido.nombre_partido', 'pais.nombre_pais', 'places.placeId', 'places.establecimiento', 'places.calle', 'places.altura', 'places.barrio_localidad', 'places.condones', 'places.prueba', 'places.ssr', 'places.dc', 'places.mac', 'places.ile', 'places.es_rapido', 'evaluation.id', 'evaluation.que_busca', 'evaluation.le_dieron', 'evaluation.info_ok', 'evaluation.privacidad_ok', 'evaluation.edad', 'evaluation.genero', 'evaluation.voto', 'evaluation.comentario', 'evaluation.es_gratuito', 'evaluation.comodo', 'evaluation.informacion_vacunas', 'evaluation.aprobado', 'pais.nombre_pais', 'provincia.nombre_provincia', 'partido.nombre_partido', 'evaluation.created_at', 'evaluation.service')
-    ->get();
+      ->join('places', 'evaluation.idPlace', '=', 'places.placeId')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+      ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
+      ->join('pais', 'places.idPais', '=', 'pais.id')
+      ->select('ciudad.nombre_ciudad','provincia.nombre_provincia', 'partido.nombre_partido', 'pais.nombre_pais', 'places.placeId', 'places.establecimiento', 'places.calle', 'places.altura', 'places.barrio_localidad', 'places.condones', 'places.prueba', 'places.ssr', 'places.dc', 'places.mac', 'places.ile', 'places.es_rapido', 'evaluation.*')
+      ->get();
 
-        return $evaluations;
+      return $evaluations;
     }
 }

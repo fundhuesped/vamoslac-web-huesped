@@ -5,15 +5,16 @@ dondev2App.controller('cityMapController',
       $scope.currentMarker = $rootScope.currentMarker;
     })
 
+
     $scope.voteLimit = 5;
 
     $rootScope.main = false;
     $rootScope.geo = false;
 
-    if($routeParams.ciudad){
+    if ($routeParams.ciudad) {
       $scope.ciudad = $routeParams.ciudad.split('-')[1];
       $scope.ciudadId = $routeParams.ciudad.split('-')[0];
-    }else{
+    } else {
       $scope.ciudad = "";
     }
 
@@ -53,14 +54,14 @@ dondev2App.controller('cityMapController',
       var urlCount = "api/v2/evaluacion/cantidad/" + item.placeId;
       $http.get(urlCount)
         .then(function(response) {
-          item.votes = response.data[0];
+          item.votes = response.data;
         });
 
       // //aparte
       var urlRate = "api/v2/evaluacion/promedio/" + item.placeId;
       $http.get(urlRate)
         .then(function(response) {
-          item.rate = response.data[0];
+          item.rate = response.data;
           item.faceList = [{
               id: '1',
               image: '1',
@@ -117,6 +118,7 @@ dondev2App.controller('cityMapController',
 
       $rootScope.places = $scope.places;
       $scope.cantidad = $scope.places.length;
+
       $rootScope.currentMarker = item;
       $rootScope.centerMarkers = [];
       //tengo que mostrar arriba en el map si es dekstop.
@@ -140,6 +142,8 @@ dondev2App.controller('cityMapController',
     $scope.closeCurrent = function() {
       $scope.currentMarker = undefined;
     }
+
+
 
     if ($rootScope.places.length > 0 && $rootScope.currentMarker) {
 
@@ -169,11 +173,20 @@ dondev2App.controller('cityMapController',
         $rootScope.centerMarkers.push($rootScope.currentMarker);
 
 
+
       })
     }
 
-    console.log("$rootScope.currentMarker");
-    console.log($rootScope.currentMarker);
 
+    console.log($rootScope.currentMarker.establecimiento);
+    console.log($rootScope.currentMarker.placeId);
+    console.log($rootScope.currentMarker.nombre_pais);
+    console.log($rootScope.currentMarker.nombre_ciudad);
+
+    gtag('event', 'evaluando', { 
+      'lugar': $rootScope.currentMarker.nombre_pais + ' - ' + $rootScope.currentMarker.nombre_ciudad, 
+      'nombre_establecimiento': $rootScope.currentMarker.establecimiento,
+      'id_establecimiento': $rootScope.currentMarker.placeId
+    });     
 
   });

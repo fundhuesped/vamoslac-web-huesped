@@ -16,6 +16,9 @@ Route::get('/phpHelp', function () {
         return File::get(public_path() . '/public/contador/index.html');
     });
 
+
+    
+Route::get('api/v2/countries/ranking', 'PlacesRESTController@getCountryRanking');
 Route::get('api/v2/getiletag/{idPais}', 'ServiceController@getIleTag'); //devuelve el tag para el json i18n correspondiente al idPais
 Route::get('changelang/{lang}', 'SeoController@changeLang'); //cambia el lenguaje de la app
 Route::get('api/v2/evaluacion/getallquestionsresponses', 'QuestionController@getAllQuestionsResponses'); //Obtiene todas las preguntas y respuestas para evaluacion
@@ -52,20 +55,35 @@ Route::get('api/v1/places2/{id}', 'PlacesRESTController@showPanel');
 */
 
 Route::get('/', 'MainRouteController@home');
+Route::get('/home', 'MainRouteController@home');
 Route::get('/form', 'MainRouteController@form');
-Route::get('/share/{id}', 'MainRouteController@shareDetail');
+Route::get('/terms', 'MainRouteController@terms');
+Route::get('/share/{lang}/{id}', 'MainRouteController@shareDetail');
 
 Route::group(['middleware' => CheckLang::class], function () {
+
     Route::get('/listado-paises', 'PaisRESTController@showCountries');
+    Route::get('/listado-detalle', 'PaisRESTController@showCountriesDetail');
     Route::get('pais/{pais}/provincia', 'ProvincesRESTController@showProvinces');
     Route::get('pais/{pais}/provincia/{provincia}/partido', 'PartidoRESTController@showCounty');
-    Route::get('pais/{pais}/provincia/{provincia}/partido/{partido}/servicio', 'SeoController@showServices');
-    Route::get('pais/{pais}/provincia/{provincia}/partido/{partido}/servicio/{code}', 'PlacesRESTController@showAll');
+    Route::get('pais/{pais}/provincia/{provincia}/partido/{partido}/ciudad', 'CiudadRESTController@showCity');
+    Route::get('pais/{pais}/provincia/{provincia}/partido/{partido}/ciudad/{ciudad}/servicio', 'SeoController@showServices');
+    Route::get('pais/{pais}/provincia/{provincia}/partido/{partido}/ciudad/{ciudad}/servicio/{code}', 'PlacesRESTController@showAll');
+
+    Route::get('pais/{id}/province', 'ProvincesRESTController@showProvincesByIdPais');
+    Route::get('provincia/{id}/partido', 'PartidoRESTController@showPartidosByIdProvincia');
+    Route::get('partido/{id}/ciudad', 'CiudadRESTController@showCitiesByIdPartido');         
+
     Route::get('api/v2/places/getall', 'PlacesRESTController@getAllPlaces');
+     Route::get('api/v2/places/{id}', 'PlacesRESTController@getPlaceById');
+    Route::get('api/v2/places/getAllApproved', 'PlacesRESTController@getAllApproved');    
     Route::get('api/v2/pais/getall', 'PlacesRESTController@getAllPaises');
     Route::get('api/v2/provincia/getall', 'PlacesRESTController@getAllProvincias');
     Route::get('api/v2/partido/getall', 'PlacesRESTController@getAllPartidos');
     Route::get('api/v2/evaluation/getall', 'EvaluationRESTController@getAllEvaluations');
+    Route::get('api/v2/evaluation/getall/{paisId}/{pciaId}/{partyId}/{cityId}', 'EvaluationRESTController@getAllByCity');
+    Route::get('api/v2/evaluation/{id}', 'EvaluationRESTController@removeEvaluation');
+
 });
 
 
@@ -100,7 +118,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/api/v1panel/cleardb', 'ImportadorController@cleardb'); // <------------------- limpia base de datos
-		Route::get('/api/v1panel/getservermode', 'ImportadorController@getServerMode'); // <------------------- devuelve .env.mode
+    Route::get('/api/v1panel/getservermode', 'ImportadorController@getServerMode'); // <------------------- devuelve .env.mode
 
     Route::get('panel', 'MainRouteController@panel');
     Route::get('panel/places/confirmation', 'MainRouteController@formEditConfirmation');
@@ -142,10 +160,18 @@ Route::group(['middleware' => 'auth'], function () {
 
     //panel-exportar-frontEnd
     Route::get('panel/importer/front-export/{pid}/{cid}/{bid}', 'ImportadorController@exportarPanelFormed');//para la busqueda de places
+
+    // For places search - Second export button
+    Route::get('panel/importer/front-export/{pid}/{bid}/{did}/{cid}', 'ImportadorController@exportarPanelFormedCity');
+
     Route::get('panel/importer/front-export/{search}', 'ImportadorController@exportarPanelSearch');//para la busqueda de places
 
     Route::get('panel/importer/front-export-eval/{pid}/{cid}/{bid}', 'ImportadorController@exportarPanelEvalFormed');//para la busqueda de places
+
     Route::post('panel/importer/activePlacesEvaluationsExport', 'ImportadorController@activePlacesEvaluationsExport');//exportar evluacion lugares activos con filtro por servicios servicio
+
+    Route::post('panel/importer/filteredEvaluations', 'ImportadorController@getFilteredEvaluations');//exportar evluacion lugares activos con filtro por servicios servicio
+
     Route::get('panel/importer/front-export-eval/{search}', 'ImportadorController@exportarPanelEvalSearch');//para la busqueda de places
   Route::post('panel/importer/activePlacesExport', 'ImportadorController@activePlacesExport');//exportar lugares activos
     Route::post('panel/importer/evaluationsExportFilterByService', 'ImportadorController@evaluationsExportFilterByService');//exportar evluacion lugares activos con filtro por servicios servicio
@@ -154,10 +180,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('panel/importer/eval-service-export/{id}', 'ImportadorController@exportarEvaluacionesPorServicios');//para las evaluaciones
 
     //todas las evaluaciones
-    Route::get('panel/importer/full-eval-export', 'ImportadorController@exportarEvaluacionesFull');//todas las evaluaciones de todos los lugares
-
-
-
+    Route::get('panel/importer/full-eval-export/{lang}', 'ImportadorController@exportarEvaluacionesFull');//todas las evaluaciones de todos los lugares
 
     Route::resource('panel/importer', 'ImportadorController');
 
@@ -169,7 +192,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('api/v1/panel/provinces/{id}/cities', 'PaisRESTController@getAllCities');
-
 
     Route::get('api/v1panelplaces/ranking', 'PlacesRESTController@getCitiRanking');
     Route::get('api/v1panelplaces/nonGeo', 'PlacesRESTController@getNonGeo');
@@ -190,7 +212,8 @@ Route::group(['middleware' => 'auth'], function () {
     //Route::get('api/v1/panel/places/pending', 'PlacesRESTController@showPending');
 
     // Route::get('api/v1/places2/{id}', 'PlacesRESTController@showPanel');
-    Route::get('api/v1/places/approved/{pid}/{cid}/{bid}', 'PlacesRESTController@showApproved');
+     Route::get('api/v1/places/approved', 'PlacesRESTController@getAllApproved');
+    Route::get('api/v1/places/approved/{pid}/{cid}/{did}/{bid}', 'PlacesRESTController@showApprovedActive');
     Route::get('api/v1/places/blocked', 'PlacesRESTController@showDreprecated');
     Route::get('api/v1/places/blockedfilterbyuser', 'PlacesRESTController@showDreprecatedFilterByUser');
     Route::get('api/v1panelplaces/pending', 'PlacesRESTController@showPending');
@@ -208,6 +231,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('api/v1/panel/partido/panel', 'PartidoRESTController@showWithProvincia');
     Route::post('api/v1/panel/partido/update/{id}', 'PartidoRESTController@updateHabilitado');
 
+    Route::get('api/v1/panel/ciudad/panel', 'CiudadRESTController@showCities');
+    Route::post('api/v1/panel/ciudad/update/{id}', 'CiudadRESTController@updateHabilitado');
 
     Route::post('api/v1/panel/places/{id}/update', 'PlacesRESTController@update');
     Route::post('api/v1/panel/places/{id}/approve', 'PlacesRESTController@approve');
@@ -253,7 +278,9 @@ Route::get('api/v1/countries/byuser', 'PaisRESTController@getCountriesByUser');
 Route::get('api/v1/countries/all', 'PaisRESTController@getAll');
 Route::get('api/v1/countries/{id}/provinces', 'PaisRESTController@getProvinces');
 
-Route::get('api/v1/panel/provinces/{id}/partidos', 'PartidoRESTController@showByProvincia');
+Route::get('api/v1/provinces/{id}/partidos', 'PaisRESTController@getPartidos');
+
+Route::get('api/v1/parties/{id}/cities', 'PaisRESTController@getCitiesByParty');
 
 Route::get('api/v1/provinces/{id}/cities', 'PaisRESTController@getCities');
 

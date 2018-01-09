@@ -8,6 +8,7 @@ dondev2App.controller('locateListController',
     $rootScope.geo = true;
     $scope.loading = true;
     $scope.events = "distance";
+    $scope.legal = true;
     //parseo a obj para obtener el servicio si no piden todo
 
     if (typeof $scope.service === "undefined" || $scope.service === null || $scope.service == "" || $scope.service == "friendly") {
@@ -18,8 +19,6 @@ dondev2App.controller('locateListController',
 
     //seteo a todos en false x las dudas
     $scope.checkbox = false;
-
-
     $rootScope.voteLimit = 5;
     $scope.voteLimit = 5;
 
@@ -86,8 +85,7 @@ dondev2App.controller('locateListController',
       });
     }
     $scope.nextShowUp = function(item) {
-      console.log("item");
-      console.log(item);
+
       var urlCount = "api/v2/evaluacion/cantidad/" + item.placeId;
       $http.get(urlCount)
         .then(function(response) {
@@ -167,10 +165,40 @@ dondev2App.controller('locateListController',
       $location.path('/localizar' + '/' + $routeParams.servicio + '/mapa');
 
     }
+
     var onLocationFound = function(position) {
       $scope.$apply(function() {
 
         placesFactory.forLocation(position.coords, function(result) {
+
+          var geoPais;
+
+          var address = position.coords.latitude+','+position.coords.longitude
+
+          var url = "https://maps.google.com.ar/maps/api/geocode/json?latlng="+address+"&key=AIzaSyBoXKGMHwhiMfdCqGsa6BPBuX43L-2Fwqs";
+
+          $http.get(url)
+          .then(function(response) {
+            for (var i = 0; i <response.data.results.length; i++){
+              if(response.data.results[i].types[0] === 'country'){
+                console.log(response.data.results[i].address_components[0].long_name);
+                geoPais = response.data.results[i].address_components[0].long_name;
+              }
+              
+            }
+
+            gtag('event', 'geo',{
+              'latitud': position.coords.latitude,
+              'longitud': position.coords.longitude 
+            });
+
+            gtag('event', 'geoPais',{
+              'nombre_pais' : geoPais
+            });            
+
+
+          });
+
           for (var i = result.length - 1; i >= 0; i--) {
             if (typeof result[i].distance === "string")
               result[i].distance = Number(result[i].distance);
@@ -268,10 +296,36 @@ dondev2App.controller('locateListController',
 						var url = "api/v2/getiletag/" + $rootScope.places[0].idPais;
 						$http.get(url)
 							.then(function(response) {
-								$scope.ileTag = "ile_" + response.data[0].nombre_pais;
-                $scope.countryTextTag = "countryText_" + response.data[0].nombre_pais;
-                $scope.countryImageTag = response.data[0].nombre_pais;
-                console.log("countryTextTag " + $scope.countryTextTag);
+								$scope.countryImageTag = response.data[0].nombre_pais.toLowerCase();
+                $scope.countryImageTag = $scope.countryImageTag.trim();
+                $scope.countryImageTag = $scope.countryImageTag.replace(/ +/g, "");
+                $scope.countryImageTag = removeAccents($scope.countryImageTag);
+
+                if ($scope.service.code == 'ile'){
+                 if($scope.countryImageTag == 'antiguaandbarbuda' || 
+                  $scope.countryImageTag == 'aruba' || 
+                  $scope.countryImageTag == 'curacao' || 
+                  $scope.countryImageTag == 'dominica' || 
+                  $scope.countryImageTag == 'jamaica' || 
+                  $scope.countryImageTag == 'honduras' || 
+                  $scope.countryImageTag == 'grenada' || 
+                  $scope.countryImageTag == 'suriname' || 
+                  $scope.countryImageTag == 'saintvincent'|| 
+                  $scope.countryImageTag == 'paraguay'|| 
+                  $scope.countryImageTag == 'panama' || 
+                  $scope.countryImageTag == 'republicadominicana' || 
+                  $scope.countryTextTag =='trinidadandtobago'){
+
+                    $scope.legal = false;
+
+                  }
+                }
+              else{
+               $scope.legal = true;
+               }
+
+                $scope.ileTag = "ile_" + $scope.countryImageTag;
+                $scope.countryTextTag = "countryText_" + $scope.countryImageTag;
 							});
 					}
 

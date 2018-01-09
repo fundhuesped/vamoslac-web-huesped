@@ -1,6 +1,7 @@
 dondev2App.controller('homeController',
-  function($timeout, copyService, placesFactory, NgMap, $anchorScroll, $scope, $rootScope, $routeParams, $location, $http, $translate) {
+  function($timeout, copyService, placesFactory, NgMap, $anchorScroll, $scope, $rootScope, $routeParams, $location, $http, $translate, $cookies) {
     $rootScope.selectedLanguage;
+    console.log()
     try {
       var userLang = navigator.language || navigator.userLanguage; // es-AR
       var userLang = userLang.split('-')[0]; // es
@@ -19,12 +20,13 @@ dondev2App.controller('homeController',
         $translate.use('es');
         $rootScope.selectedLanguage = 'es';
       }
+      
       $http.get('changelang/' + localStorage.lang)
         .then(
           function(response) {
 
             if (response.statusText == 'OK') {
-
+              
             } else {
               Materialize.toast('Intenta nuevamente mas tarde.', 5000);
             }
@@ -59,6 +61,7 @@ dondev2App.controller('homeController',
       localStorage.setItem("lang", $rootScope.selectedLanguage);
       localStorage.setItem("selectedByUser", true);
       $translate.use($rootScope.selectedLanguage);
+      $cookies.put('lang' , $rootScope.selectedLanguage);
       $http.get('changelang/' + $rootScope.selectedLanguage)
         .then(
           function(response) {

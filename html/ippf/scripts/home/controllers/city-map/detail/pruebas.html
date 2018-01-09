@@ -8,8 +8,14 @@
 </div>
 <div class="collapsible-body">
     <div class="col s12 m12" ng-cloak ng-show="currentMarker.servicetype_prueba">
-        <i class="md-icons attach_money tiny"><span translate="form_select_service_type_title"> </span></i>[[currentMarker.servicetype_prueba]]
+        <span translate="form_select_service_type_title"></span>&nbsp;[[currentMarker.servicetype_prueba]]
     </div>
+
+
+    <div class="col s12 m12" ng-cloak ng-show="currentMarker.observaciones_testeo">
+     <i class="mdi-action-info tiny"></i>[[currentMarker.observaciones_testeo]]
+    </div>
+
     <div class="col s12 m12 " ng-cloak ng-show="currentMarker.horario_testeo">
         <i class="mdi-action-query-builder tiny"> </i>[[currentMarker.horario_testeo]]
     </div>
@@ -29,6 +35,7 @@
     <div class="col s12 m12 truncate" ng-cloak ng-show="currentMarker.responsable_testeo">
         <i class="mdi-action-face-unlock tiny"></i> [[currentMarker.responsable_testeo]]
     </div>
+
 
     <div class="col s12 m12 telefono trap">
         <a target="_blank" ng-cloak ng-show="currentMarker.tel_testeo" ng-href="tel:[[currentMarker.tel_testeo]]" class="tel">

@@ -44,10 +44,67 @@ class CiudadRESTController extends Controller
                 ->get();*/
 
         $placesByParty = DB::table('places')
-                ->select('partido.id', 'partido.nombre_partido', '')
+                ->select('partido.id', 'partido.nombre_partido', '');
 
         return $placesByParty;
 
     }
+
+
+     public function showCities()
+    {
+      return DB::table('ciudad')
+      ->join('partido', 'partido.id', '=', 'ciudad.idPartido')
+      ->join('provincia', 'provincia.id', '=', 'ciudad.idProvincia')
+      ->join('pais', 'pais.id', '=', 'ciudad.idPais')
+      ->leftJoin('places', function($join){
+        $join->on('places.idCiudad', '=', 'ciudad.id')->where('places.aprobado','=','1');
+      })
+      ->select('ciudad.nombre_ciudad', 'ciudad.id', 'partido.nombre_partido','provincia.nombre_provincia','pais.nombre_pais','ciudad.habilitado', DB::raw("COUNT(places.idCiudad) as countPlaces"))
+      ->groupBy('ciudad.id')
+      ->orderBy('countPlaces')
+      ->get();
+    }
+
+    public function updateHabilitado(Request $request, $id)
+    {
+        $request_params = $request->all();
+        $ciudad = Ciudad::find($id);
+
+        if($request->has('habilitado')){
+          $ciudad->habilitado = $request_params['habilitado'] ? 1 : 0;
+          $ciudad->updated_at = date("Y-m-d H:i:s");
+          $ciudad->save();
+        }
+          return [];
+
+    }
+
+    public function showCity($pais,$provincia, $partido)
+    {
+        $ciudades = DB::table('ciudad')
+          ->join('partido', 'partido.id', '=', 'ciudad.idPartido')
+          ->join('provincia', 'provincia.id', '=', 'partido.idProvincia')
+          ->join('pais', 'pais.id', '=', 'partido.idPais')
+          ->where('nombre_pais',$pais)
+          ->where('nombre_provincia',$provincia)
+          ->where('nombre_partido',$partido)
+          ->orderBy('nombre_ciudad')
+          ->get();
+          
+        return view('seo.ciudades',compact('ciudades','partido','provincia','pais'));
+    }
+
+
+    public function showCitiesByIdPartido($id)
+    {
+        $ciudades = DB::table('ciudad')
+          ->join('partido', 'partido.id', '=', 'ciudad.idPartido')
+          ->where('ciudad.idPartido',$id)
+          ->orderBy('nombre_ciudad')
+          ->get();
+          
+        return $ciudades;
+    }    
 
 }
