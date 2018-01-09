@@ -1698,7 +1698,7 @@ div.list div.label {
 .detail .service-header-text{
   padding-left: 0;
 }
-=======
+
 .arrow-btn {
   color: white;
 }
@@ -1723,4 +1723,4 @@ li.collection-item.center {
   flex-direction: column;
   justify-content: center;
 }
->>>>>>> cccf91b38eb45203146221b22c1fc20acc96e809
+
