@@ -6,6 +6,7 @@ vendor/
 storage/
 
 database.prod.php
+database.php
 
 raw-datasets/
 # Runtime data

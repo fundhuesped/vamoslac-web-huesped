@@ -71,7 +71,7 @@ return [
             // 'collation' => 'utf8_unicode_ci',
             // 'prefix'    => '',
             // 'strict'    => false,
-
+/*
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', 'localhost'),
             'database'  => env('DB_DATABASE', 'ippf'),
@@ -81,17 +81,17 @@ return [
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
             'strict'    => false,
-
-            // // DO
-            // 'driver'    => 'mysql',
-            // 'host'      => env('DB_HOST', 'localhost'),
-            // 'database'  => env('DB_DATABASE', 'donde'),
-            // 'username'  => env('DB_USERNAME', 'root'),
-            // 'password'  => env('DB_PASSWORD', ''),
-            // 'charset'   => 'utf8',
-            // 'collation' => 'utf8_unicode_ci',
-            // 'prefix'    => '',
-            // 'strict'    => false,
+*/
+            
+             'driver'    => 'mysql',
+            'host'      => env('DB_HOST', 'localhost'),
+             'database'  => env('DB_DATABASE', 'donde'),
+             'username'  => env('DB_USERNAME', 'root'),
+             'password'  => env('DB_PASSWORD', ''),
+             'charset'   => 'utf8',
+             'collation' => 'utf8_unicode_ci',
+             'prefix'    => '',
+             'strict'    => false,
 
         ],
 

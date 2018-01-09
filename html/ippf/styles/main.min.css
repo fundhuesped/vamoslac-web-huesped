@@ -1524,8 +1524,84 @@ div.list div.label {
 }
 .detail h4 {
   text-align: center;
+  margin-bottom: 0;
 }
 
 .country-image{
   max-width: 100%;
+}
+
+.collection .collection-item.active {
+    background-color: white;
+    color: #000000;
+    padding: 12px 14px;
+}
+
+.collapsible-header, .collapsible-body {
+    border-bottom: 0;
+}
+
+.servicios .col.s12.m12{
+  float: none;
+}
+
+.servicios .collapsible-header h4{
+  font-size: 1rem;
+  text-align: left;
+}
+
+.servicios .collapsible-header {
+    padding: 0;
+}
+
+.servicios .collapsible-header i {
+  transition: all 0.4s;
+  transform: rotate(0);
+  color: #e6344d;
+  padding-right: 0!important;
+  margin-right: 0;
+  padding-left: 0;
+  font-size: 2.25rem;
+  float: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.servicios .collapsible-header.active i{
+  transform: rotate(180deg);
+}
+
+.service-li{
+    position: relative;
+}
+
+.servicios .collapsible-header i.service-button-down-icon{
+  position: absolute;
+  top: 0;
+  right:  0;
+  height:  100%;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.service-button-down-background {
+    background-color: #e6344d;
+    height: 200%;
+    right: 0;
+    top: -1px;
+    width: 2rem;
+    position: absolute;
+    border-top: solid 1px rgba(139, 0, 0, 0.5);
+}
+
+.detail .servicios .collection-item .service-header {
+    padding-bottom: 0;
+    border-bottom: 0;
+    display: flex;
+    align-items: center;
+}
+
+.detail .service-header-text{
+  padding-left: 0;
 }

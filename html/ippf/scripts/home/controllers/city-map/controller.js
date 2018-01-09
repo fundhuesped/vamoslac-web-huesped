@@ -31,6 +31,8 @@ dondev2App.controller('cityMapController',
 
     $rootScope.navBar = $scope.service;
 
+  //  $scope.currentService = JSON.parse($routeParams.servicio);
+
     var search = {
 
       ciudad: $scope.ciudadId,

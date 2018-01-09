@@ -64,4 +64,7 @@ dondev2App.controller('locationController',
       });
 
     }
+
+    $rootScope.serviceLabel = $scope.service.label;
+    $rootScope.serviceCode = $scope.service.code;
   });
