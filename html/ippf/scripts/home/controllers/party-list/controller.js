@@ -7,6 +7,7 @@ dondev2App.controller('partyListController',
     $rootScope.main = false;
     $rootScope.geo = false;
     $scope.legal = true;
+    $scope.events = "rateReal";
 
     try {
       try {
@@ -68,17 +69,17 @@ dondev2App.controller('partyListController',
         $scope.countryImageTag = removeAccents($scope.countryImageTag);
 
         if ($scope.service.code == 'ile') {
-          if ($scope.countryImageTag == 'antiguaandbarbuda' || 
-            $scope.countryImageTag == 'aruba' || 
-            $scope.countryImageTag == 'curacao' || 
-            $scope.countryImageTag == 'dominica' || 
-            $scope.countryImageTag == 'jamaica' || 
-            $scope.countryImageTag == 'honduras' || 
-            $scope.countryImageTag == 'grenada' || 
-            $scope.countryImageTag == 'suriname' || 
-            $scope.countryImageTag == 'saintvincent' || 
-            $scope.countryImageTag == 'paraguay' || 
-            $scope.countryImageTag == 'panama' || 
+          if ($scope.countryImageTag == 'antiguaandbarbuda' ||
+            $scope.countryImageTag == 'aruba' ||
+            $scope.countryImageTag == 'curacao' ||
+            $scope.countryImageTag == 'dominica' ||
+            $scope.countryImageTag == 'jamaica' ||
+            $scope.countryImageTag == 'honduras' ||
+            $scope.countryImageTag == 'grenada' ||
+            $scope.countryImageTag == 'suriname' ||
+            $scope.countryImageTag == 'saintvincent' ||
+            $scope.countryImageTag == 'paraguay' ||
+            $scope.countryImageTag == 'panama' ||
             $scope.countryImageTag == 'republicadominicana' ||
             $scope.countryTextTag == 'trinidadandtobago') {
 
@@ -107,7 +108,7 @@ dondev2App.controller('partyListController',
 
     })
 
-    $scope.nextShowUp = function(item) {    
+    $scope.nextShowUp = function(item) {
 
       $scope.ciudad = item.nombre_ciudad;
 
