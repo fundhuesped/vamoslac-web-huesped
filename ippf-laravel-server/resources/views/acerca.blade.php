@@ -81,7 +81,7 @@
 	<p>
 		<div class="row">
 			<div class="col s12 m12 center-align ">
-				<a style="color:#ed2840" href="https://github.com/frabaglia/DONDE" target="_blank" rel="external" class="ui-link">
+				<a style="color:#ed2840" href="https://github.com/VamosLacOrg/" target="_blank" rel="external" class="ui-link">
 					<i class="fa fa-github-square fa-3x"></i>
 				</a>
 			</div>
