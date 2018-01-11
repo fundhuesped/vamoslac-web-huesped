@@ -7,7 +7,7 @@ dondev2App.controller('locateListController',
     $scope.main = true;
     $rootScope.geo = true;
     $scope.loading = true;
-    $scope.events = "distance";
+    $scope.events = "-rateReal";
     $scope.legal = true;
     //parseo a obj para obtener el servicio si no piden todo
 
@@ -184,17 +184,17 @@ dondev2App.controller('locateListController',
                 console.log(response.data.results[i].address_components[0].long_name);
                 geoPais = response.data.results[i].address_components[0].long_name;
               }
-              
+
             }
 
             gtag('event', 'geo',{
               'latitud': position.coords.latitude,
-              'longitud': position.coords.longitude 
+              'longitud': position.coords.longitude
             });
 
             gtag('event', 'geoPais',{
               'nombre_pais' : geoPais
-            });            
+            });
 
 
           });
@@ -302,18 +302,18 @@ dondev2App.controller('locateListController',
                 $scope.countryImageTag = removeAccents($scope.countryImageTag);
 
                 if ($scope.service.code == 'ile'){
-                 if($scope.countryImageTag == 'antiguaandbarbuda' || 
-                  $scope.countryImageTag == 'aruba' || 
-                  $scope.countryImageTag == 'curacao' || 
-                  $scope.countryImageTag == 'dominica' || 
-                  $scope.countryImageTag == 'jamaica' || 
-                  $scope.countryImageTag == 'honduras' || 
-                  $scope.countryImageTag == 'grenada' || 
-                  $scope.countryImageTag == 'suriname' || 
-                  $scope.countryImageTag == 'saintvincent'|| 
-                  $scope.countryImageTag == 'paraguay'|| 
-                  $scope.countryImageTag == 'panama' || 
-                  $scope.countryImageTag == 'republicadominicana' || 
+                 if($scope.countryImageTag == 'antiguaandbarbuda' ||
+                  $scope.countryImageTag == 'aruba' ||
+                  $scope.countryImageTag == 'curacao' ||
+                  $scope.countryImageTag == 'dominica' ||
+                  $scope.countryImageTag == 'jamaica' ||
+                  $scope.countryImageTag == 'honduras' ||
+                  $scope.countryImageTag == 'grenada' ||
+                  $scope.countryImageTag == 'suriname' ||
+                  $scope.countryImageTag == 'saintvincent'||
+                  $scope.countryImageTag == 'paraguay'||
+                  $scope.countryImageTag == 'panama' ||
+                  $scope.countryImageTag == 'republicadominicana' ||
                   $scope.countryTextTag =='trinidadandtobago'){
 
                     $scope.legal = false;
