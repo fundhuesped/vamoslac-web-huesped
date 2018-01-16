@@ -125,7 +125,7 @@ foreach ($dataSet as $provincia) {
 			->join('places', 'places.placeId', '=', 'evaluation.idPlace')
 			->where('evaluation.aprobado',1)
 			->where('evaluation.idPlace',$id)
-			->select('places.establecimiento','evaluation.comentario','evaluation.que_busca','evaluation.voto')
+			->select('places.establecimiento','evaluation.comentario','evaluation.que_busca','evaluation.voto', 'evaluation.updated_at')
 			->get();
 
 
@@ -408,7 +408,7 @@ foreach ($dataSet as $provincia) {
 			$ev->name = $request->name;
 			$ev->tel = $request->tel;
 			$ev->email = $request->email;
-				
+
 			$ev->save();
 			//para el metodo aprove panel
 			$place = Places::find($request->idPlace);
@@ -456,7 +456,7 @@ foreach ($dataSet as $provincia) {
 	}
 
 	public function getAllFileteredEvaluations(){
-		
+
 		$evaluations = DB::table('evaluation')
 		->join('places', 'places.placeId','=', 'evaluation.idPlace')
 		->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
@@ -469,7 +469,7 @@ foreach ($dataSet as $provincia) {
 	}
 
 	public function getAllByCity($paisId, $pciaId, $partyId, $cityId){
-		
+
 			$evaluations = DB::table('evaluation')
 				->join('places', 'places.placeId', '=', 'evaluation.idPlace')
 				->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
