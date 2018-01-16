@@ -1360,9 +1360,6 @@ main .view {
     overflow-y: auto;
   }
 
-  .select-wrapper {
-        color: #fff;
-  }
 }
 
 @media screen and (max-width: 600px) {
@@ -1395,9 +1392,7 @@ main .view {
     left: 35%;
     position: absolute;
   }
-  .select-wrapper {
-        color: #fff;
-  }
+
 }
 
 @media screen and (min-width: 1000px) {
@@ -1408,9 +1403,6 @@ main .view {
     overflow-y: auto;
   }
 
-  .select-wrapper {
-        color: #fff;
-  }
 }
 /*
 main .map {
@@ -1450,9 +1442,6 @@ main .map {
     width: 100%;
   }
 
-  .select-wrapper {
-        color: #fff;
-  }
 }
 
 footer {
@@ -1723,4 +1712,3 @@ li.collection-item.center {
   flex-direction: column;
   justify-content: center;
 }
-
