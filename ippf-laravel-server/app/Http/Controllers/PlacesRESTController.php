@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -279,7 +279,7 @@ class PlacesRESTController extends Controller
     }
 
     public static function getPlaceById($id){
-     
+
      $place = DB::table('places')
       ->join('pais', 'pais.id', '=', 'places.idPais')
       ->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
@@ -358,7 +358,7 @@ class PlacesRESTController extends Controller
           ->where('places.aprobado', '=', 1)
           ->select()
           ->get();
-          
+
     }
 
     public static function scopeIsLike($query, $q)
@@ -485,7 +485,33 @@ class PlacesRESTController extends Controller
       ->where('places.aprobado', '=', 1)
       ->select()
       ->get();
-    }    
+    }
+
+    public static function showApprovedActiveByState($pid, $cid)
+    {
+        return DB::table('places')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+      ->where('places.idPais', $pid)
+      ->where('places.idProvincia', $cid)
+      ->where('places.aprobado', '=', 1)
+      ->select()
+      ->get();
+    }
+
+    public static function showApprovedActiveByDepartment($pid, $cid, $did)
+    {
+        return DB::table('places')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+      ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->where('places.idPais', $pid)
+      ->where('places.idProvincia', $cid)
+      ->where('places.idPartido', $did)
+      ->where('places.aprobado', '=', 1)
+      ->select()
+      ->get();
+    }
 
     public static function showApprovedActive($pid, $cid, $did, $bid)
     {
@@ -501,7 +527,7 @@ class PlacesRESTController extends Controller
       ->where('places.aprobado', '=', 1)
       ->select()
       ->get();
-    }    
+    }
 
     public static function showApprovedFilterByService($paisId, $provinciaId, $partidoId, $servicios)
     {
@@ -553,11 +579,11 @@ class PlacesRESTController extends Controller
 
   public static function getAprobedPlaces($idPais, $idProvincia, $idPartido, $idCiudad)
     {
-      
+
      // Export filter by country
      if ((isset($idPais)) && ($idPais != "null") && (($idProvincia == "null") || (!isset($idProvincia)))) {
       $places = DB::table('places')
-      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')  
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -569,7 +595,7 @@ class PlacesRESTController extends Controller
     // Export filter by country and province
     if ((isset($idPais)) && ($idPais != "null") && (isset($idProvincia)) && ($idProvincia != "null") && (($idPartido == "null") || (!isset($idPartido)))) {
       $places = DB::table('places')
-      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')  
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -582,7 +608,7 @@ class PlacesRESTController extends Controller
     // Export filter by country, province and party
     if ((isset($idPais)) && ($idPais != "null") && (isset($idProvincia)) && ($idProvincia != "null") && (isset($idPartido)) && ($idPartido != "null") && (($idCiudad == "null") || (!isset($idCiudad)))) {
       $places = DB::table('places')
-      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')  
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -596,7 +622,7 @@ class PlacesRESTController extends Controller
     // Export filter by country, province, party and city
     if ((isset($idPais)) && ($idPais != "null") && (isset($idProvincia)) && ($idProvincia != "null") && (isset($idPartido)) && ($idPartido != "null") && (isset($idCiudad) && ($idCiudad != "null"))) {
       $places = DB::table('places')
-      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')  
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -611,7 +637,7 @@ class PlacesRESTController extends Controller
     // Export all
     if ( $idPais == "null"  &&  $idProvincia == "null" && $idPartido == "null" && $idCiudad == "null") {
       $places = DB::table('places')
-      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')  
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -817,7 +843,7 @@ class PlacesRESTController extends Controller
 
     public static function getCountryRanking()
     {
-        
+
             return
               DB::table('places')
                      ->select(
@@ -826,7 +852,7 @@ class PlacesRESTController extends Controller
                      ->orderBy('lugares', 'desc')
                      ->groupBy('idPais')
                      ->get();
-        
+
     }
 
 
@@ -1224,13 +1250,13 @@ class PlacesRESTController extends Controller
     {
         try {
             return DB::table('places')
-              ->where('aprobado', '=' , 1) 
+              ->where('aprobado', '=' , 1)
               ->select('establecimiento')
               ->get();
         } catch (Exception $e) {
             return $e->getMessage();
         }
-    }    
+    }
 
     public function getAllPartidos(Request $request)
     {
@@ -1272,7 +1298,7 @@ class PlacesRESTController extends Controller
                             ->join('pais', 'pais.id', '=', 'ciudad.idPais')
                             ->where('ciudad.habilitado', '=', 1)
                             ->where('ciudad.nombre_ciudad', 'like', $param)
-                            ->get();     
+                            ->get();
 
               $partidos = DB::table('partido')
                             ->select('partido.id','partido.nombre_partido', 'provincia.nombre_provincia', 'pais.nombre_pais', 'partido.idProvincia', 'partido.idPais')
@@ -1280,12 +1306,12 @@ class PlacesRESTController extends Controller
                             ->join('pais', 'pais.id', '=', 'partido.idPais')
                             ->where('partido.habilitado', '=', 1)
                             ->where('partido.nombre_partido', 'like', $param)
-                            ->get();   
+                            ->get();
 
-              $multimedia = array_merge((array)$partidos, (array)$ciudades);                             
+              $multimedia = array_merge((array)$partidos, (array)$ciudades);
 
               return response()->json($multimedia);
-              
+
            }
     }
 
@@ -1305,7 +1331,7 @@ class PlacesRESTController extends Controller
 
       return $places;
 
-    }  
+    }
 
     public function elimina_acentos($text) {
       $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
@@ -1360,7 +1386,7 @@ class PlacesRESTController extends Controller
          ->join('provincia', 'provincia.id', '=', 'partido.idProvincia')
          ->join('pais', 'pais.id', '=', 'partido.idPais')
          ->where('partido.habilitado', '=', 1)
-         ->get();   
+         ->get();
 
     $ciudades = DB::table('ciudad')
       ->select('ciudad.id','ciudad.nombre_ciudad','ciudad.idPartido', 'partido.nombre_partido', 'ciudad.idProvincia','provincia.nombre_provincia','ciudad.idPais','pais.nombre_pais')
@@ -1368,9 +1394,9 @@ class PlacesRESTController extends Controller
       ->join('provincia', 'provincia.id', '=', 'ciudad.idProvincia')
       ->join('pais', 'pais.id', '=', 'ciudad.idPais')
       ->where('ciudad.habilitado', '=', 1)
-      ->get();   
+      ->get();
 
-    $multimedia = array_merge((array)$ciudades, (array)$partidos);                                  
+    $multimedia = array_merge((array)$ciudades, (array)$partidos);
 
     return response()->json($multimedia);
 
