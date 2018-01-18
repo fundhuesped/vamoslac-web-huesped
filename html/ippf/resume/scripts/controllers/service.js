@@ -17,37 +17,37 @@ angular.module('dondeDataVizApp').controller('serviceCtrl',
     }
 
     $scope.services = [{
-        icon: "iconos-new_preservativos-3.png",
+        icon: "condones.svg",
         title: "condones_name",
         code: "condones",
         content: "condones_content"
       },
       {
-        icon: "iconos-new_analisis-3.png",
+        icon: "vih.svg",
         title: "prueba_name",
         code: "prueba",
         content: "prueba_content"
       },
       {
-        icon: "iconos-new_vacunacion-3.png",
+        icon: "salud.svg",
         title: "ssr_name",
         code: "ssr",
         content: "ssr_content"
       },
       {
-        icon: "iconos-new_atencion-3.png",
+        icon: "deteccion.svg",
         title: "dc_name",
         code: "dc",
         content: "dc_content"
       },
       {
-        icon: "iconos-new_sssr-3.png",
+        icon: "mac.svg",
         title: "mac_name",
         code: "mac",
         content: "mac_content"
       },
       {
-        icon: "iconos-new_ile-3.png",
+        icon: "ile.svg",
         title: "ile_name",
         code: "ile",
         content: "ile_content"

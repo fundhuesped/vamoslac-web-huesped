@@ -96,6 +96,17 @@
     border-color: transparent transparent black transparent;
 }
 
+.tooltip-left::after {
+    content: "";
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
 
 .izquierdo {
     /*background-color: blue;*/
