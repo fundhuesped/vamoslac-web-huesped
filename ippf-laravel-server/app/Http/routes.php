@@ -17,7 +17,7 @@ Route::get('/phpHelp', function () {
     });
 
 
-    
+
 Route::get('api/v2/countries/ranking', 'PlacesRESTController@getCountryRanking');
 Route::get('api/v2/getiletag/{idPais}', 'ServiceController@getIleTag'); //devuelve el tag para el json i18n correspondiente al idPais
 Route::get('changelang/{lang}', 'SeoController@changeLang'); //cambia el lenguaje de la app
@@ -72,11 +72,11 @@ Route::group(['middleware' => CheckLang::class], function () {
 
     Route::get('pais/{id}/province', 'ProvincesRESTController@showProvincesByIdPais');
     Route::get('provincia/{id}/partido', 'PartidoRESTController@showPartidosByIdProvincia');
-    Route::get('partido/{id}/ciudad', 'CiudadRESTController@showCitiesByIdPartido');         
+    Route::get('partido/{id}/ciudad', 'CiudadRESTController@showCitiesByIdPartido');
 
     Route::get('api/v2/places/getall', 'PlacesRESTController@getAllPlaces');
      Route::get('api/v2/places/{id}', 'PlacesRESTController@getPlaceById');
-    Route::get('api/v2/places/getAllApproved', 'PlacesRESTController@getAllApproved');    
+    Route::get('api/v2/places/getAllApproved', 'PlacesRESTController@getAllApproved');
     Route::get('api/v2/pais/getall', 'PlacesRESTController@getAllPaises');
     Route::get('api/v2/provincia/getall', 'PlacesRESTController@getAllProvincias');
     Route::get('api/v2/partido/getall', 'PlacesRESTController@getAllPartidos');
@@ -212,7 +212,9 @@ Route::group(['middleware' => 'auth'], function () {
     //Route::get('api/v1/panel/places/pending', 'PlacesRESTController@showPending');
 
     // Route::get('api/v1/places2/{id}', 'PlacesRESTController@showPanel');
-     Route::get('api/v1/places/approved', 'PlacesRESTController@getAllApproved');
+    Route::get('api/v1/places/approved', 'PlacesRESTController@getAllApproved');
+    Route::get('api/v1/places/approved/{pid}/{cid}', 'PlacesRESTController@showApprovedActiveByState');
+    Route::get('api/v1/places/approved/{pid}/{cid}/{did}', 'PlacesRESTController@showApprovedActiveByDepartment');
     Route::get('api/v1/places/approved/{pid}/{cid}/{did}/{bid}', 'PlacesRESTController@showApprovedActive');
     Route::get('api/v1/places/blocked', 'PlacesRESTController@showDreprecated');
     Route::get('api/v1/places/blockedfilterbyuser', 'PlacesRESTController@showDreprecatedFilterByUser');

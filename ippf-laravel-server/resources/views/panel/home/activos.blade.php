@@ -6,7 +6,7 @@
   <div ng-cloak ng-show="loadingPost" class="progress">
     <div class="indeterminate"></div>
   </div>
-  
+
   <h4 ng-cloak ng-show="!places"  ng-hide="loadingPost" translate="panel_actives_title"></h4>
 
   <select class="rollSelect"
@@ -67,7 +67,7 @@ ng-model="selectedCity" material-select watch>
       <div class="ng-cloak stats" ng-cloak ng-hide="loadingPost">
        <div class="row" ng-hide="!places">
 
-        <h3 ng-if="optionMaster1" class="title"> <span translate="panel_actives_summary_1" translate-values="{places: '[[places.length]]'}"></span><strong> [[selectedCity.nombre_ciudad || currentKey]] </strong>
+        <h3 ng-if="optionMaster1" class="title"> <span translate="panel_actives_summary_1" translate-values="{places: '[[places.length]]'}"></span><strong> [[ selectedCity.nombre_ciudad || selectedProvince.nombre_provincia || currentKey]] </strong>
           <a ng-if="places.length > 0" target="_self" href="panel/importer/front-export/[[selectedCountry.id]]/[[selectedProvince.id]]/[[selectedParty.id]]/[[selectedCity.id]]" ng-click="" class="waves-effect waves-light btn-floating red"><i class="mdi-file-file-download left"></i></a>
         </h3>
 
@@ -161,7 +161,7 @@ ng-model="selectedCity" material-select watch>
           <div class="row" ng-show="[[place.cantidad_votos]]">
 
               <div class="col s12 evaluation-panel-count">
-                [[place.cantidad_votos]] 
+                [[place.cantidad_votos]]
                 <span ng-show='place.cantidad_votos > 1' translate="evaluation_plural"></span>
                 <span ng-show='place.cantidad_votos == 1' translate="evaluation_singular"></span>
               </div>
