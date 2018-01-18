@@ -96,15 +96,13 @@
     border-color: transparent transparent black transparent;
 }
 
-.tooltip-left::after {
-    content: "";
-    position: absolute;
+.tooltiptext.tooltip-navbar {
     top: 5%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent black transparent;
+    left: 2%;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+    text-align: center;
+    line-height: 1rem;
 }
 
 
@@ -1298,6 +1296,11 @@ nav {
 nav .nav-wrapper li {
   width: 60px;
 }
+
+.nav-index {
+    z-index: 1;
+}
+
 @media screen and (min-width: 980px) {
   nav .brand-logo {
     width: 100%;
