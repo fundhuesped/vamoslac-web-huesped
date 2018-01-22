@@ -11,9 +11,9 @@
       <!-- DESKTOP NAVBAR -->
       <ul class="right hide-on-med-and-down">
         <li><a class="modal-trigger" href="#modal"><i class="mdi-action-info tooltip"><div class="tooltiptext tooltip-navbar">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div></i></a></li>
-        <li><a class="" href="#/localizar/all/listado"><i class="mdi-maps-place left"></i></a></li>
-        <li><a class="" href="form"><i class="mdi-content-add-circle-outline"></i></a></li>
-        <li><a class="" href="listado-paises"><i class="mdi-action-language"></i></a></li>
+        <li><a class="" href="#/localizar/all/listado"><i class="mdi-maps-place left tooltip"><div class="tooltiptext tooltip-navbar">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div></i></a></li>
+        <li><a class="" href="form"><i class="mdi-content-add-circle-outline tooltip"><div class="tooltiptext tooltip-navbar">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div></i></a></li>
+        <li><a class="" href="listado-paises"><i class="mdi-action-language tooltip"><div class="tooltiptext tooltip-navbar">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div></i></a></li>
         <li>
           <select  name="language1" id="language1" ng-model="selectedLanguage" ng-change="changeLanguage()"  material-select watch>
             <option value="" disabled><span>LANG</span></option>
