@@ -105,6 +105,8 @@ Route::group(['middleware' => ['auth','CheckAdmin']], function () {
 		Route::post('auth/register', 'Auth\AuthController@postRegister');
 });
 
+    Route::post('api/v2/evaluacion/panel/comentarios/{id}/{admin}/{response}', 'EvaluationRESTController@replyEvaluation');
+
 Route::group(['middleware' => 'auth'], function () {
 
 

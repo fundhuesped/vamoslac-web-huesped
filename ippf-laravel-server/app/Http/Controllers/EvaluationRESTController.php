@@ -488,4 +488,13 @@ foreach ($dataSet as $provincia) {
 		$eval->delete();
 	}
 
+	public function replyEvaluation($evalId, $replay_admin, $replay_content){
+		$eval = DB::table( 'evaluation' )->where( 'id', $evalId );
+		$eval->update(array(
+			'replay_date'		=>	date("Y-m-d H:i:s"),
+			'replay_admin'		=>	$replay_admin,
+			'replay_content'	=>	$replay_content,
+		));
+	}
+
 }
