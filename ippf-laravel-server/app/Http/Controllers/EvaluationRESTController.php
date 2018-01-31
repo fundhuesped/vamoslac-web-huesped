@@ -11,6 +11,7 @@ use App\Provincia;
 use App\Places;
 use Validator;
 use DB;
+use Auth;
 
 class EvaluationRESTController extends Controller {
 
@@ -125,7 +126,9 @@ foreach ($dataSet as $provincia) {
 			->join('places', 'places.placeId', '=', 'evaluation.idPlace')
 			->where('evaluation.aprobado',1)
 			->where('evaluation.idPlace',$id)
-			->select('places.establecimiento','evaluation.comentario','evaluation.que_busca','evaluation.voto', 'evaluation.updated_at')
+			->select('places.establecimiento', 'evaluation.comentario',
+			'evaluation.que_busca', 'evaluation.voto', 'evaluation.updated_at',
+			'evaluation.replay_admin', 'evaluation.replay_date', 'evaluation.replay_content')
 			->get();
 
 
@@ -488,13 +491,12 @@ foreach ($dataSet as $provincia) {
 		$eval->delete();
 	}
 
-	public function replyEvaluation($evalId, $replay_admin, $replay_content){
+	public function replyEvaluation($evalId, $replay_content){
 		$eval = DB::table( 'evaluation' )->where( 'id', $evalId );
 		$eval->update(array(
 			'replay_date'		=>	date("Y-m-d H:i:s"),
-			'replay_admin'		=>	$replay_admin,
+			'replay_admin'		=>	Auth::user()->name,
 			'replay_content'	=>	$replay_content,
 		));
 	}
-
 }

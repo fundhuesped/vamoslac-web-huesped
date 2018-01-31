@@ -363,6 +363,7 @@
 }
 
 .evaluation-preview-right {
+  margin: 0 1rem;
   text-align: left;
   padding-left: 0px;
 }
@@ -1725,4 +1726,54 @@ li.collection-item.center {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.reply-form-header{
+    text-align: center;
+}
+
+.close-reply-form {
+    margin: 1rem;
+    background: #ed2840;
+    color: white;
+    border-radius: 50%;
+    padding: 0.3rem;
+    cursor: pointer;
+}
+
+.few-chars-left, .needs-more-chars{
+    color: red;
+}
+
+.too-many-chars{
+    color: #ff667c;
+}
+
+.invalid-form{
+    cursor: default!important;
+}
+
+.evaluation-reply {
+    padding-left: 0.5rem;
+    border-left: solid 0.35rem #ed2840;
+}
+
+.evaluation-reply h6{
+    font-weight: 600;
+}
+
+.evaluation-reply .reply-date{
+    font-size: 0.8rem;
+}
+
+.evaluation-replay-admin {
+    color: #ed2840;
+}
+
+.reply-form-input-container {
+    border-top: solid 0.1rem #ee6e73;
+}
+
+.modal-content > h4 {
+    margin-top: 0.2rem;
 }

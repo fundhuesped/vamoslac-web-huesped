@@ -105,7 +105,6 @@ Route::group(['middleware' => ['auth','CheckAdmin']], function () {
 		Route::post('auth/register', 'Auth\AuthController@postRegister');
 });
 
-    Route::post('api/v2/evaluacion/panel/comentarios/{id}/{admin}/{response}', 'EvaluationRESTController@replyEvaluation');
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -115,6 +114,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('api/v2/evaluacion/panel/notificacion/{id}', 'EvaluationRESTController@countAllEvaluations'); //nitification badge
     Route::post('api/v2/evaluacion/panel/{id}/block', 'EvaluationRESTController@block');
     Route::post('api/v2/evaluacion/panel/{id}/approve', 'EvaluationRESTController@approve');
+    Route::post('api/v2/evaluacion/panel/comentarios/{id}/{response}', 'EvaluationRESTController@replyEvaluation');//reply
 
 
 
