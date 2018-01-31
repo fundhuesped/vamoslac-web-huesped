@@ -83,7 +83,7 @@
                 <h4>Comment</h4>
                 <blockquote>"[[currentev.comentario]]"</blockquote>
             </div>
-            <div class="evaluation-replay-container">
+            <div ng-show="currentev.replay_content" class="evaluation-replay-container">
                 <h4>Reply made by <span class="evaluation-replay-admin">[[currentev.replay_admin]]</span> ([[currentev.replay_date]])</h4>
                 <blockquote>[[currentev.replay_content]]</blockquote>
             </div>
