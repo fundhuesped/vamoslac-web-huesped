@@ -117,8 +117,8 @@
                     <p class="evaluation-preview-info"><span  translate="city_map_comments_label_1"></span>
                       <div ng-repeat="que_busca in comment.que_busca track by $index"><span translate="[[que_busca]]"></span></div>
                     </p>
-                    <div class="evaluation-reply">
-                        <h6>Reply 
+                    <div ng-show="comment.replay_content" class="evaluation-reply">
+                        <h6>Reply
                             <span class="reply-date">[[comment.replay_date]]</span>
                         </h6>
                         <p>[[comment.replay_content]]</p>
