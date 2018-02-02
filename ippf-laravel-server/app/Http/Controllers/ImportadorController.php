@@ -615,7 +615,7 @@ class ImportadorController extends Controller {
     	}
 
     	$csv = Writer::createFromFileObject(new SplTempFileObject());
-		
+
 		// HEADER
     	switch ($lang) {
 
@@ -785,10 +785,10 @@ class ImportadorController extends Controller {
     	$placesController = new PlacesRESTController;
     	$places = $placesController->getAprobedPlaces($idPais, $idProvincia, $idPartido, $idCiudad);
 
-    	if ((isset($places)) && (count($places) > 0)){ 
-    		
+    	if ((isset($places)) && (count($places) > 0)){
+
     		if($idPais == "null" && $idProvincia == "null" && $idPartido == "null" && $idCiudad == "null"){
-    			// Export all active places 
+    			// Export all active places
     			$copyCSV = "establecimientos_activos.csv";
     		}
     		else{
@@ -914,7 +914,7 @@ class ImportadorController extends Controller {
     	$csv->output($copyCSV);
     }
 
-	// Export filtered evaluations 
+	// Export filtered evaluations
     public function getFilteredEvaluations(Request $request){
 
     	$request_params = Input::all();
@@ -947,12 +947,12 @@ class ImportadorController extends Controller {
 
     		case 'en':
     		$copyCSV = "evaluations.csv";
-    		$csv->insertOne('id_place,name_place,city,district,province,country,id_evaluation,look_for?,given?,clear_information,privacity,free,at_ease,vaccination_information,age,gender,rate,comment,approved?,date,service,name,email,phone');
+    		$csv->insertOne('id_place,name_place,city,district,province,country,id_evaluation,look_for?,given?,clear_information,privacity,free,at_ease,vaccination_information,age,gender,rate,comment,approved?,date,service,name,email,phone,reply_admin,reply_date,reply_content');
     		$copies = $this->copien;
     		break;
 
     		default:
-    		$csv->insertOne('id_establecimiento,nombre_establecimiento,ciudad,partido,provincia,pais,id_evaluacion,¿que_busco?,¿se_lo_dieron?,informacion_clara,privacidad,gratuito,comodo,informacióon_vacunas,edad,genero,puntuacion,comentario,¿aprobado?,fecha,servicio,nombre,email,telefono');
+    		$csv->insertOne('id_establecimiento,nombre_establecimiento,ciudad,partido,provincia,pais,id_evaluacion,¿que_busco?,¿se_lo_dieron?,informacion_clara,privacidad,gratuito,comodo,informacióon_vacunas,edad,genero,puntuacion,comentario,¿aprobado?,fecha,servicio,nombre,email,telefono,admin_respuesta,fecha_respuesta,contenido_respuesta');
     		$copies = $this->copies;
     		break;
 
@@ -968,7 +968,6 @@ class ImportadorController extends Controller {
     		$p['es_gratuito']= $this->parseToExport($p['es_gratuito']);
     		$p['service']= $this->parseService($p['service']);
     		$p['comodo']= $this->parseToExport($p['comodo']);
-    		$p['informacion_vacunas']= $this->parseToExport($p['informacion_vacunas']);
 
     		$index_gender = $p['genero'];
     		$index_sfound = $p['que_busca'];
@@ -997,7 +996,10 @@ class ImportadorController extends Controller {
     			$p['service'],
     			$p['name'],
     			$p['email'],
-    			$p['tel']
+    			$p['tel'],
+				$p['reply_admin'],
+    			$p['reply_date'],
+    			$p['reply_content'],
     		]);
     	}
 
@@ -1059,7 +1061,7 @@ class ImportadorController extends Controller {
     				$p['dc'],
     				$p['ssr'],
     				$p['es_rapido'],
-    				$p['id'],	    	
+    				$p['id'],
     				$this->copies[$index_sfound],
     				$p['edad'],
     				$this->copies[$index_gender],
@@ -1070,7 +1072,7 @@ class ImportadorController extends Controller {
     				$p['service'],
     				$p['name'],
     				$p['email'],
-    				$p['tel']	
+    				$p['tel']
 
     			]);
     		}
@@ -3299,7 +3301,7 @@ public function posAdd(Request $request){ //vista results, agrego a BD
 		$placeTag->save();
 		session()->forget('csvname');
 		session()->forget('datosUnificar');
-		$contador = 0;			
+		$contador = 0;
 
 		foreach ($datosUnificar as $book) {
 
@@ -3370,7 +3372,7 @@ public function posAdd(Request $request){ //vista results, agrego a BD
 
 			$places->save();
 
-		}// del for 
+		}// del for
 	}// del if
 
 		return view('panel.importer.results',compact('datosNuevos','cantidadNuevos','datosRepetidos','cantidadRepetidos','datosDescartados','cantidadDescartados','datosIncompletos','cantidadIncompletos','datosUnificar','cantidadUnificar'));
@@ -4060,10 +4062,10 @@ public function agregarNuevoNoGeo($book,$latLng){
 		'altura' => $book->altura,
 		'piso_dpto' => $book->piso_dpto,
 		'cruce' => $book->cruce,
-		'barrio_localidad' => $final['county'], 
+		'barrio_localidad' => $final['county'],
 		'ciudad' => $final['city'],
-		'partido_comuna' => $final['partido'], 
-		'provincia_region' => $final['state'], 
+		'partido_comuna' => $final['partido'],
+		'provincia_region' => $final['state'],
 		'pais' => $final['country'],
 		'aprobado' => $book->aprobado,
 		'observacion' => $book->observacion,

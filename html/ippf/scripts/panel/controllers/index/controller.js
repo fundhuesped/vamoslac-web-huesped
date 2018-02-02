@@ -240,7 +240,7 @@ $rootScope.disableExportEvaluationButton = function(){
    if (typeof $rootScope.selectedProvinceEval == "undefined") {
      idProvincia = null;
    }
-      else idProvincia = $rootScope.selectedProvinceEval.id;
+   else idProvincia = $rootScope.selectedProvinceEval.id;
 
    if (typeof $rootScope.selectedPartyEval === 'undefined'){
      idPartido = null;
@@ -461,10 +461,9 @@ $rootScope.submitReplyForm = function(){
     $http.post('api/v2/evaluacion/panel/comentarios/' + evaluationID + '/' + replyContent )
     .then(
         function(response) {
-            console.log(response);
             if (response.data.length == 0) {
-                Materialize.toast('Respuesta enviada', 5000);
                 console.log("The form has been submited", "Form content: ", $rootScope.replyContent);
+                Materialize.toast('Respuesta enviada', 5000);
                 $rootScope.replyContent = "";
                 //Resets the evaluations (to get the new reply)
                 $http.get('api/v2/evaluation/getall')
@@ -474,9 +473,10 @@ $rootScope.submitReplyForm = function(){
                 });
             }
             else {
-                for (var propertyName in response.data) {
+                /*for (var propertyName in response.data) {
                     Materialize.toast(response.data[propertyName], 10000);
-                };
+                };*/
+                Materialize.toast("Session timed out, log back in", 10000);
             }
         },
         function(response) {

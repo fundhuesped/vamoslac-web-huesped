@@ -1777,3 +1777,12 @@ li.collection-item.center {
 .modal-content > h4 {
     margin-top: 0.2rem;
 }
+
+span.evaluation-date.ng-binding {
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+.evaluation-preview-right .evaluation-content{
+    display: inline-block;
+}

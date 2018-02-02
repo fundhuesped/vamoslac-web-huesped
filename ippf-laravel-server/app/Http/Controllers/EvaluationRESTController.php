@@ -128,7 +128,7 @@ foreach ($dataSet as $provincia) {
 			->where('evaluation.idPlace',$id)
 			->select('places.establecimiento', 'evaluation.comentario',
 			'evaluation.que_busca', 'evaluation.voto', 'evaluation.updated_at',
-			'evaluation.replay_admin', 'evaluation.replay_date', 'evaluation.replay_content')
+			'evaluation.reply_admin', 'evaluation.reply_date', 'evaluation.reply_content')
 			->get();
 
 
@@ -491,12 +491,12 @@ foreach ($dataSet as $provincia) {
 		$eval->delete();
 	}
 
-	public function replyEvaluation($evalId, $replay_content){
+	public function replyEvaluation($evalId, $reply_content){
 		$eval = DB::table( 'evaluation' )->where( 'id', $evalId );
 		$eval->update(array(
-			'replay_date'		=>	date("Y-m-d H:i:s"),
-			'replay_admin'		=>	Auth::user()->name,
-			'replay_content'	=>	$replay_content,
+			'reply_date'		=>	date("Y-m-d H:i:s"),
+			'reply_admin'		=>	Auth::user()->name,
+			'reply_content'	=>	$reply_content,
 		));
 	}
 }
