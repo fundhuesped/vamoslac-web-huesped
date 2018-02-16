@@ -39,13 +39,13 @@ angular.module('angucomplete', [])
                 $scope.searchStr = null;
 
                 var normalize = (function() {
-                  var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç", 
+                  var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç",
                       to   = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
                       mapping = {};
-                 
+
                   for(var i = 0, j = from.length; i < j; i++ )
                       mapping[ from.charAt( i ) ] = to.charAt( i );
-                 
+
                   return function( str ) {
                       var ret = [];
                       for( var i = 0, j = str.length; i < j; i++ ) {
@@ -54,10 +54,10 @@ angular.module('angucomplete', [])
                               ret.push( mapping[ c ] );
                           else
                               ret.push( c );
-                      }      
+                      }
                       return ret.join( '' );
                   }
-                 
+
                 })();
 
                 if ($scope.minLengthUser && $scope.minLengthUser != "") {
@@ -69,7 +69,7 @@ angular.module('angucomplete', [])
                 }
 
                 $scope.processResults = function(responseData, str) {
-                    console.log()
+
                     if (responseData && responseData.length > 0) {
                         $scope.results = [];
 
@@ -107,17 +107,18 @@ angular.module('angucomplete', [])
                                 titleCode.shift();
 
                             }
+
                             var text = titleCode.join(', ');
                             var textNorm = normalize(titleCode.join(', '));
-                            
+
                             if ($scope.matchClass) {
                                 var re = new RegExp(str, 'i');
 
-                                // console.log('textMatch');
-                                // console.log(text.match(re)[0]);
-                                // console.log('textNormMatch');
-                                // console.log(textNorm.match(re)[0]);
-                                
+                                 /*console.log('textMatch');
+                                 console.log(text.match(re)[0]);
+                                 console.log('textNormMatch');
+                                 console.log(textNorm.match(re)[0]);*/
+
                                 if (!text.match(re))
                                     var strPart = textNorm.match(re)[0];
                                 else

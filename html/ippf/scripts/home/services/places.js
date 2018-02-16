@@ -63,7 +63,7 @@ dondev2App.factory('placesFactory', function($http, $filter) {
 					cb(cities);
 			});
 
-		},		
+		},
 
 		getAllFor:function(s,cb){
 
@@ -90,7 +90,7 @@ dondev2App.factory('placesFactory', function($http, $filter) {
 					cb(cities);
 			});
 
-		},		
+		},
 
 		getPlacesByParty: function(p,cb){
 
@@ -99,7 +99,15 @@ dondev2App.factory('placesFactory', function($http, $filter) {
 					factory.establecimientos[p] = establecimientos;
 					cb(establecimientos);
 			});
-		}			
+		},
+
+		getPlacesByName: function(name, servicio, cb){
+			$http.get('api/v1/places/search/'+ name + '/' + servicio )
+				.success(function(establecimientos){
+					factory.establecimientos[name] = establecimientos;
+					cb(establecimientos);
+			});
+		}
 	}
 
 

@@ -75,7 +75,8 @@ Route::group(['middleware' => CheckLang::class], function () {
     Route::get('partido/{id}/ciudad', 'CiudadRESTController@showCitiesByIdPartido');
 
     Route::get('api/v2/places/getall', 'PlacesRESTController@getAllPlaces');
-     Route::get('api/v2/places/{id}', 'PlacesRESTController@getPlaceById');
+    Route::get('api/v2/places/{id}', 'PlacesRESTController@getPlaceById');
+    Route::get('api/v2/places/byname/{name}', 'PlacesRESTController@getPlaceByName');
     Route::get('api/v2/places/getAllApproved', 'PlacesRESTController@getAllApproved');
     Route::get('api/v2/pais/getall', 'PlacesRESTController@getAllPaises');
     Route::get('api/v2/provincia/getall', 'PlacesRESTController@getAllProvincias');
@@ -267,6 +268,10 @@ Route::post('api/v1/places/all/autocomplete', 'PlacesRESTController@getAllAutoco
 
 Route::get('api/v1/places/all/autocomplete', 'PlacesRESTController@listAllAutocomplete');
 
+Route::post('api/v1/places/all/autocompletename', 'PlacesRESTController@getAllAutocompleteName');
+Route::get('api/v1/places/all/autocompletename', 'PlacesRESTController@listAllAutocompleteName');
+
+Route::get('api/v1/places/search/{name}/{service}', 'PlacesRESTController@getPlacesByName');
 // Modified route in order to suppport cities
 Route::get('api/v1/places/{pid}/{cid}/{bid}/{lid}/{service}', 'PlacesRESTController@getScalarServicesByCity');
 

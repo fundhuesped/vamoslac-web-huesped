@@ -290,6 +290,18 @@ class PlacesRESTController extends Controller
       return $place;
     }
 
+    public static function getPlaceByName($name){
+
+     $places = DB::table('places')
+      ->join('pais', 'pais.id', '=', 'places.idPais')
+      ->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
+      ->where('places.establecimiento', '=', $name)
+      ->select('places.*', 'pais.nombre_pais', 'ciudad.nombre_ciudad')
+      ->get();
+
+      return $places;
+    }
+
     public static function getScalarCampus($id)
     {
         return DB::table('places')
@@ -1313,6 +1325,56 @@ class PlacesRESTController extends Controller
               return response()->json($multimedia);
 
            }
+    }
+
+    public function getAllAutocompleteName(Request $request){
+
+        if($request->has("nombre_partido")){
+
+            $param = "%".$request->nombre_partido."%";
+
+            $places = DB::table('places')
+              ->select('places.establecimiento')
+              ->where('places.establecimiento', 'like', $param)
+              ->get();
+
+            $multimedia = (array)$places;
+
+            return response()->json($multimedia);
+         }
+
+    }
+
+    public function getPlacesByName($name, $service){
+
+        $places = DB::table('places')
+         ->join('pais', 'pais.id', '=', 'places.idPais')
+         ->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
+         ->where($service,'=',1)
+         ->where(function ($query) use ($name) {
+             $query->orWhere('calle', 'LIKE', '%'.$name .'%')
+             ->orWhere('altura', 'LIKE', '%'.$name .'%')
+             ->orWhere('places.establecimiento', 'like', '%'.$name. '%');
+         })
+         ->select('places.*', 'pais.nombre_pais', 'ciudad.nombre_ciudad')
+         ->get();
+
+        return response()->json($places);
+    }
+
+    public function listAllAutocompleteName(){
+        // For the app
+        $multimedia = array();
+
+        $places = DB::table('places')
+          ->select('places.establecimiento')
+          ->where('places.aprobado', '=', 1)
+          ->get();
+
+        $multimedia = (array)$places;
+
+        return response()->json($multimedia);
+
     }
 
     public function getpPlacesByParty($pid, $service){

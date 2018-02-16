@@ -614,7 +614,8 @@ var translations_es =
    "result_evaluations_plural" : "Hay un total de [[evaluations_length]] evaluaciones",
    "comment" : "Comentario",
    "confirm_delete_evaluation" : "¿Estás seguro que deseas eliminar esta evaluación?" ,
-   "confirm_description" : "La evaluación será removida definitivamente."
-
+   "confirm_description" : "La evaluación será removida definitivamente.",
+   "busqueda_name_titulo" : "Ingresar nombre del lugar" ,
+   "busqueda_name_desc" : "Buscar a partir del nombre de un establecimiento" ,
 
  }

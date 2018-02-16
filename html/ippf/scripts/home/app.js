@@ -25,6 +25,10 @@ config(['$routeProvider', function($routeProvider) {
         templateUrl: 'scripts/home/controllers/suggest-location/viewSug.html',
         controller: 'locationNewController'
       })
+      .when('/como-buscas/:servicio/name', { //nueva vista Opcion 4
+        templateUrl: 'scripts/home/controllers/location/viewName.html',
+        controller: 'locationController'
+      })
       .when('/lugar/nuevo', {
         templateUrl: 'scripts/places/controllers/map/view.html',
         controller: 'placesController'
@@ -37,6 +41,11 @@ config(['$routeProvider', function($routeProvider) {
         controller: 'locateListController'
       })
 
+      // List all the places
+      .when('/buscar/:servicio/:name/listado', {
+        templateUrl: 'scripts/home/controllers/name-list/view.html',
+        controller: 'nameListController'
+      })
       // List all the places that belong to a party by service
       .when('/:pais/:provincia/:partido/:servicio/listado', {
         templateUrl: 'scripts/home/controllers/party-list/view.html',
