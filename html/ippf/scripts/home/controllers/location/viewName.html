@@ -9,18 +9,9 @@
 
             <h4 translate="busqueda_name_titulo"> </h4>
 
-            <angucomplete id="members"
-            ng-focus="angucomplete"
-            ng-attr-placeholder="[['parameter'|translate]]"
-            pause="400"
-            selectedobject="postdata"
-            url="api/v1/places/all/autocompletename"
-            localdata="results"
-            titlefield="nombre_partido"
-            inputclass="form-control form-control-small"
-            matchclass="highlight" />
+            <input ng-attr-placeholder="[['parameter'|translate]]" id="members" ng-model="name">
 
-            <a ng-click="getNow(postdata)" class="waves-effect waves-light btn wow" ng-class="{'disabled': !postdata.originalObject}" translate="search">
+            <a ng-click="setReturn(3)" ng-href="#/buscar/[[service.code]]/[[name]]/listado" class="waves-effect waves-light btn wow" ng-class="{'disabled': !name || name.length < 3}" translate="search">
             <i class="mdi-navigation-chevron-right right"></i>
             <i class="mdi-editor-format-list-bulleted left"></i></a>
 

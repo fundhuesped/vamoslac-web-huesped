@@ -106,6 +106,7 @@ dondev2App.factory('placesFactory', function($http, $filter) {
 				.success(function(establecimientos){
 					factory.establecimientos[name] = establecimientos;
 					cb(establecimientos);
+					//console.log(establecimientos);
 			});
 		}
 	}

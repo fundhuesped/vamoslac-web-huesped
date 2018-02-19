@@ -112,8 +112,14 @@ dondev2App.controller('nameListController',
     })
 
     $scope.nextShowUp = function(item) {
+      //console.log(item);
 
+      $scope.country = item.nombre_pais;
+      $scope.province = item.nombre_provincia;
+      $scope.city = item.nombre_partido;
       $scope.ciudad = item.nombre_ciudad;
+
+      //
 
       var urlCount = "api/v2/evaluacion/cantidad/" + item.placeId;
       $http.get(urlCount)

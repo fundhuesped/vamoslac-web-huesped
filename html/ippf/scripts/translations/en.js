@@ -614,5 +614,8 @@ var translations_en =
    "result_evaluations_plural" : "There are [[evaluations_length]] evaluations",
    "comment" : "Comment",
    "confirm_delete_evaluation" : "Are you sure you want to delete this evaluation?" ,
-   "confirm_description" : "This evaluation will be remove definitely."
+   "confirm_description" : "This evaluation will be remove definitely.",
+   "busqueda_name_titulo" : "Enter place name or address" ,
+   "busqueda_name_desc" : "Search a place by it's name or address" ,
+
  }

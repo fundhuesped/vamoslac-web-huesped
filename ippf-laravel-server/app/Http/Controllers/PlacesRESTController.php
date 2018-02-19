@@ -1348,15 +1348,19 @@ class PlacesRESTController extends Controller
     public function getPlacesByName($name, $service){
 
         $places = DB::table('places')
-         ->join('pais', 'pais.id', '=', 'places.idPais')
-         ->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
-         ->where($service,'=',1)
-         ->where(function ($query) use ($name) {
-             $query->orWhere('calle', 'LIKE', '%'.$name .'%')
-             ->orWhere('altura', 'LIKE', '%'.$name .'%')
-             ->orWhere('places.establecimiento', 'like', '%'.$name. '%');
+        ->join('partido', 'places.idPartido', '=', 'partido.id')
+        ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+        ->join('pais', 'places.idPais', '=', 'pais.id')
+        ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
+        ->where($service,'=',1)
+        ->where(function ($query) use ($name) {
+            $query->orWhere('calle', 'LIKE', '%'. $name .'%')
+            ->orWhere('altura', 'LIKE', '%'. $name .'%')
+            ->orWhere(DB::raw('concat(calle," ",altura)'), 'LIKE', '%'. $name .'%')
+            ->orWhere('places.establecimiento', 'like', '%'.$name. '%');
          })
-         ->select('places.*', 'pais.nombre_pais', 'ciudad.nombre_ciudad')
+         ->select('places.*', 'pais.nombre_pais', 'ciudad.nombre_ciudad',
+         'partido.nombre_partido', 'provincia.nombre_provincia')
          ->get();
 
         return response()->json($places);

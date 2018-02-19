@@ -615,7 +615,7 @@ var translations_es =
    "comment" : "Comentario",
    "confirm_delete_evaluation" : "¿Estás seguro que deseas eliminar esta evaluación?" ,
    "confirm_description" : "La evaluación será removida definitivamente.",
-   "busqueda_name_titulo" : "Ingresar nombre del lugar" ,
-   "busqueda_name_desc" : "Buscar a partir del nombre de un establecimiento" ,
+   "busqueda_name_titulo" : "Ingresar nombre del lugar o dirección " ,
+   "busqueda_name_desc" : "Buscar a partir del nombre de un establecimiento o su dirección" ,
 
  }
