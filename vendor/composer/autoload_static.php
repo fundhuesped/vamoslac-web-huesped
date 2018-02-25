@@ -426,6 +426,7 @@ class ComposerStaticInit51040d8fdd12b40f4ff04f9ba3ef815a
         'App\\Http\\Controllers\\SeoController' => __DIR__ . '/../..' . '/app/Http/Controllers/SeoController.php',
         'App\\Http\\Controllers\\ServiceController' => __DIR__ . '/../..' . '/app/Http/Controllers/ServiceController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
+        'App\\Http\\Middleware\\CheckLang' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckLang.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',

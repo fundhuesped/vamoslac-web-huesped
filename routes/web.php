@@ -73,7 +73,7 @@ Route::get('/form', '\App\Http\Controllers\MainRouteController@form');
 Route::get('/terms', '\App\Http\Controllers\MainRouteController@terms');
 Route::get('/share/{lang}/{id}', '\App\Http\Controllers\MainRouteController@shareDetail');
 
-Route::group(['middleware' => CheckLang::class], function () {
+Route::group(['middleware' => \App\Http\Middleware\CheckLang::class], function () {
 
     Route::get('/listado-paises', '\App\Http\Controllers\PaisRESTController@showCountries');
     Route::get('/listado-detalle', '\App\Http\Controllers\PaisRESTController@showCountriesDetail');

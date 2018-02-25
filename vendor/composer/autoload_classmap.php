@@ -31,6 +31,7 @@ return array(
     'App\\Http\\Controllers\\SeoController' => $baseDir . '/app/Http/Controllers/SeoController.php',
     'App\\Http\\Controllers\\ServiceController' => $baseDir . '/app/Http/Controllers/ServiceController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
+    'App\\Http\\Middleware\\CheckLang' => $baseDir . '/app/Http/Middleware/CheckLang.php',
     'App\\Http\\Middleware\\EncryptCookies' => $baseDir . '/app/Http/Middleware/EncryptCookies.php',
     'App\\Http\\Middleware\\RedirectIfAuthenticated' => $baseDir . '/app/Http/Middleware/RedirectIfAuthenticated.php',
     'App\\Http\\Middleware\\TrimStrings' => $baseDir . '/app/Http/Middleware/TrimStrings.php',
