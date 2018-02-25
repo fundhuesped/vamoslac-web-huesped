@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\PlaceLog;
 use Excel;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Storage;
 use DB;
 use App\Pais;

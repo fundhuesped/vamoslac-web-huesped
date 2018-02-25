@@ -11,7 +11,8 @@
 |
 */
 
-Auth::routes();
+
+
 
 Route::get('/', function () {
     return view('home');
@@ -100,10 +101,6 @@ Route::group(['middleware' => CheckLang::class], function () {
 });
 
 
-// Authentication routes...
-Route::get('login', '\App\Http\Controllers\Auth\LoginController@getLogin');
-Route::post('auth/login', '\App\Http\Controllers\Auth\LoginController@postLogin');
-Route::get('auth/logout', '\App\Http\Controllers\Auth\LoginController@getLogout');
 
 
 ///////////////////////////////////////////////
@@ -311,3 +308,7 @@ Route::get('api/v2/places/comments/{id}', '\App\Http\Controllers\PlacesRESTContr
 Route::resource('seo', '\App\Http\Controllers\SeoController');
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
