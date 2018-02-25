@@ -1,7 +1,7 @@
 <!-- NAV BAR DESKTOP/MOBILE-->
 <nav>
   <div class="nav-wrapper nav-index">
-    <a href="/DONDE/html/ippf/" class="brand-logo">
+    <a href="/#/" class="brand-logo">
       <!-- WEBSITE LOGO -->
       <img class="logoTop" src="images/logo_blanco.svg">
       <!-- MOBILE BURGER BUTTON -->
