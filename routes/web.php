@@ -290,6 +290,8 @@ Route::get('api/v1/places/{pid}/{service}', '\App\Http\Controllers\PlacesRESTCon
 // Check if this route is still useful
 Route::get('api/v1/places/{pid}/{cid}/{bid}/{service}', '\App\Http\Controllers\PlacesRESTController@getScalarServices');
 
+Route::get('api/v1/single/service/{code}', '\App\Http\Controllers\ServiceController@getServiceByCode');
+
 Route::get('api/v1/places/{pid}/{cid}/{bid}', '\App\Http\Controllers\PlacesRESTController@getScalar');
 
 Route::get('api/v1/countries/byuser', '\App\Http\Controllers\PaisRESTController@getCountriesByUser');

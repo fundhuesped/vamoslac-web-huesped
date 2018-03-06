@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use DB;
 
 class ServiceController extends Controller
 {
@@ -25,6 +26,15 @@ class ServiceController extends Controller
       $pais = iconv('UTF-8','ASCII//TRANSLIT',$pais);
 
 			return $pais;
+    }
+
+    public static function getServiceByCode($serviceCode){
+
+     $service = DB::table('service')
+      ->where('service.shortname', '=', $serviceCode)
+      ->first();
+
+      return get_object_vars($service);
     }
 
     public function getPlaceServices($placeId)
@@ -59,7 +69,7 @@ class ServiceController extends Controller
               array_push($services, $service[0]);
           }
         }
-                       
+
 
         return $services;
       } catch (Exception $e) {

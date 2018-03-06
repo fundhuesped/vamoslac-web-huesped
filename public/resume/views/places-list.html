@@ -3,19 +3,19 @@
 
     <div ng-show='cPlaces == 1' class="Aligner">
 
-      [[cPlaces]]&nbsp;<span translate="preCopyFoundSingle" translate-values="{  'service'  : '[[serviceCode]]'}">
+      [[cPlaces]]&nbsp;<span translate="preCopyFoundSingle" translate-values="{  'service'  : '[[service.name]]'}">
 
     </div>
 
     <div ng-show='cPlaces > 1' class="Aligner">
 
-     [[cPlaces]]&nbsp; <span translate="preCopyFound" translate-values="{  'service'  : '[[serviceCode]]'}"></span> 
+     [[cPlaces]]&nbsp; <span translate="preCopyFound" translate-values="{  'service'  : '[[serviceCode]]'}"></span>
 
-    </div>    
+    </div>
 
 
     <div class="Aligner">
-      <div class="Aligner-item Aligner-item--top"><img width="50px" src="/images/{{$resu['icon']}}"></div>
+      <div class="Aligner-item Aligner-item--top"><img width="50px" src="/images/countries/[[nameCountry]].jpg"></div><!--{{$resu['icon']}}-->
       <div class="Aligner-item">
         <b><span class="text-seo">[[nameCity]]</span>, <span class="text-seo">[[nameParty]]</span>, <span class="text-seo">[[nameProvince]]</span>, <span class="text-seo">[[nameCountry]]</span></b>
       </div>
@@ -35,9 +35,9 @@
 		<tbody>
 			<tr ng-repeat='p in places'>
 
-            <td ng-show='!p.altura'><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.calle]] [[p.altura]]</a></td>
-				  <td ng-show='p.altura' ><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.calle]] Sin número</a></td>
-  
+            <td ng-show='p.altura'><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.calle]] [[p.altura]]</a></td>
+				  <td ng-show='!p.altura' ><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.calle]] Sin número</a></td>
+
 				<td><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.establecimiento]]</a></td>
 				<td><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.horario]]</a></td>
 				<td><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.responsable]]</a></td>
@@ -61,7 +61,7 @@
 
   <div ng-show='cPlaces == 0' class="result-seo">
     <div class="Aligner">
-      <span translate="preCopyNotFound" translate-values="{ 'service' : '[[serviceCode]]' , 'city' : '[[nameCity]]'}"> 
+      <span translate="preCopyNotFound" translate-values="{ 'service' : '[[serviceCode]]' , 'city' : '[[nameCity]]'}">
 
     <div class="Aligner">
       <div class="Aligner-item">

@@ -21,6 +21,7 @@ angular.module('dondeDataVizApp').controller('placeCtrl',
     $scope.nameParty = $routeParams.partido;
     $scope.nameCity = $routeParams.ciudad;
     $scope.serviceCode = $routeParams.code;
+    $scope.service = {};
 
     $scope.places = [];
     $http.get('pais/' + $scope.nameCountry + '/provincia/' + $scope.nameProvince + '/partido/' + $scope.nameParty + '/ciudad/' + $scope.nameCity + '/servicio/' + $scope.serviceCode)
@@ -28,5 +29,12 @@ angular.module('dondeDataVizApp').controller('placeCtrl',
         $scope.places = places.lugares;
         console.log($scope.cPlaces = places.cantidad);
       });
+
+    $http.get('api/v1/single/service/'+ $scope.serviceCode)
+    .success(function(service) {
+      $scope.service = service;
+      console.log($scope.service);
+    });
+
 
   });
