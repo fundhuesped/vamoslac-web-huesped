@@ -15,7 +15,7 @@ angular.module('dondeDataVizApp').controller('placeCtrl',
     if (lang) {
       $translate.use(lang);
     };
-
+    
     $scope.nameCountry = $routeParams.pais;
     $scope.nameProvince = $routeParams.provincia;
     $scope.nameParty = $routeParams.partido;

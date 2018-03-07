@@ -8,8 +8,10 @@
  * Controller of the houstonDiversityMap
  */
 angular.module('dondeDataVizApp').controller('HomeCtrl',
-  function(moment, NgMap, $interval, $scope, $timeout, $document, $http, $translate, $cookies) {
+  function(moment, NgMap, $interval, $scope,$rootScope, $timeout, $document, $http, $translate, $cookies) {
 
+    $scope.serviceCode = 'resume';
+    $rootScope.serviceCode = 'resume';
     // Change language of this module
     var lang = $cookies.get('lang');
     if (lang) {
@@ -34,6 +36,9 @@ angular.module('dondeDataVizApp').controller('HomeCtrl',
           p.nombre_partido = $scope.ciudades[i].nombre_partido;
           p.nombre_provincia = $scope.ciudades[i].nombre_provincia;
           p.nombre_pais = $scope.ciudades[i].nombre_pais;
+          p.serviceCode = 'resume';
+
+          
           break;
         }
       }

@@ -1,4 +1,4 @@
-<div class="collapsible-header service-header row" ng-class="{ active : serviceCode == 'condones' }">
+<div class="collapsible-header service-header row" ng-class="{ active : serviceCode == 'condones' ||  currentMarker.serviceCode == 'resume'}">
   <h4 class="service-header-text col s11 l11">
      <img class="home-icon-responsive" ng-show="currentMarker.friendly_condones" src="images/condones_friendly.svg">
      <img ng-show="!(currentMarker.friendly_condones)" alt="Este lugar distribuye condones" src="images/condones.svg">

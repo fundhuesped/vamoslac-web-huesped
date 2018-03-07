@@ -53,7 +53,7 @@ angular.module('dondeDataVizApp').controller('serviceCtrl',
         content: "ile_content"
       }
     ];
-
+    
     $scope.nameCountry = $routeParams.pais.split('-')[1];
     $scope.idCountry = $routeParams.pais.split('-')[0];
     $scope.nameProvince = $routeParams.provincia.split('-')[1];
