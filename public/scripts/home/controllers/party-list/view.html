@@ -69,16 +69,15 @@
         </select>
       </div>
 
-      <ul class="collection">
-        <li class="collection-item" ng-repeat="item in places | orderBy: events: '!null' | filter:esFriendly()">
-          <div class="row info ">
-            <div class="col s12 label">
-              <span class="title truncate">[[item.establecimiento]]</span>
-              <a ng-click="nextShowUp(item)" class="waves-effect waves-light right">
-                <i class="mdi-navigation-chevron-right right"></i>
-              </a>
+       <ul class="collection">
+        <li class="collection-item center" ng-repeat="item in places | orderBy: events: '!null' | filter:esFriendly()">
+        <div class="row col-container">
+        <div class="col s11 center-col-services">
+            <div class="row info ">
+              <div class="col s12 label">
+                <span class="title truncate">[[item.establecimiento]]</span>
+              </div>
             </div>
-          </div>
 
           <!-- DESCRIPCION -->
           <div class="row info">
@@ -89,25 +88,19 @@
               <span ng-show='item.cruce'>
                 <span translate="and"></span>
                 <span ng-show='item.cruce'> [[item.cruce]]<br></span>
-                <span ng-show='item.piso_dpto'>[[item.piso_dpto]] </span><br>
+                <span ng-show='item.piso_dpto'> [[item.piso_dpto]] </span><br>
                 <span ng-show='item.barrio_localidad'> [[item.barrio_localidad]]<br></span>
               </span>
-
-              <span class="telefono" ng-cloak ng-show="item.telefono">
-                <a ng-href="tel:[[item.tel]]" class="">
-                <i class="mdi-communication-call tiny"> </i>[[item.telefono]]</a><br>
-              </span>
-              <span class="time truncate" ng-cloak ng-show="item.horario"><i class="mdi-action-query-builder tiny"> </i>[[item.horario]]</span>
             </div>
+          </div>
 
-            <!-- DISTANCE PER ITEM-->
+            <!-- DISTANCE PER ITEM -->
             <div class="col s6 l4">
               <span class="distance" ng-cloak ng-show="item.distance">
                 <i class="mdi-maps-directions-walk tiny"></i>
                 <span translate="place_distance_size" translate-values="{distance: '[[item.distance]]'}"></span>
               </span>
             </div>
-          </div>
 
           <!-- SERVICES PER ITEM -->
           <div class="row info services">
@@ -133,6 +126,16 @@
               <span ng-show="item.rate == 1" translate="point_singular"></span>
             </div>
           </div>
+
+        </div>
+
+          <div class="col s1 arrow-container">
+              <a ng-click="nextShowUp(item)" class="waves-effect waves-light right">
+                <i class="mdi-navigation-chevron-right arrow-btn right"></i></a>
+            </div>
+
+
+        </div>
         </li>
       </ul>
     </div>
