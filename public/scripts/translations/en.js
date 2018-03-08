@@ -620,5 +620,5 @@ var translations_en =
    "useful_info" : "Useful information" ,
    "nearby_locations" : "Nearby locations" ,
    "suggest_new_place" : "Suggest a new place" ,
-   "places_lists_mundito" : "See all places" ,
+   "places_lists_mundito" : "Places by country" ,
  }
