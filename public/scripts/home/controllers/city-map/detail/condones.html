@@ -7,8 +7,8 @@
   <i class="mdi-hardware-keyboard-arrow-down col s1 l1"></i>
 </div>
 <div class="collapsible-body">
-    <div class="col s12 m12" ng-cloak ng-show="currentMarker.servicetype_condones">
-        <i class="mdi-attach-money tiny" translate="form_select_service_type_title"> </i>
+   <div class="col s12 m12" ng-cloak ng-show="currentMarker.servicetype_condones != ''">
+        <span translate="form_select_service_type_title"></span>&nbsp;[[currentMarker.servicetype_condones]]
     </div>
 
     <div class="col s12 m12" ng-cloak ng-show="currentMarker.comentarios_distrib">
