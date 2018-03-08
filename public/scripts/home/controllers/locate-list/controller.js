@@ -96,7 +96,7 @@ dondev2App.controller('locateListController',
       var urlRate = "api/v2/evaluacion/promedio/" + item.placeId;
       $http.get(urlRate)
         .then(function(response) {
-          item.rate = response.data[0];
+          item.rate = response.data;
           item.faceList = [{
               id: '1',
               image: '1',
