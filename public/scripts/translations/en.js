@@ -61,7 +61,7 @@ var translations_en =
    "select_state": "(Select State)",
    "select_department": "(Select Department)",
    "neighborhood": "Neighborhood, city, or department",
-   "responsable": "Responsable",
+   "responsable": "Responsible",
    "select_location": "Select Location",
    "search_department_description": "Enter your neighborhood, city, or department",
    "not_found_result_label": "No results found",

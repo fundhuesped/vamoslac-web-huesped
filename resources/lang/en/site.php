@@ -53,7 +53,7 @@ return [
   "select_department" => "(Enter your neighborhood or Department)",
   "select_city" => "(Select City)",
   "neighborhood" => "neighborhood, city, or department",
-  "responsable" => "Responsable",
+  "responsable" => "Responsible",
   "select_location" => "Select Location",
   "search_department_description" => "Enter the name of the Department or Neighborhood",
   "not_found_result_label" => "No results found ...",
