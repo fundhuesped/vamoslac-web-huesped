@@ -20,13 +20,13 @@ dondev2App.controller('homeController',
         $translate.use('es');
         $rootScope.selectedLanguage = 'es';
       }
-      
+
       $http.get('changelang/' + localStorage.lang)
         .then(
           function(response) {
 
             if (response.statusText == 'OK') {
-              
+
             } else {
               Materialize.toast('Intenta nuevamente mas tarde.', 5000);
             }

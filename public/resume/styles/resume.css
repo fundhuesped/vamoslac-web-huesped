@@ -102,10 +102,9 @@ div.share {
   }
 
 .resume .detail {
-     padding: 0px; 
-   
+    padding: 0px;
     margin-left: auto;
-    margin-right: 20px;
+    margin: 0 0.5rem;
 }
 
 .resume {
@@ -131,7 +130,7 @@ strong {
 }
 
 .container.close{
-     padding-top: 20px; 
+     padding-top: 20px;
 }
 
 .container.list{
@@ -143,5 +142,9 @@ strong {
   padding-top:0;
 }
 
-
-
+@media ( min-width: 600px ){
+    .resume .detail {
+        margin-left: auto;
+        margin-right: 20px;
+    }
+}
