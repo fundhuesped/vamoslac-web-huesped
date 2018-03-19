@@ -24,9 +24,9 @@
 	<!-- START SECTION 1 -->
 	<h3 id="menu" translate="about_usefull_information"></h3>
 	<ul>
-		<li><a href="#/anchor#vamos" translate="about_href_label"></a></li>
-		<li><a href="#/anchor#sobre" translate="about_href_aboutfh"></a></li>
-		<li><a href="#/anchor#comoFunciona" translate="about_href_how_it_works"></a></li>
+		<li><a href="#/#vamos" translate="about_href_label"></a></li>
+		<li><a href="#/#sobre" translate="about_href_aboutfh"></a></li>
+		<li><a href="#/#comoFunciona" translate="about_href_how_it_works"></a></li>
 	</ul>
 
 	<h3 class="newMenuAbout" id="vamos" translate="about_href_label"></h3>
