@@ -24,9 +24,9 @@
 	<!-- START SECTION 1 -->
 	<h3 id="menu" translate="about_usefull_information"></h3>
 	<ul>
-		<li><a href="#/#vamos" translate="about_href_label"></a></li>
-		<li><a href="#/#sobre" translate="about_href_aboutfh"></a></li>
-		<li><a href="#/#comoFunciona" translate="about_href_how_it_works"></a></li>
+		<li><a href="" ng-click="goToNext('vamos')" translate="about_href_label"></a></li>
+		<li><a href="" ng-click="goToNext('sobre')"translate="about_href_aboutfh"></a></li>
+		<li><a href="" ng-click="goToNext('comoFunciona')" translate="about_href_how_it_works"></a></li>
 	</ul>
 
 	<h3 class="newMenuAbout" id="vamos" translate="about_href_label"></h3>
@@ -90,7 +90,7 @@
 	<!-- END SECTION 1 -->
 
 	<!-- RETURN MENU -->
-	<a class="waves-effect waves-light btn back-button" href="#/anchor#menu" translate="back"></a>
+	<a class="waves-effect waves-light btn back-button" href="" ng-click="goToNext('menu')" translate="back"></a>
 
 	<!-- START SECTION 2 -->
 	<h3 class="newMenuAbout" id="sobre" translate="about_vamos_title"></h3>
@@ -140,7 +140,7 @@
 	<!-- END SECTION 2 -->
 
 	<!-- RETURN MENU -->
-	<a class="waves-effect waves-light btn back-button" href="#/anchor#menu" translate="back"></a>
+	<a class="waves-effect waves-light btn back-button" href="" ng-click="goToNext('menu')" translate="back"></a>
 
 	<!-- START SECTION 3 -->
 	<h4 id='fundacionHuesped'>Fundación Huésped</h4>
@@ -184,7 +184,7 @@
 	<!-- END SECTION 3 -->
 
 	<!-- RETURN MENU -->
-	<a class="waves-effect waves-light btn back-button" href="#/anchor#menu" translate="back"></a>
+	<a class="waves-effect waves-light btn back-button" href="" ng-click="goToNext('menu')" translate="back"></a>
 
 	<!-- START SECTION 4 -->
 	<h3 id="comoFunciona" translate="about_href_how_it_works"> </h3>
@@ -209,7 +209,8 @@
 	<!-- END SECTION 4 -->
 
 	<!-- RETURN MENU -->
-	<a class="waves-effect waves-light btn back-button" href="#/anchor#menu" translate="back"></a>
+	<a class="waves-effect waves-light btn back-button" href="" ng-click="goToNext('menu')" translate="back"></a>
+
 	</div>
 	<!--div class="modal-footer">
 		<a href=""

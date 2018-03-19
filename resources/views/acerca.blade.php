@@ -10,7 +10,6 @@
 }
 
 </style>
-
 <!-- Modal Structure -->
 <div id="modal" class="modal modal-fixed-footer">
 	<div class="modal-content">
@@ -24,7 +23,7 @@
 	<!-- START SECTION 1 -->
 	<h3 id="menu" translate="about_usefull_information"></h3>
 	<ul>
-		<li><a href="#/#vamos" translate="about_href_label"></a></li>
+		<li><a href="#/"  click="document.getElementById('vamos').scrollIntoView()" translate="about_href_label"></a></li>
 		<li><a href="#/#sobre" translate="about_href_aboutfh"></a></li>
 		<li><a href="#/#comoFunciona" translate="about_href_how_it_works"></a></li>
 	</ul>
