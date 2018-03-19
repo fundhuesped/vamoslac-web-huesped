@@ -334,7 +334,7 @@ var translations_es =
    "about": "Acerca",
    "name": "Nombre",
    "social_share_text": "Usando #VAMOS busqué servicios y encontré [[establecimiento]] en [[nombre_partido]] ",
-   "social_share_text_2": "Encuentra los servicios de salud sexual y reproductiva más cercanos http://vamoslac.org",
+   "social_share_text_2": "Encuentra los servicios de salud sexual y reproductiva más cercanos ",
    "web_url": "https://vamoslac.org",
    "web_url_label": "www.vamoslac.org",
    "intro text": "Vamos es una plataforma colaborativa. Si encuentras un error en los datos o en el funcionamiento de la plataforma envíanos un mensaje.",

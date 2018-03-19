@@ -334,7 +334,7 @@ var translations_en =
    "about": "About",
    "name": "Name",
    "social_share_text": "Using #VAMOS I search and I found [[establecimiento]] in [[nombre_partido]] ",
-   "social_share_text_2": "Find the nearest sexual and reproductive health services http://vamoslac.org ",
+   "social_share_text_2": "Find the nearest sexual and reproductive health services ",
    "web_url": "https://vamoslac.org",
    "web_url_label": "www.vamoslac.org",
    "intro text": "Vamos is a collaborative platform. If you find any error with the platform's data or operating functionality, please send us a message.",
