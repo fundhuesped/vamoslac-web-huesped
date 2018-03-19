@@ -402,7 +402,7 @@ var translations_en =
    "select": "Select",
    "adol_filtro": "Only youth friendly services",
    "social_share_text": "Using #VAMOS I search sexual and reproductive health services and I found [[establecimiento]] in [[nombre_partido]] ",
-   "social_share_text_2": "Find the nearest sexual and reproductive health services http://vamoslac.org ",
+   "social_share_text_2": "Find the nearest sexual and reproductive health services  ",
    "point_plural": "points",
    "point_singular": "point",
    "reload_bd": "Reload data base",

@@ -402,7 +402,7 @@ var translations_es =
    "select": "Seleccionar",
    "adol_filtro": "Sólo servicios amigables para adolescentes",
    "social_share_text": "Usando #VAMOS busqué servicios de salud sexual y reproductiva y encontré [[establecimiento]] en [[nombre_partido]] ",
-   "social_share_text_2": "Encuentra los servicios de salud sexual y reproductiva más cercanos http://vamoslac.org",
+   "social_share_text_2": "Encuentra los servicios de salud sexual y reproductiva más cercanos ",
    "point_plural": "puntos",
    "point_singular": "punto",
    "reload_bd": "Recargar base de datos",
