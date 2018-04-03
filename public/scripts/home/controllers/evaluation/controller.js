@@ -31,11 +31,11 @@ dondev2App.controller('evaluationController',
       console.log(data.data[0].nombre_pais);
       console.log(data.data[0].nombre_ciudad);
 
-      gtag('event', 'evaluando', { 
-            'lugar': data.data[0].nombre_pais + ' - ' + data.data[0].nombre_ciudad, 
+      gtag('event', 'evaluando', {
+            'lugar': data.data[0].nombre_pais + ' - ' + data.data[0].nombre_ciudad,
             'nombre_establecimiento': data.data[0].establecimiento,
             'id_establecimiento': data.data[0].placeId
-      });     
+      });
 
     });
 

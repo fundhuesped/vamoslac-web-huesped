@@ -204,8 +204,8 @@ foreach ($dataSet as $provincia) {
 
 	public function store(Request $request)
 	{
-			$request->le_dieron = strtolower($request->le_dieron);
-			if (strpos($request->le_dieron, "cerrado") !== false) {
+		$request->le_dieron = strtolower($request->le_dieron);
+		if (strpos($request->le_dieron, "cerrado") !== false) {
 			$rules = array(
 				'que_busca' => 'required',
 				//'le_dieron' => 'required',
@@ -414,20 +414,23 @@ foreach ($dataSet as $provincia) {
 
 			$ev->save();
 			//para el metodo aprove panel
-			$place = Places::find($request->idPlace);
-
-			$place->cantidad_votos = $this->countEvaluations($request->idPlace);
-
-			$place->rate = $this->getPlaceAverageVote($request->idPlace);
-			$place->rateReal = $this->getPlaceAverageVoteReal($request->idPlace);
-
-			$place->save();
+			$this->updatePlaceEvaluationValues( $request->idPlace );
 		//	return $ev->service;
 		}
 		//========
 
 	return $validator->messages();
 
+	}
+
+	public function updatePlaceEvaluationValues( $idPlace ){
+		$place = Places::find($idPlace);
+
+		$place->cantidad_votos = $this->countEvaluations($idPlace);
+		$place->rate = $this->getPlaceAverageVote($idPlace);
+		$place->rateReal = $this->getPlaceAverageVoteReal($idPlace);
+
+		$place->save();
 	}
 
 	/**
@@ -486,9 +489,10 @@ foreach ($dataSet as $provincia) {
 		}
 
 	public function removeEvaluation($evalId){
-
 		$eval = Evaluation::find($evalId);
+		$idPlace = $eval->idPlace;
 		$eval->delete();
+		$this->updatePlaceEvaluationValues($idPlace);
 	}
 
 	public function replyEvaluation($evalId, $reply_content){
