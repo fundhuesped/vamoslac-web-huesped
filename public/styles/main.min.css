@@ -1806,6 +1806,9 @@ span.evaluation-date.ng-binding {
 
 #onlyFriendly + label {
     text-align:  left;
+    text-align: left;
+    font-size: 0.9em;
+
 }
 
 #onlyFriendly + label:before {
