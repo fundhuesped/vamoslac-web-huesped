@@ -23,7 +23,7 @@ angular.module('dondeDataVizApp').controller('countryListController',
         .then(
           function(response) {
 
-            if (response.data.status == 'ok') {
+            if (response.statusText == 'OK') {
 
             } else {
               Materialize.toast('Intenta nuevamente mas tarde.', 5000);
@@ -64,7 +64,7 @@ angular.module('dondeDataVizApp').controller('countryListController',
         .then(
           function(response) {
 
-            if (response.data.status == 'ok') {
+            if (response.statusText == 'OK') {
 
             } else {
               Materialize.toast('Intenta nuevamente mas tarde.', 5000);

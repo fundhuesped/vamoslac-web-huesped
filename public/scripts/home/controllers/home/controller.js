@@ -25,7 +25,7 @@ dondev2App.controller('homeController',
         .then(
           function(response) {
 
-            if (response.data.status == 'ok') {
+            if (response.statusText == 'OK') {
 
             } else {
               Materialize.toast('Intenta nuevamente mas tarde.', 5000);
@@ -66,7 +66,7 @@ dondev2App.controller('homeController',
         .then(
           function(response) {
 
-            if (response.data.status == 'ok') {
+            if (response.statusText == 'OK') {
 
             } else {
               Materialize.toast('Intenta nuevamente mas tarde.', 5000);

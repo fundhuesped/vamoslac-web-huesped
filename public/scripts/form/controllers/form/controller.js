@@ -288,7 +288,7 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
       .then(
         function(response) {
 
-          if (response.data.status == 'ok') {
+          if (response.statusText == 'OK') {
 
           } else {
             Materialize.toast('Intenta nuevamente mas tarde.', 5000);
