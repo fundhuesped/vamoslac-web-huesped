@@ -69,7 +69,7 @@ var translations_en =
    "share_this_place": "Share this establishment",
    "rate_this_place": "How was your experience?",
    "next": "Next",
-   "page_title": "VAMOS - Find Sexual and reproductive health services nearby - IPPF/RHO and Fundación Huésped",
+   "page_title": "VAMOS - Find Sexual and reproductive health services nearby - IPPF/WHR and Fundación Huésped",
    "form_intro_text": "Complete the following form with information about the new establishment. Field marked with * are mandatory.",
    "form_establishment_name": "Establishment name*",
    "form_establishment_type": "Type",
