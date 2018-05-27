@@ -36,6 +36,7 @@ var translations_en =
    "resultado_cantidad_titulo>1": "There are [[cantidad]] places nearby",
    "resultado_cantidad_titulo=1": "There is 1 place nearby",
    "friendly_service_label": "Youth friendly service",
+   "friendly_service_short_desc": "Find youth friendly services nearby.",
    "only_teenager_friendly": "Youth friendly services only",
    "footer_text": "Vamos is a <b>collaborative platform.</b> If you find any error with the platform's data or operating functionality, please send us a <a href=\"mailto:vamoslacapp@gmail.com\"  target=\"_self\">message</a>.",
    "sort_label_text": "Sort:",

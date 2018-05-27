@@ -36,6 +36,7 @@ var translations_es =
    "resultado_cantidad_titulo>1": "Hay [[cantidad]] lugares cerca",
    "resultado_cantidad_titulo=1": "Hay 1 lugar cerca",
    "friendly_service_label": "Servicio amigable para adolescentes",
+   "friendly_service_short_desc": "Encuentra los servicios amigables para adolescentes cercanos.",
    "only_teenager_friendly": "Sólo servicios amigables para adolescentes",
    "footer_text": "Vamos es una plataforma <b>colaborativa.</b> Si encuentras un error en los datos o en el funcionamiento de la plataforma  <a href=\"mailto:vamoslacapp@gmail.com\"  target=\"_self\">envianos un mensaje</a>",
    "sort_label_text": "Ordenar:",
