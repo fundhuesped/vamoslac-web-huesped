@@ -21,7 +21,10 @@ angular.module('dondeDataVizApp').controller('placeCtrl',
     $scope.nameParty = $routeParams.partido;
     $scope.nameCity = $routeParams.ciudad;
     $scope.serviceCode = $routeParams.code;
-    $scope.service = {};
+    $scope.translateKeyService = $routeParams.code + "_name";
+    $translate($routeParams.code + "_name").then(function(t){
+      $scope.serviceName =   t;
+    })
 
     $scope.places = [];
     $http.get('pais/' + $scope.nameCountry + '/provincia/' + $scope.nameProvince + '/partido/' + $scope.nameParty + '/ciudad/' + $scope.nameCity + '/servicio/' + $scope.serviceCode)
