@@ -1467,6 +1467,20 @@ class PlacesRESTController extends Controller
     return response()->json($multimedia);
 
   }
+  public function citiesAllAutocomplete(){
+   
+     $ciudades = DB::table('ciudad')
+      ->select('ciudad.id','ciudad.nombre_ciudad','ciudad.idPartido', 'partido.nombre_partido', 'ciudad.idProvincia','provincia.nombre_provincia','ciudad.idPais','pais.nombre_pais')
+      ->join('partido', 'partido.id', '=', 'ciudad.idPartido')
+      ->join('provincia', 'provincia.id', '=', 'ciudad.idProvincia')
+      ->join('pais', 'pais.id', '=', 'ciudad.idPais')
+      ->where('ciudad.habilitado', '=', 1)
+      ->get();
+
+
+    return response()->json($ciudades);
+
+  }
 
     public static function getBestRatedPlaces($pid)
     {

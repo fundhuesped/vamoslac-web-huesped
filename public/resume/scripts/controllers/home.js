@@ -28,14 +28,16 @@ angular.module('dondeDataVizApp').controller('HomeCtrl',
       var anchor = document.querySelector('#mainMap');
       smoothScroll.animateScroll(anchor);
     }
-    $scope.showDetail = function(i, p) {
+    $scope.showDetail = function(z, p) {
       $scope.currentMarker = p;
       for (var i = 0; i < $scope.ciudades.length; i++) {
-        if ($scope.ciudades[i].id === p.idCiudad) {
-          p.nombre_ciudad = $scope.ciudades[i].nombre_ciudad;
-          p.nombre_partido = $scope.ciudades[i].nombre_partido;
-          p.nombre_provincia = $scope.ciudades[i].nombre_provincia;
-          p.nombre_pais = $scope.ciudades[i].nombre_pais;
+      var c = $scope.ciudades[i];
+
+        if (c.id === p.idCiudad) {
+          p.nombre_ciudad = c.nombre_ciudad;
+          p.nombre_partido = c.nombre_partido;
+          p.nombre_provincia = c.nombre_provincia;
+          p.nombre_pais = c.nombre_pais;
           p.serviceCode = 'resume';
 
           
@@ -46,7 +48,7 @@ angular.module('dondeDataVizApp').controller('HomeCtrl',
       smoothScroll.animateScroll(anchor);
     }
 
-    $http.get('api/v1/places/all/autocomplete').then(function(d) {
+    $http.get('api/v1/cities/all/autocomplete').then(function(d) {
       $scope.ciudades = d.data;
     });
     $http.get('api/v2/countries/ranking').then(function(d) {

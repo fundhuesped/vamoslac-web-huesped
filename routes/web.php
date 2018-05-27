@@ -277,6 +277,9 @@ Route::post('api/v1/places/all/autocomplete', '\App\Http\Controllers\PlacesRESTC
 
 Route::get('api/v1/places/all/autocomplete', '\App\Http\Controllers\PlacesRESTController@listAllAutocomplete');
 
+Route::get('api/v1/cities/all/autocomplete', '\App\Http\Controllers\PlacesRESTController@citiesAllAutocomplete');
+
+
 Route::post('api/v1/places/all/autocompletename', '\App\Http\Controllers\PlacesRESTController@getAllAutocompleteName');
 Route::get('api/v1/places/all/autocompletename', '\App\Http\Controllers\PlacesRESTController@listAllAutocompleteName');
 
