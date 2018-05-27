@@ -39,7 +39,9 @@ dondev2App.controller('cityMapController2',
       $scope.country = response.data[0].nombre_pais;
       $scope.countryId = response.data[0].idPais;
 
-
+      setTimeout(function(){
+        $('.mdi-hardware-keyboard-arrow-down').each(function(e) { $(this).click()});
+      },200)
       $scope.showCurrent = function(i, p) {
         $scope.currentMarker = p;
       }

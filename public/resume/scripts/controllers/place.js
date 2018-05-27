@@ -11,10 +11,13 @@ angular.module('dondeDataVizApp').controller('placeCtrl',
   function(moment, NgMap, $interval, $routeParams, $scope, $timeout, $document, $http, $translate, $cookies) {
 
     // Change language of this module
-    var lang = $cookies.get('lang');
-    if (lang) {
+    $scope.lang = $cookies.get('lang');
+    if ($scope.lang) {
       $translate.use(lang);
-    };
+    }else {
+         $translate.use('en');
+    }
+    $scope.lang = $translate.preferredLanguage();
     
     $scope.nameCountry = $routeParams.pais;
     $scope.nameProvince = $routeParams.provincia;
