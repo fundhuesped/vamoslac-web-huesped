@@ -1836,3 +1836,21 @@ span.evaluation-date.ng-binding {
     height:  100%;
     z-index: 2;
 }
+
+.interactive-box > .box-text {
+    text-decoration:  underline;
+    font-weight: 600;
+}
+
+.interactive-box {
+    text-align:  center;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    cursor: pointer;
+    margin: 1rem 0;
+}
+
+.interactive-box > .box-text > p {
+    margin: 0;
+}

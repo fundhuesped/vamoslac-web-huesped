@@ -622,4 +622,6 @@ var translations_es =
    "nearby_locations" : "Lugares cercanos" ,
    "suggest_new_place" : "Sugerir nuevo lugar" ,
    "places_lists_mundito" : "Lugares por país" ,
+   "talk_to_someone" : "Habla con alguien",
+   "have_any_doubts" : "¿Tenes alguna duda? Habla con alguien",
  }

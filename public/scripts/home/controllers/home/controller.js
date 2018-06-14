@@ -95,4 +95,13 @@ dondev2App.controller('homeController',
     $rootScope.navBar = ""
     $scope.collapsibleElements = copyService.getAll();
 
-  });
+    $scope.activateChat = function(){
+        $zopim.livechat.window.show();
+        if( !$scope.chatHasBeenActivated ){
+            $zopim.livechat.setOnChatStart(function(){
+                $scope.chatHasBeenActivated = true;
+                $zopim.livechat.setNotes("El usuario se encontraba en el home");
+            });
+        }
+    };
+});
