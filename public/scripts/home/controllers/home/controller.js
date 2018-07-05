@@ -1,7 +1,7 @@
 dondev2App.controller('homeController',
   function($timeout, copyService, placesFactory, NgMap, $anchorScroll, $scope, $rootScope, $routeParams, $location, $http, $translate, $cookies) {
     $rootScope.selectedLanguage;
-    console.log()
+    console.log();
     try {
       var userLang = navigator.language || navigator.userLanguage; // es-AR
       var userLang = userLang.split('-')[0]; // es
@@ -95,13 +95,5 @@ dondev2App.controller('homeController',
     $rootScope.navBar = ""
     $scope.collapsibleElements = copyService.getAll();
 
-    $scope.activateChat = function(){
-        $zopim.livechat.window.show();
-        if( !$scope.chatHasBeenActivated ){
-            $zopim.livechat.setOnChatStart(function(){
-                $scope.chatHasBeenActivated = true;
-                $zopim.livechat.setNotes("El usuario se encontraba en el home");
-            });
-        }
-    };
+    $scope.zendeskTriggerNotes = "El usuario se encontraba en el home";
 });

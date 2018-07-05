@@ -72,13 +72,5 @@ dondev2App.controller('locationController',
     $rootScope.serviceLabel = $scope.service.label;
     $rootScope.serviceCode = $scope.service.code;
 
-    $scope.activateChat = function(){
-        $zopim.livechat.window.show();
-        if( !$scope.chatHasBeenActivated ){
-            $zopim.livechat.setOnChatStart(function(){
-                $scope.chatHasBeenActivated = true;
-                $zopim.livechat.setNotes("El usuario se encontraba buscando información de " + $scope.service.label);
-            });
-        }
-    };
+    $scope.zendeskTriggerNotes = "El usuario se encontraba buscando información de " + $scope.service.label;
 });

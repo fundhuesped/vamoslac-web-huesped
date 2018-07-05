@@ -12,7 +12,7 @@
             </p>
             <p class="header Aligner-home-content" ng-cloak ng-show="service" translate="[[service.desc]]"></p>
             <!--p class="Aligner-home-extra" ng-cloak ng-show="service.code=='mac' || service.code=='ile'"><a href="[['web_url' | translate]]"><span  translate="web_url_label"></span></a> </p-->
-            <div class="interactive-box" ng-click="activateChat()">
+            <div class="interactive-box" zendesk-chat-trigger zendesk-notes="zendeskTriggerNotes">
                 <div class="box-image">
                     <img class="home-icon-responsive" src="images/live-chat.png">
                 </div>

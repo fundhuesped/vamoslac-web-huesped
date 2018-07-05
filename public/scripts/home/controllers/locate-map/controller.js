@@ -1,6 +1,6 @@
 dondev2App.controller('locateMapController',
 	function(placesFactory,NgMap, $scope,$rootScope, $routeParams, $location, $http){
-  
+
   $rootScope.geo = true;
 	$scope.service = $routeParams.servicio;
 	$rootScope.navBar =$scope.service ;
@@ -43,4 +43,7 @@ dondev2App.controller('locateMapController',
       $scope.currentMarker = undefined;
     }
     navigator.geolocation.getCurrentPosition(onLocationFound, onLocationError);
+	console.log($scope);
+	$scope.zendeskTriggerNotes = "El usuario se encontraba buscando información de " + JSON.parse($scope.service).label + ".\n"+
+	"Buscó utilizando su ubicación actual";
 });

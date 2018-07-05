@@ -623,5 +623,5 @@ var translations_es =
    "suggest_new_place" : "Sugerir nuevo lugar" ,
    "places_lists_mundito" : "Lugares por país" ,
    "talk_to_someone" : "Habla con alguien",
-   "have_any_doubts" : "¿Tenes alguna duda? Habla con alguien",
+   "have_any_doubts" : "¿Tenés alguna duda? Habla con alguien",
  }
