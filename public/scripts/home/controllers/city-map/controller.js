@@ -189,4 +189,14 @@ dondev2App.controller('cityMapController',
       'id_establecimiento': $rootScope.currentMarker.placeId
     });
 
-  });
+
+    $scope.activateChat = function(){
+        $zopim.livechat.window.show();
+        if( !$scope.chatHasBeenActivated ){
+            $zopim.livechat.setOnChatStart(function(){
+                $scope.chatHasBeenActivated = true;
+                $zopim.livechat.setNotes("El usuario se encontraba buscando información de " + $scope.service.label + ".\nCiudad: " + $scope.city + ".");
+            });
+        }
+    };
+});

@@ -334,4 +334,14 @@ dondev2App.controller('locateListController',
       });
     };
     navigator.geolocation.getCurrentPosition(onLocationFound, onLocationError);
-  });
+
+    $scope.activateChat = function(){
+        $zopim.livechat.window.show();
+        if( !$scope.chatHasBeenActivated ){
+            $zopim.livechat.setOnChatStart(function(){
+                $scope.chatHasBeenActivated = true;
+                $zopim.livechat.setNotes("El usuario se encontraba buscando información de " + $scope.service.label + ". Buscó usando su ubicación actual.");
+            });
+        }
+    };
+});
