@@ -1857,9 +1857,10 @@ span.evaluation-date.ng-binding {
 }
 
 .interactive-box .box-image {
-    height: 2rem;
+    height: 3rem;
+    width: 3rem;
     max-height: 100%;
-    /* overflow:  hidden; */
+    /* overflow: hidden; */
 }
 
 .interactive-box .box-image > img {
