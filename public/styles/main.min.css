@@ -1838,19 +1838,54 @@ span.evaluation-date.ng-binding {
 }
 
 .interactive-box > .box-text {
-    text-decoration:  underline;
+    /* text-decoration:  underline; */
     font-weight: 600;
 }
 
 .interactive-box {
     text-align:  center;
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    align-items: center;
+    /* justify-content: center; */
     cursor: pointer;
     margin: 1rem 0;
+    padding: 2rem 1rem;
 }
 
 .interactive-box > .box-text > p {
     margin: 0;
+}
+
+.interactive-box .box-image {
+    height: 2rem;
+    max-height: 100%;
+    /* overflow:  hidden; */
+}
+
+.interactive-box .box-image > img {
+    max-height: 100%;
+    width: auto;
+}
+
+
+.interactive-box > .box-text {
+    margin-left: 0.5rem;
+    text-align: left;
+}
+
+.red-background{
+    background-color: #ed2840;
+    color: #ffffff;
+}
+
+.services-home.red-background .item-home{
+    color: #ffffff;
+}
+
+@media (min-width: 600px) {
+    .places .zendesk-trigger, .detail .zendesk-trigger {
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+    }
 }
