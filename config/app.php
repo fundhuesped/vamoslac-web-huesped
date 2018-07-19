@@ -51,7 +51,7 @@ return [
     | your application so that it is used when running Artisan tasks.
     |
     */
-
+    'MODE'=>env('MODE', 'production'),
     'url' => env('APP_URL', 'http://localhost'),
 
     /*
