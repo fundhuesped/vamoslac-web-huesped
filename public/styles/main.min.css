@@ -1884,7 +1884,7 @@ span.evaluation-date.ng-binding {
 }
 
 @media (min-width: 600px) {
-    .places .zendesk-trigger, .detail .zendesk-trigger {
+    .places .zendesk-trigger, .detail .zendesk-trigger, .zendesk-trigger.medium-size {
         margin-left: auto;
         margin-right: auto;
         width: 90%;
