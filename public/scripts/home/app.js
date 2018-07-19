@@ -148,6 +148,29 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
   $interpolateProvider.endSymbol(']]');
 })
 
+dondev2App.directive('zendeskChatTrigger', function($rootScope, $http) {
+    return {
+        scope: {
+            zendeskNotes: '=',
+        },
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            scope.chatHasBeenActivated = false;
+            element.on('click', function(){
+                var notes = scope.zendeskNotes;
+                if ( !notes && attr.zendeskNotes )
+                    notes = attr.zendeskNotes;
+                $zopim.livechat.window.show();
+                if( !scope.chatHasBeenActivated ){
+                    $zopim.livechat.setOnChatStart(function(){
+                        scope.chatHasBeenActivated = true;
+                        $zopim.livechat.setNotes(notes);
+                    });
+                }
+            });
+        },
+    };
+});
 
 angular.module('ngMap').run(function($rootScope) {
   $rootScope.$on('mapInitialized', function(evt, map) {

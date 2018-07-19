@@ -14,6 +14,15 @@
 			<h5 ng-cloak ng-show="cantidad  === 0" translate="places_not_found" translate-values="{ newNotFoundResult: '[[service.newNotFoundResult]]'}"> </h5>
 			<!-- <strong> [[service.title]] cerca </strong> </h5> -->
 			<!-- modulo sugerencia -->
+			<!-- ZENDESK CHAT TRIGGER -->
+			<div ng-cloak ng-show="cantidad  === 0" class="interactive-box red-background zendesk-trigger medium-size" zendesk-chat-trigger zendesk-notes="zendeskTriggerNotes">
+				<div class="box-image">
+					<img class="responsive-img" src="images/chat.svg">
+				</div>
+				<div class="box-text">
+					<p translate="have_any_doubts"></p>
+				</div>
+			</div>
 			<div class="container" ng-cloak ng-show="cantidad  === 0">
 				<br>
 				<div class="card-panel hoverable">
@@ -48,7 +57,15 @@
 				ng-model="onlyFriendly" ng-true-value="1" ng-false-value="0"/>
 				<label for="onlyFriendly" translate="only_teenager_friendly"></label>
 
-
+	<!-- ZENDESK CHAT TRIGGER -->
+	<div class="interactive-box red-background zendesk-trigger" zendesk-chat-trigger zendesk-notes="zendeskTriggerNotes">
+        <div class="box-image">
+            <img class="responsive-img" src="images/chat.svg">
+        </div>
+        <div class="box-text">
+            <p translate="have_any_doubts"></p>
+        </div>
+    </div>
    <ul class="collection">
         <li class="collection-item center" ng-repeat="item in places | orderBy: events: '!null' | filter:esFriendly()">
         <div class="row col-container">
@@ -123,14 +140,7 @@
 
 
 		</div>
-		<div class="interactive-box" ng-click="activateChat()">
-			<div class="box-image">
-				<img class="home-icon-responsive" src="images/live-chat.png">
-			</div>
-			<div class="box-text">
-				<p translate="have_any_doubts"></p>
-			</div>
-		</div>
+
 	</div>
 </div>
 

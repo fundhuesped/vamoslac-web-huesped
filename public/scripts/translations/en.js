@@ -622,6 +622,6 @@ var translations_en =
    "nearby_locations" : "Nearby locations" ,
    "suggest_new_place" : "Suggest a new place" ,
    "places_lists_mundito" : "Places by country" ,
-   "talk_to_someone" : "Talk to someone",
-   "have_any_doubts" : "Have any doubts? Talk to Someone",
+   "talk_to_someone" : "Chat with us",
+   "have_any_doubts" : "Have any doubts? Chat with us",
  }

@@ -250,14 +250,5 @@ dondev2App.controller('partyListController',
       }
     };
 
-    $scope.activateChat = function(){
-        $zopim.livechat.window.show();
-        if( !$scope.chatHasBeenActivated ){
-            $zopim.livechat.setOnChatStart(function(){
-                $scope.chatHasBeenActivated = true;
-                $zopim.livechat.setNotes("El usuario se encontraba buscando información de " + $scope.service.label);
-            });
-        }
-    };
-
+    $scope.zendeskTriggerNotes = "El usuario se encontraba buscando información de " + $scope.service.label;
   });

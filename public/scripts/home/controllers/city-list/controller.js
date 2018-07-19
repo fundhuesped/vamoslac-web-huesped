@@ -250,14 +250,5 @@ dondev2App.controller('cityListController',
       }
     };
 
-    $scope.activateChat = function(){
-        $zopim.livechat.window.show();
-        if( !$scope.chatHasBeenActivated ){
-            $zopim.livechat.setOnChatStart(function(){
-                $scope.chatHasBeenActivated = true;
-                $zopim.livechat.setNotes("El usuario se encontraba buscando información de " + $scope.service.label + ".\nCiudad: " + $scope.city + "." + ".\nNombre del lugar: " + $scope.placeName  + ".");
-            });
-        }
-    };
-
+    $scope.zendeskTriggerNotes = "El usuario se encontraba buscando información de " + $scope.service.label + ".\nCiudad: " + $scope.city + "." + ".\nNombre del lugar: " + $scope.placeName  + ".";
 });
