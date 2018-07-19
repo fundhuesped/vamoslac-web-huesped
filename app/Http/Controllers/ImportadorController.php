@@ -4142,7 +4142,7 @@ public function agregarNuevoNoGeo($book,$latLng){
 }
 
 	public function cleardb(Request $request){ //elimina datos de la tabla paises, provincias, partidos y places
-		$mode = config('MODE', 'testing');
+		$mode = config('APP_ENV', 'testing');
 		$result = ['mode' => $mode];
 		if (($mode !== null) && ($mode !== 'production'))  {
 			DB::statement('SET FOREIGN_KEY_CHECKS=0');
@@ -4162,7 +4162,7 @@ public function agregarNuevoNoGeo($book,$latLng){
 	}
 
 	public function getServerMode(Request $request){ //elimina datos de la tabla paises, provincias, partidos y places
-		$mode = config('MODE', 'testing');
+		$mode = config('APP_ENV', 'testing');
 		return(['mode' => $mode]);
 	}
 
