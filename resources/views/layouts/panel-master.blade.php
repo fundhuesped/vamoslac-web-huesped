@@ -32,7 +32,7 @@
       </div>
     </nav>
     <div class="row">
-      <div class=" home new-home">
+      <div class=" home">
         @yield('content')
       </div>
     </div>
