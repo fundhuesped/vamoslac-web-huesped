@@ -58,14 +58,19 @@ angular.module('dondeDataVizApp').controller('HomeCtrl',
 
 
     $scope.data = [];
+    var preData = [];
     var getStats = function() {
       var onPageFinished = function() {
-        console.log($scope.data[0]);
+        for (var i = 0; i < preData.length; i++) {
+          if (preData[i].aprobado){
+            $scope.data.push(preData[i]);
+          }
+        }
       };
       var getNextPage = function(url) {
         $http.get(url)
           .then(function(d) {
-            $scope.data = $scope.data.concat(d.data.data);
+            preData = preData.concat(d.data.data);
             if (d.data.next_page_url) {
               getNextPage(d.data.next_page_url);
             } else {
