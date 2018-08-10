@@ -40,7 +40,7 @@ $lang = \Session::get('lang');
   <div class="view" ng-view autoscroll="true">
   </div>
   <div class="map" ng-controller="mapController">
-    <div ng-cloak class="wow fadeIn fadeInRight">
+    <div ng-cloak>
       <ng-map id="mainMap"
         zoom-to-include-markers="auto"
         default-style="true">
