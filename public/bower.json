@@ -2,7 +2,7 @@
   "name": "Fundacion Huespued, Donde",
   "version": "2.0.0",
   "description": "Aplicación web que permite buscar lugares cercanos gratuitos de testeo de VIH y de distribución de preservativos.",
-  "homepage": "http://donde.huesped.org.ar",
+  "homepage": "http://vamoslac.org",
   "license": "MIT",
   "private": true,
   "dependencies": {

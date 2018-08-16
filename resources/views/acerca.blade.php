@@ -199,7 +199,7 @@
 	<!-- HOW TO ADD INFO -->
 	<h4 translate="about_title_add_info"></h4>
 	<span translate="about_descripcion1_add_info"></span>
-	<a href="https://donde.huesped.org.ar/form" rel="external" target="_blank" class="ui-link" translate="about_description2_add_info"></a>
+	<a href="https://vamoslac.org/form" rel="external" target="_blank" class="ui-link" translate="about_description2_add_info"></a>
 	<span translate="about_description3_add_info"></span>
 	<img class="newAboutIcon+" src="images/about/+new_btn.png" width="32px" title="IPPF">
 	<span translate="about_description4_add_info"></span>
