@@ -10,6 +10,9 @@
       <!-- <i class="mdi-editor-attach-money tiny"></i> -->
       <span translate="form_select_service_type_title"></span>[[currentMarker.servicetype_ssr]]
   </div>
+  <div class="col s12 m12" ng-cloak ng-show="currentMarker.comentarios_ssr">
+     <i class="mdi-action-info tiny"></i>[[currentMarker.comentarios_ssr]]
+  </div>
   <div class="col s12 m12 " ng-cloak ng-show="currentMarker.horario_ssr"><i class="mdi-action-query-builder tiny"> </i>[[currentMarker.horario_ssr]]</div>
   <div class="col s12 m12" ng-cloak ng-show="currentMarker.responsable_ssr"><i class="mdi-action-face-unlock tiny"> </i>[[currentMarker.responsable_ssr]]</div>
   <div class="col s12 m12" ng-cloak ng-show="currentMarker.mail_ssr">
@@ -25,7 +28,6 @@
     </a>
   </div>
   <!-- [[currentMarker.observaciones_mac]] -->
-  [[currentMarker.comentarios_ssr]]
   <div class="col s12 m12 telefono">
     <a target="_blank" ng-cloak ng-show="currentMarker.tel_ssr" ng-href="tel:[[currentMarker.tel_ssr]]" class="tel"><i class="mdi-communication-call tiny"></i>
       [[currentMarker.tel_ssr]]
