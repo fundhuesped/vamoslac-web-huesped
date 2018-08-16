@@ -16,7 +16,7 @@ $lang = \Session::get('lang');
 <meta property='og:type' content="@lang('site.page_title')" />
 <meta property='og:locale' content='es_LA'/>
 <meta property='og:url' content='https://vamoslac.org/'/>
-<meta property='og:site_name' content='DÓNDE'/>
+<meta property='og:site_name' content='VAMOS'/>
 <meta property='og:image' content='https://vamoslac.org/og.png'/>
 <meta property='fb:app_id' content='1964173333831483' />
 <meta name="twitter:card" content="summary">
