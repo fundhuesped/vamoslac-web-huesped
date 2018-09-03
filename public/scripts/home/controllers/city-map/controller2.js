@@ -67,7 +67,7 @@ dondev2App.controller('cityMapController2',
     console.log($rootScope.currentMarker.nombre_pais);
     console.log($rootScope.currentMarker.nombre_ciudad);
 
-    gtag('event','evaluando', {
+    gtag('event','ver_centro', {
           'event_category': $rootScope.currentMarker.establecimiento,
       }); 
 

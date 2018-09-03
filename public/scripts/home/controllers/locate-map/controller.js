@@ -37,13 +37,17 @@ dondev2App.controller('locateMapController',
       $rootScope.centerMarkers = [];
       //tengo que mostrar arriba en el map si es dekstop.
       $rootScope.centerMarkers.push($rootScope.currentMarker);
-
+      gtag('event','ver_centro', {
+          'event_category': $rootScope.currentMarker.establecimiento,
+          'event_label': JSON.parse($scope.service).label
+      });
     }
     $scope.closeCurrent = function(){
       $scope.currentMarker = undefined;
     }
     navigator.geolocation.getCurrentPosition(onLocationFound, onLocationError);
-	console.log($scope);
+	 
+   
 	$scope.zendeskTriggerNotes = "El usuario se encontraba buscando información de " + JSON.parse($scope.service).label + ".\n"+
 	"Buscó utilizando su ubicación actual";
 });
