@@ -182,12 +182,11 @@ dondev2App.controller('cityMapController',
     console.log($rootScope.currentMarker.placeId);
     console.log($rootScope.currentMarker.nombre_pais);
     console.log($rootScope.currentMarker.nombre_ciudad);*/
+     gtag('event','evaluando', {
+          'event_category': 'evaluando',
+          'event_label': $rootScope.currentMarker.establecimiento,
+         });
 
-    gtag('event', 'evaluando', {
-      'lugar': $rootScope.currentMarker.nombre_pais + ' - ' + $rootScope.currentMarker.nombre_ciudad,
-      'nombre_establecimiento': $rootScope.currentMarker.establecimiento,
-      'id_establecimiento': $rootScope.currentMarker.placeId
-    });
 
     $scope.zendeskTriggerNotes = "El usuario se encontraba buscando información de " + $scope.service.label + ".\nCiudad: " + $scope.cityId + ".";
 });

@@ -188,13 +188,12 @@ dondev2App.controller('locateListController',
             }
 
             gtag('event', 'geo',{
-              'latitud': position.coords.latitude,
-              'longitud': position.coords.longitude
+                'event_category':geoPais,
+                'event_label':  position.coords.latitud +  " " + position.coords.longitude,
+            
             });
 
-            gtag('event', 'geoPais',{
-              'nombre_pais' : geoPais
-            });
+            
 
 
           });

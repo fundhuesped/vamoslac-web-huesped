@@ -47,11 +47,11 @@ dondev2App.controller('cityListController',
 
     };
 
-    var eventName = 'listado_' + $routeParams.servicio;
-    gtag('event',eventName, {
-      'lugar':   $scope.country + ' - ' +   $scope.ciudad
-    }
-    );
+    var eventName = 'ver_listado_ciudades';
+      gtag('event',eventName, {
+          'event_category': $routeParams.servicio,
+          'event_label':  $scope.country + ' - ' +   $scope.ciudad,
+         });
 
     search[$routeParams.servicio.toLowerCase()] = true;
 

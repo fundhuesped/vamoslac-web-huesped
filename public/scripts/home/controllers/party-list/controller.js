@@ -50,11 +50,12 @@ dondev2App.controller('partyListController',
     };
     search[$routeParams.servicio.toLowerCase()] = true;
 
-    var eventName = 'listado_' + $routeParams.servicio;
-    gtag('event',eventName, {
-      'lugar':   $scope.country + ' - ' +   $scope.partido
-    }
-    );
+      var eventName = 'ver_listado_partidos';
+      gtag('event',eventName, {
+          'event_category': $routeParams.servicio,
+          'event_label':  $scope.country + ' - ' +   $scope.ciudad,
+         });
+      
 
     placesFactory.getPlacesByParty(search, function(data) {
 

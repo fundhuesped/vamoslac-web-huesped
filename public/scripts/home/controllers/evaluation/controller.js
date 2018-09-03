@@ -25,6 +25,8 @@ dondev2App.controller('evaluationController',
     $http.get('api/v2/places/' + $routeParams.id).then(function(data) {
 
       $scope.establecimiento = data.data[0].establecimiento;
+      $scope.nombre_pais = data.data[0].nombre_pais;
+      $scope.nombre_ciudad = data.data[0].nombre_ciudad;
 
       console.log(data.data[0].establecimiento);
       console.log(data.data[0].placeId);
@@ -32,10 +34,10 @@ dondev2App.controller('evaluationController',
       console.log(data.data[0].nombre_ciudad);
 
       gtag('event', 'evaluando', {
-            'lugar': data.data[0].nombre_pais + ' - ' + data.data[0].nombre_ciudad,
-            'nombre_establecimiento': data.data[0].establecimiento,
-            'id_establecimiento': data.data[0].placeId
-      });
+          'event_category': data.data[0].nombre_pais + ' - ' + data.data[0].nombre_ciudad,
+          'event_label':  data.data[0].establecimiento,
+         });
+
 
     });
 
@@ -1214,6 +1216,12 @@ dondev2App.controller('evaluationController',
       $http.post('api/v2/evaluacion/votar', $scope.respuestas)
         .then(function(response) {
             if (response.data.length === 0) {
+
+                   gtag('event', 'evaluando', {
+                      'event_category': $scope.nombre_pais + ' - ' + $scope.nombre_ciudad,
+                      'event_label':  $scope.establecimiento,
+                      'value': parseInt($scope.respuestas.voto)
+                     });
               var lang =  localStorage.getItem('lang');
               if(lang == 'es')
                   Materialize.toast('Calificación enviada!', 5000);
