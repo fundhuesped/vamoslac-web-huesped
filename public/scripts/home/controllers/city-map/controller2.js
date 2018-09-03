@@ -68,8 +68,7 @@ dondev2App.controller('cityMapController2',
     console.log($rootScope.currentMarker.nombre_ciudad);
 
     gtag('event','evaluando', {
-          'event_category': 'evaluando',
-          'event_label': $rootScope.currentMarker.establecimiento,
+          'event_category': $rootScope.currentMarker.establecimiento,
       }); 
 
     }); //del get

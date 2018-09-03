@@ -1217,9 +1217,9 @@ dondev2App.controller('evaluationController',
         .then(function(response) {
             if (response.data.length === 0) {
 
-                   gtag('event', 'evaluando', {
-                      'event_category': $scope.nombre_pais + ' - ' + $scope.nombre_ciudad,
-                      'event_label':  $scope.establecimiento,
+                   gtag('event', 'evaluacion-enviada', {
+                      'event_label': $scope.nombre_pais + ' - ' + $scope.nombre_ciudad,
+                      'event_category':  $scope.establecimiento,
                       'value': parseInt($scope.respuestas.voto)
                      });
               var lang =  localStorage.getItem('lang');
