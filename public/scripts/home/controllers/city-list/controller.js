@@ -84,7 +84,7 @@ dondev2App.controller('cityListController',
             ($scope.countryImageTag == 'paraguay') ||
             ($scope.countryImageTag == 'panama') ||
             ($scope.countryImageTag == 'republicadominicana') ||
-            ($scope.countryTextTag == 'trinidadandtobago')) {
+            ($scope.countryImageTag == 'trinidadandtobago')) {
             $scope.legal = false;
           }
         } else {
