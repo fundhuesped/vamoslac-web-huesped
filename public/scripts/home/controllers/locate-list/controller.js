@@ -313,7 +313,8 @@ dondev2App.controller('locateListController',
                   $scope.countryImageTag == 'paraguay'||
                   $scope.countryImageTag == 'panama' ||
                   $scope.countryImageTag == 'republicadominicana' ||
-                  $scope.countryTextTag =='trinidadandtobago'){
+                  $scope.countryImageTag == 'trinidadandtobago' ||
+                  $scope.countryImageTag =='trinidadandtobago'){
 
                     $scope.legal = false;
 
