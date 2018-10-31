@@ -48,6 +48,6 @@ dondev2App.controller('locateMapController',
     navigator.geolocation.getCurrentPosition(onLocationFound, onLocationError);
 	 
    
-	$scope.zendeskTriggerNotes = "El usuario se encontraba buscando información de " + JSON.parse($scope.service).label + ".\n"+
+	$scope.zendeskTriggerNotes = "El usuario se encontraba buscando información de " + $scope.service + ".\n"+
 	"Buscó utilizando su ubicación actual";
 });
