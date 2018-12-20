@@ -1252,12 +1252,22 @@ class PlacesRESTController extends Controller
     public function getAllPlaces(Request $request)
     {
         try {
-            return DB::table('places')->paginate(100);
+            return DB::table('places')
+            ->paginate(100);
         } catch (Exception $e) {
             return $e->getMessage();
         }
     }
-
+    public function getApproved(Request $request)
+    {
+        try {
+            return DB::table('places')
+            ->where('aprobado', '=' , 1)
+            ->paginate(100);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
     public function getAllApproved(Request $request)
     {
         try {

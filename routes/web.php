@@ -88,6 +88,7 @@ Route::group(['middleware' => \App\Http\Middleware\CheckLang::class], function (
     Route::get('partido/{id}/ciudad', '\App\Http\Controllers\CiudadRESTController@showCitiesByIdPartido');
 
     Route::get('api/v2/places/getall', '\App\Http\Controllers\PlacesRESTController@getAllPlaces');
+    Route::get('api/v2/places/getApproved', '\App\Http\Controllers\PlacesRESTController@getApproved');
     Route::get('api/v2/places/{id}', '\App\Http\Controllers\PlacesRESTController@getPlaceById');
     Route::get('api/v2/places/byname/{name}', '\App\Http\Controllers\PlacesRESTController@getPlaceByName');
     Route::get('api/v2/places/getAllApproved', '\App\Http\Controllers\PlacesRESTController@getAllApproved');
