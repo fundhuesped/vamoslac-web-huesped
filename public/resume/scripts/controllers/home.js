@@ -79,7 +79,7 @@ angular.module('dondeDataVizApp').controller('HomeCtrl',
           });
       };
 
-      getNextPage('api/v2/places/getall');
+      getNextPage('api/v2/places/getApproved');
 
     };
 
