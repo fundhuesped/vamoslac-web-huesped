@@ -95,7 +95,7 @@
 	<h3 class="newMenuAbout" id="sobre" translate="about_vamos_title"></h3>
 	<p translate="about_donde_description_4"></p>
 
-	<h4 class="newMenuAbout">IPPF/RHO</h4>
+	<h4 class="newMenuAbout">IPPF/WHR</h4>
 	<p translate="about_ippf_description"></p>
 	<p translate="about_ippf_description_2"></p>
 	<p translate="about_ippf_description_3"></p>

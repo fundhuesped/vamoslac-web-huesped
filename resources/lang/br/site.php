@@ -71,7 +71,7 @@ return [
     "about_li_label_ile" => "Informações sobre o aborto seguro e realizar aborto legal",
     "about_li_rhsc_label" => "através do Fundo de Inovação de fundo, obtida em parceria com o ",
     "about_li_rhsc_label_2" => "Centro de Estudos de Estado e Sociedade (CEDES).",
-    "about_li_ippf_hro_label" => "Federación Internacional de Planificación de la Familia/Región del Hemisferio Occidental (IPPF/RHO).",
+    "about_li_ippf_hro_label" => "Federación Internacional de Planificación de la Familia/Región del Hemisferio Occidental (IPPF/WHR).",
     "about_li_ministerio_label" => "Ministerio de Desarrollo Social de la Nación",
     "about_href_colectivo_1" => "Coletivo Juventude para Direitos Sexuais e Reprodutivos",
     "about_href_colectivo_1" => " É uma parceria estratégica para esta iniciativa, porque nós trabalhamos juntos na validação da plataforma e seu conteúdo, bem como no planejamento e implementação de actividades de divulgação.",
