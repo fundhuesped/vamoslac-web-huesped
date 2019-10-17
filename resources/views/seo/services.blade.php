@@ -1,8 +1,8 @@
 @extends('layouts.clear')
 
 @section('meta')
-<title>@lang('site.seo_meta_property_title') -  <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido)." , ",html_entity_decode($ciudad) ; ?> </title>
-<meta name="description" content="@lang('site.seo_meta_property_description_4') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido)." , ".html_entity_decode($ciudad); ?>">
+<title> @lang('site.seo_meta_property_description_2') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido)." , ".html_entity_decode($ciudad); ?> @lang('site.seo_meta_property_description_3')" </title> 
+<meta name="description" content="@lang('site.seo_meta_property_title')">
 <meta name="author" content="@lang('site.seo_meta_author_content')">
 <link rel="canonical" href="@lang('site.seo_meta_canonicallink')"/>
 <meta property='og:locale' content="@lang('site.seo_meta_property_local')"/>
