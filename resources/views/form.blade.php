@@ -42,7 +42,7 @@
         <!-- INPUT -->
         <div class="row">
           <div class="input-field col s12">
-            <input id="establecimiento" type="text" name="establecimiento" class="validate" ng-model="place.establecimiento"
+            <input id="establecimiento" type="text" name="establecimiento" class="validate" ng-model="place.establecimiento"         required pattern="\S+.*"
             ng-change="formChange()">
             <label for="establecimiento" translate="form_establishment_name"></label>
           </div>
@@ -51,7 +51,7 @@
         <div class="row">
           <div class="input-field col s12">
             <input id="tipo" type="text" name="tipo"
-            class="validate" ng-model="place.tipo"
+            class="validate" ng-model="place.tipo" 
             ng-change="formChange()">
             <label for="tipo" translate="form_establishment_type"></label>
           </div>
@@ -92,20 +92,20 @@
         <div class="row">
           <div class="input-field col s12">
             <!-- DROPDOWN PAIS -->
-            <select class=""
+            <select         required pattern="\S+.*" class=""
               ng-change="showProvince()" ng-model="place.idPais"
               ng-options="v.id as v.nombre_pais for v in countries" material-select watch>
               <option value="" disabled selected translate="select_country">*</option>
             </select>
             <!-- DROPDOWN PROVINCIA -->
-            <select class=""
+            <select         required pattern="\S+.*" class=""
               ng-change="showPartido()" ng-model="place.idProvincia"
               ng-disabled ='!provinceOn'
               ng-options="pcia.id as pcia.nombre_provincia for pcia in provinces" material-select watch>
               <option value="" disabled selected translate="select_state">*</option>
             </select>
             <!-- DROPDOWN PARTIDO -->
-            <select class=""
+            <select         required pattern="\S+.*" class=""
               ng-change="loadCity()"
               ng-disabled ='!partidoOn'
               ng-options="item.id as
@@ -115,7 +115,7 @@
               <option value="" disabled="" selected translate="select_department"></option>
             </select>
             <!-- DROPDOWN CIUDAD -->
-            <select class=""
+            <select         required pattern="\S+.*" class=""
               ng-disabled="!showCity"
               ng-options="c.id as c.nombre_ciudad for c in cities track by c.id"
               ng-model="place.idCiudad" material-select watch>
