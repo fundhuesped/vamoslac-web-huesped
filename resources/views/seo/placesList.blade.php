@@ -1,8 +1,7 @@
 @extends('layouts.clear')
 @section('meta')
 
-{{-- <title> @lang('site.seo_meta_placelist_title_1') <?php echo html_entity_decode($resu['titleCopySeo']);?> @lang('site.on') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido)." , ".html_entity_decode($ciudad); ?>? </title> --}}
-<title>VAMOS | vamoslac.org</title>
+<title> @lang('site.seo_meta_placelist_title_1') <?php echo html_entity_decode($resu['titleCopySeo']);?> @lang('site.on') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido)." , ".html_entity_decode($ciudad); ?>? </title>
 <meta name="description" content="@lang('site.seo_meta_description_content_2') <?php echo html_entity_decode($resu['descriptionCopy']);?> @lang('site.on') <?php echo html_entity_decode($pais)." . ".html_entity_decode($provincia)." , ".html_entity_decode($partido)." , ".html_entity_decode($ciudad); ?>">
 <meta name="author" content="@lang('site.seo_meta_author_content')">
 <link rel="canonical" href="@lang('site.seo_meta_canonicallink')"/>

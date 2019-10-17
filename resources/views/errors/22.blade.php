@@ -48,7 +48,7 @@
 					    <br>
 					@endif
 				</div>
-{{-- 				<div class="row valign full-width">
+		<div class="row valign full-width">
 					<div class="row">
 						<div class="col s12 error-container">
 							<p> <b>Detalles tecnicos: (formateado) </b></p>
@@ -61,7 +61,7 @@
 							<p>{{$exception }}</p>
 						</div>
 					</div>
-				</div> --}}
+				</div> 
 
 			</div>
 
