@@ -1,7 +1,6 @@
 @extends('layouts.master')
 @section('meta')
 <title>VAMOS | vamoslac.org</title>
-<meta name="google-site-verification" content="RQh3eES_sArPYfFybCM87HsV6mbwmttWlAIk-Upf1EQ" />
 
 <?php
 $lang = \Session::get('lang');
@@ -10,6 +9,7 @@ $lang = \Session::get('lang');
 
 
 <meta name="author" content="IPPF">
+<meta name="google-site-verification" content="RQh3eES_sArPYfFybCM87HsV6mbwmttWlAIk-Upf1EQ" />
 <link rel="canonical" href="https://vamoslac.org/"/>
 <meta property='og:title' content="@lang('site.page_title')" />
 <meta property="og:description" content="@lang('site.seo_meta_description_content')" />

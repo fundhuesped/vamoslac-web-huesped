@@ -10,7 +10,8 @@
     <meta name="author" content="@lang('page_title')">
     <link rel="canonical" href="https://vamoslac.org"/>
     <meta property='og:locale' content='es_LA'/>
-    <meta property='og:title' content='DÓNDE'/>
+    <meta property='og:title' content='VAMOS'/>
+    <meta name="google-site-verification" content="7Myd-74iCkDjnz5HEK2-iF7gNuDUL8TMmkg6DiwxsZc" />
     <meta property="og:description" ccontent="{{$p->establecimiento}} en {{$p->nombre_ciudad}}, {{$p->calle}} {{$p->altura}}  ">
     <meta property='og:url' content='https://vamoslac.org/share/{{$p->placeId}} '/>
     <meta property='og:site_name' content="Vamos a ver que hace"/>
