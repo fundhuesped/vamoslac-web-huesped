@@ -4,6 +4,11 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Database\QueryException;
+use App\Exceptions\CustomException;
+use App\Exceptions\ImporterException;
+use App\Exceptions\CsvException;
 
 class Handler extends ExceptionHandler
 {
@@ -29,8 +34,6 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
      * @param  \Exception  $exception
      * @return void
      */
@@ -47,7 +50,37 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
-    {
-        return parent::render($request, $exception);
+    {   
+        
+
+        $list_desings_ids = array('23000', '500','300','310','404');
+
+        if ($exception instanceof CsvException) {
+                return response()->view('errors.310', [], 300);
+        }
+        else if ($exception instanceof CustomException) {
+                return response()->view('errors.importador', ['exception' => $exception], 300);    
+        }
+        else if ($exception instanceof ImporterException) {
+               return response()->view('errors.importador', ['exception' => $exception], 300);    
+        }
+        else if ($exception instanceof QueryException) {
+               return response()->view('errors.500', ['exception' => $exception], 300);    
+
+        }
+        else if ($exception instanceof HttpException) {
+               return response()->view('errors.500', ['exception' => $exception], 300);    
+
+        }
+        else if(in_array($exception->getCode(), $list_desings_ids))
+        {
+           return response()->view('errors.' . $exception->getCode(), ['exception' => $exception]);    
+           
+        }
+        else {
+            return parent::render($request, $exception);
+        }
+        
+       
     }
 }
