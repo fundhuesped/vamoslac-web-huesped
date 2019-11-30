@@ -2250,7 +2250,7 @@ public function importCsv(Request $request){
 		$validateResult = $this->checkAllColumns($rowColumns);
 
 		try {
-			if ($rowCount > 400)
+			if ($rowCount > 1200)
 				abort(310, "Máximo de Centros Superado");
 			else
 				if (!$validateResult['status'])
