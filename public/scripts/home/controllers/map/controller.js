@@ -1,66 +1,156 @@
 dondev2App.controller('mapController',
 	function(placesFactory,NgMap, $scope,$rootScope, $timeout, $routeParams, $location, $http){
 
-$rootScope.centerMarkers = [];
+    //Constants
+    var overviewZoom = 5;
+    var locationZoom = 12;
+    var placeZoom = 15;
+    var initLocation = {latitude: -27.433133, longitude: -63.046042};
 
+    //Shared variables
+    $rootScope.moveMapTo = [];
+    $rootScope.loadPlaces = [];
+    $rootScope.currentZoom = [];
 
-  $timeout(function(){
+    //Private variables
+    var markers = [];
 
-    $rootScope.moveMapTo = {
-      latitude:-12.382928338487396,
-      longitude:-79.27734375,
-      zoom:3
-    };
-  },3000);
-  $rootScope.$watch('moveMapTo', function(d){
-    if ((!$rootScope.places || $rootScope.places.length === 0) || (typeof d.center != "undefined" && d.center)){
-      if (d && $rootScope.map){
-        $scope.center = "[" + d.latitude  + "," +  d.longitude +"]";
-         window.map.setCenter({
-          lat : d.latitude,
-          lng : d.longitude
-        });
-        window.map.setZoom(d.zoom);
-        }
+    function initMap() {
+      $rootScope.moveMapTo = initLocation;
+      $rootScope.currentZoom = {'rand': Math.random(), 'zoom': 'overview'};
     }
-  })
 
-	$scope.service = $routeParams.servicio;
-	$rootScope.navBar =$scope.service ;
-	$rootScope.places = [];
-	$scope.main = true;
-  $rootScope.main = false;
-	 var onLocationError = function(e){
-        $scope.$apply(function(){
-          $location.path('/call/help');
-        });
-    };
+    //Watch out when the map needs to be moved
+    $rootScope.$watch('moveMapTo', function(coords){
+      var pos = new google.maps.LatLng(coords.latitude, coords.longitude);
+      if (window.map){
+        window.map.setCenter(pos);
+        window.map.panTo(pos);
+      }
+    });
 
+    //Watch out when we need to adjust the zoom
+    $rootScope.$watch('currentZoom', function(currentZoom){
+      var zoom = currentZoom['zoom'];
+      if (window.map){
+        switch (zoom) {
+          case "overview":
+          window.map.setZoom(overviewZoom); break;
+          case "location":
+          window.map.setZoom(locationZoom); break;
+          case "place":
+          window.map.setZoom(placeZoom); break;
+          default:
+          window.map.setZoom(overviewZoom); break;
+        }
+      }
+    });
 
+    //Watch places. If changed, reset markers. Prefilter centers to avoid doubled markers on same geolocation
+    $rootScope.$watch('places', function(){
+      var places = $rootScope.places;
+      var centers = $rootScope.centerMarkers;
+      if(places){
+        deleteMarkers();
+        places = filterPlacesOverCenters(places,centers);
+        for (var i = 0; i < places.length; i++) {
+          var item = places[i];
+          pushMarker(item,false);
+        }
+        for (var i = 0; i < centers.length; i++) {
+          var item = centers[i];
+          pushMarker(item,true);
+        }
+      }
+    });
 
-    $scope.showCurrent = function(i,p){
-      $rootScope.navBar = p.establecimiento;
+    // Watch out changes on center markers. Must delete a present place marker before
+    $rootScope.$watch('currentMarker', function(){
+      var centers = $rootScope.centerMarkers;
+      for (var i = 0; i < centers.length; i++) {
+        var item = centers[i];
+        deleteMarkerByID(item.placeId);
+        pushMarker(item,true);
+      }
+    });
 
-      var urlComments = "api/v2/evaluacion/comentarios/" + p.placeId;
-      p.comments = [];
+    // Delete marker by ID
+    function deleteMarkerByID(id){
+      for (var i = 0; i < markers.length; i++) {
+        if(markers[i]['ID'] == id){
+          markers[i]['marker'].setMap(null);
+          markers.splice(i,1);
+          return i;
+        }
+      }
+      return -1;
+    }
+
+    // Get rid of centers that are present on places, avoiding double markers
+    function filterPlacesOverCenters(places, centers){
+      for (var j = 0; j < centers.length; j++) {
+        for (var i = 0; i < places.length; i++) {
+          if(centers[j].placeId == places[i].placeId){
+            places.splice(i, 1);
+          }
+        }
+      }
+      return places;
+    }
+
+    // Set markers on screen (or not)
+    function setMapOnMarkers(map) {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i]['marker'].setMap(map);
+      }
+    }
+
+    // Refresh markers
+    function deleteMarkers() {
+      setMapOnMarkers(null);
+      markers = [];
+    }
+
+    // Creates marker (check if it's selected or not), add to list, add 'click' listener, add to map
+    function pushMarker(item,is_center = false){
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(item.latitude,item.longitude),
+        icon: (is_center)?"images/place-on.png":"images/place-off.png"
+      });
+      markers.push({
+        'marker': marker,
+        'ID': item.placeId
+      });
+      markers[markers.length - 1]['marker'].addListener('click', showCurrent.bind(this, item));
+      markers[markers.length - 1]['marker'].setMap(window.map);
+    }
+
+    $timeout(function(){
+      initMap();
+    },1000);
+
+    //Bind 'click' function on map
+    function showCurrent (place){
+      $rootScope.navBar = place.establecimiento;
+
+      //Load comments
+      var urlComments = "api/v2/evaluacion/comentarios/" + place.placeId;
+      place.comments = [];
       $http.get(urlComments)
-        .then(function(response) {
-          p.comments = response.data;
-          p.comments.forEach(function(comment) {
-            comment.que_busca = comment.que_busca.split(',');
-          });
+      .then(function(response) {
+        place.comments = response.data;
+        place.comments.forEach(function(comment) {
+          comment.que_busca = comment.que_busca.split(',');
         });
+      });
 
-      $rootScope.currentMarker  = $scope.currentMarker = p;
-
-      window.map.setCenter({
-          lat : $rootScope.currentMarker.latitude,
-          lng : $rootScope.currentMarker.longitude,
-        });
-      window.map.panTo(new google.maps.LatLng($rootScope.currentMarker.latitude,$rootScope.currentMarker.longitude));
-       $rootScope.centerMarkers = [];
-      //tengo que mostrar arriba en el map si es dekstop.
+      //Actualizar markers seleccionados en el mapa
+      $rootScope.currentMarker = place;
       $rootScope.centerMarkers.push($rootScope.currentMarker);
+
+      //Actualizar mapa
+      $rootScope.moveMapTo = {latitude: place.latitude, longitude: place.longitude};
+      $rootScope.currentZoom = {'rand': Math.random(), 'zoom': 'place'};
 
       var path = $location.path();
       if (path.indexOf('listado') > -1){
@@ -68,8 +158,5 @@ $rootScope.centerMarkers = [];
         $location.path(newPath);
       }
     }
-    $scope.closeCurrent = function(){
-      $scope.currentMarker = undefined;
-    }
 
-});
+  });

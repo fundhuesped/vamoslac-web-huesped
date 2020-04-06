@@ -42,8 +42,8 @@ $lang = \Session::get('lang');
   <div class="map" ng-controller="mapController">
     <div ng-cloak>
       <ng-map id="mainMap"
-        zoom-to-include-markers="auto"
         default-style="true">
+        {{-- Esto lo comentamos porque ahora se hace por angular más optimizado, just in case lo dejamos
         <marker
           icon="images/place-off.png"
           on-click="showCurrent(p)"
@@ -54,7 +54,7 @@ $lang = \Session::get('lang');
           icon="images/place-on.png"
           ng-repeat="p in centerMarkers"
           position="[[p.latitude]],[[p.longitude]]">
-        </marker>
+        </marker> --}}
       </ng-map>
     </div>
   </div>

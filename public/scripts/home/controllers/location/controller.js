@@ -5,32 +5,21 @@ dondev2App.controller('locationController',
 
     $rootScope.returnTo = ""; //manipulate close buton.
 
-
      gtag('event','ver_servicio', {
           'event_category': $routeParams.servicio,
           'event_label':  $routeParams.servicio
          });
     
-
-    $timeout(
-      function() {
-        $rootScope.moveMapTo = {
-          latitude: -12.382928338487396,
-          longitude: -79.27734375,
-          zoom: 3
-        };
-      }, 500);
-    $rootScope.places = [];
     $scope.searchOn = false;
     $rootScope.main = false;
-    $scope.countries = [];
+
+    $rootScope.places = [];
+    $rootScope.centerMarkers = [];
+    $scope.countries = [];    
 
     placesFactory.getCountries(function(countries) {
       $scope.countries = countries;
     })
-
-
-
 
     $scope.getNow = function() {
       var next = $scope.selectedCountry.id + "-" + $scope.selectedCountry.nombre_pais;
@@ -43,9 +32,7 @@ dondev2App.controller('locationController',
     }
 
     $scope.setReturn = function(value) {
-
       $rootScope.returnTo = value;
-
     }
 
     $scope.loadCity = function() {

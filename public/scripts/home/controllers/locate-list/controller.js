@@ -9,8 +9,8 @@ dondev2App.controller('locateListController',
     $scope.loading = true;
     $scope.events = "-rateReal";
     $scope.legal = true;
-    //parseo a obj para obtener el servicio si no piden todo
 
+    //parseo a obj para obtener el servicio si no piden todo
     if (typeof $scope.service === "undefined" || $scope.service === null || $scope.service == "" || $scope.service == "friendly") {
       $scope.service = "friendly";
     } else {
@@ -140,8 +140,6 @@ dondev2App.controller('locateListController',
             item.faceList[pos].image = item.faceList[pos].imageBacon;
         });
 
-
-
       var urlComments = "api/v2/evaluacion/comentarios/" + item.placeId;
       item.comments = [];
       $http.get(urlComments)
@@ -154,12 +152,13 @@ dondev2App.controller('locateListController',
 
         });
 
-      $rootScope.places = $scope.places;
-      $scope.cantidad = $scope.places.length;
+      //Actualizar markers seleccionados en el mapa
       $rootScope.currentMarker = item;
-      $rootScope.centerMarkers = [];
-      //tengo que mostrar arriba en el map si es dekstop.
       $rootScope.centerMarkers.push($rootScope.currentMarker);
+
+      //Actualizar el mapa
+      $rootScope.moveMapTo = {latitude: item.latitude, longitude: item.longitude};
+      $rootScope.currentZoom = {'rand': Math.random(), 'zoom': 'place'};
 
       //con esto centro el mapa en el place correspondiente
       $location.path('/localizar' + '/' + $routeParams.servicio + '/mapa');
@@ -186,16 +185,10 @@ dondev2App.controller('locateListController',
               }
 
             }
-
             gtag('event', 'geo',{
                 'event_category':geoPais,
                 'event_label':  position.coords.latitud +  " " + position.coords.longitude,
-            
             });
-
-            
-
-
           });
 
           for (var i = result.length - 1; i >= 0; i--) {
@@ -288,9 +281,14 @@ dondev2App.controller('locateListController',
             }
           }
 
+          //Cargar markers en el mapa
           $rootScope.places = $scope.places = $scope.closer = resultTemp;
           $scope.cantidad = $scope.places.length;
-          $rootScope.currentPos = position.coords;
+
+          //Actualizar el mapa
+          $rootScope.moveMapTo = position.coords;
+          $rootScope.currentZoom = {'rand': Math.random(), 'zoom': 'location'};
+
 					if (typeof $rootScope.places[0] != 'undefined' && $rootScope.places[0].idPais != undefined){
 						var url = "api/v2/getiletag/" + $rootScope.places[0].idPais;
 						$http.get(url)

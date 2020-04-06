@@ -50,17 +50,21 @@ dondev2App.controller('partyListController',
     };
     search[$routeParams.servicio.toLowerCase()] = true;
 
-      var eventName = 'ver_listado_partidos';
-      gtag('event',eventName, {
-          'event_category': $routeParams.servicio,
-          'event_label':  $scope.country + ' - ' +   $scope.ciudad,
-         });
-      
+    var eventName = 'ver_listado_partidos';
+    gtag('event',eventName, {
+      'event_category': $routeParams.servicio,
+      'event_label':  $scope.country + ' - ' +   $scope.ciudad,
+    });
+
 
     placesFactory.getPlacesByParty(search, function(data) {
 
       $rootScope.places = $scope.places = data;
       $scope.cantidad = $scope.places.length;
+
+      //Actualizar el mapa en la posición del primer elemento
+      $rootScope.moveMapTo = {latitude: data[0].latitude, longitude: data[0].longitude};
+      $rootScope.currentZoom = {'rand': Math.random(), 'zoom': 'location'};
 
       if ($scope.country != null && $scope.country.length > 0) {
 
@@ -86,23 +90,23 @@ dondev2App.controller('partyListController',
 
             $scope.legal = false;
 
-          }
-        } else {
-          $scope.legal = true;
         }
+      } else {
+        $scope.legal = true;
+      }
 
-        $scope.ileTag = "ile_" + $scope.countryImageTag;
-        $scope.countryTextTag = "countryText_" + $scope.countryImageTag;
+      $scope.ileTag = "ile_" + $scope.countryImageTag;
+      $scope.countryTextTag = "countryText_" + $scope.countryImageTag;
 
-      } else if (typeof $rootScope.places[0] != 'undefined' && $rootScope.places[0].idPais != undefined) {
+    } else if (typeof $rootScope.places[0] != 'undefined' && $rootScope.places[0].idPais != undefined) {
         //busco el tag para ILE por país
         var url = "api/v2/getiletag/" + $rootScope.places[0].idPais;
         $http.get(url)
-          .then(function(response) {
-            $scope.ileTag = "ile_" + response.data[0].nombre_pais;
-            $scope.countryTextTag = "countryText_" + response.data[0].nombre_pais;
+        .then(function(response) {
+          $scope.ileTag = "ile_" + response.data[0].nombre_pais;
+          $scope.countryTextTag = "countryText_" + response.data[0].nombre_pais;
 
-          });
+        });
       }
 
       $scope.loading = false;
@@ -115,76 +119,72 @@ dondev2App.controller('partyListController',
 
       var urlCount = "api/v2/evaluacion/cantidad/" + item.placeId;
       $http.get(urlCount)
-        .then(function(response) {
-          item.votes = response.data;
-        });
+      .then(function(response) {
+        item.votes = response.data;
+      });
 
       // //aparte
       var urlRate = "api/v2/evaluacion/promedio/" + item.placeId;
       $http.get(urlRate)
-        .then(function(response) {
-          item.rate = response.data;
-          item.faceList = [{
-              id: '1',
-              image: '1',
-              imageDefault: '1',
-              imageBacon: '1active'
-            },
-            {
-              id: '2',
-              image: '2',
-              imageDefault: '2',
-              imageBacon: '2active'
-            },
-            {
-              id: '3',
-              image: '3',
-              imageDefault: '3',
-              imageBacon: '3active'
-            },
-            {
-              id: '4',
-              image: '4',
-              imageDefault: '4',
-              imageBacon: '4active'
-            },
-            {
-              id: '5',
-              image: '5',
-              imageDefault: '5',
-              imageBacon: '5active'
-            }
-          ];
+      .then(function(response) {
+        item.rate = response.data;
+        item.faceList = [{
+          id: '1',
+          image: '1',
+          imageDefault: '1',
+          imageBacon: '1active'
+        },
+        {
+          id: '2',
+          image: '2',
+          imageDefault: '2',
+          imageBacon: '2active'
+        },
+        {
+          id: '3',
+          image: '3',
+          imageDefault: '3',
+          imageBacon: '3active'
+        },
+        {
+          id: '4',
+          image: '4',
+          imageDefault: '4',
+          imageBacon: '4active'
+        },
+        {
+          id: '5',
+          image: '5',
+          imageDefault: '5',
+          imageBacon: '5active'
+        }
+        ];
 
-
-          var pos = -1;
-          for (var i = 0; i < item.faceList.length; i++) {
-            item.faceList[i].image = item.faceList[i].imageDefault;
-            if (item.faceList[i].id == item.rate) pos = i;
-          }
-          //si tiene votos cambio el color
-          if (pos != -1)
-            item.faceList[pos].image = item.faceList[pos].imageBacon;
-        });
-
-
+        var pos = -1;
+        for (var i = 0; i < item.faceList.length; i++) {
+          item.faceList[i].image = item.faceList[i].imageDefault;
+          if (item.faceList[i].id == item.rate) pos = i;
+        }
+        //si tiene votos cambio el color
+        if (pos != -1)
+          item.faceList[pos].image = item.faceList[pos].imageBacon;
+      });
 
       var urlComments = "api/v2/evaluacion/comentarios/" + item.placeId;
       item.comments = [];
       $http.get(urlComments)
-        .then(function(response) {
-          item.comments = response.data;
-          item.comments.forEach(function(comment) {
-            comment.que_busca = comment.que_busca.split(',');
-          });
+      .then(function(response) {
+        item.comments = response.data;
+        item.comments.forEach(function(comment) {
+          comment.que_busca = comment.que_busca.split(',');
         });
+      });
 
-
-      $rootScope.places = $scope.cantidad = $scope.places;
       $rootScope.currentMarker = item;
-      $rootScope.centerMarkers = [];
-      //tengo que mostrar arriba en el map si es dekstop.
       $rootScope.centerMarkers.push($rootScope.currentMarker);
+
+      $rootScope.moveMapTo = {latitude: item.latitude, longitude: item.longitude};
+      $rootScope.currentZoom = {'rand': Math.random(), 'zoom': 'place'};
 
       $location.path('/' + $scope.country + '/' +
         $scope.province + '/' +

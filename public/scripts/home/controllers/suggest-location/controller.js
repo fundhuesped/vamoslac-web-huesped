@@ -5,6 +5,9 @@ dondev2App.controller('locationNewController',
 
     $scope.service = copyService.getFor($routeParams.servicio);
 
+    $rootScope.places = [];
+    $rootScope.centerMarkers = [];
+
     var queryNavBar;
 
     $scope.getNow = function(postdata) {
