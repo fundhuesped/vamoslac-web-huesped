@@ -71,7 +71,7 @@ Route::get('/', '\App\Http\Controllers\MainRouteController@home');
 Route::get('/home', '\App\Http\Controllers\MainRouteController@home');
 Route::get('/form', '\App\Http\Controllers\MainRouteController@form');
 Route::get('/terms', '\App\Http\Controllers\MainRouteController@terms');
-Route::get('/share/{lang}/{id}', '\App\Http\Controllers\MainRouteController@shareDetail');
+Route::get('/share/{id}', '\App\Http\Controllers\MainRouteController@shareDetail');
 
 Route::group(['middleware' => \App\Http\Middleware\CheckLang::class], function () {
 

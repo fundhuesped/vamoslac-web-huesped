@@ -1,74 +1,72 @@
 dondev2App.controller('cityMapController2',
   function(placesFactory, NgMap, copyService, $scope, $rootScope, $routeParams, $location, $http,$translate) {
 
-    $rootScope.selectedLanguage = $routeParams.lang;
-    $translate.use($routeParams.lang);
+    $rootScope.selectedLanguage = localStorage.lang;
+    $translate.use($rootScope.selectedLanguage);
 
     var id = $routeParams.id;
     var urlShow = "api/v1/panel/places/" + id;
 
     $scope.voteLimit = 5;
 
-
     var urlComments = "api/v2/evaluacion/comentarios/" + id;
     $scope.comments = [];
     $http.get(urlComments)
-      .then(function(response) {
-        $scope.comments = response.data;
-        $scope.comments.forEach(function(comment) {
-          comment.que_busca = comment.que_busca.split(',');
-        });
+    .then(function(response) {
+      $scope.comments = response.data;
+      $scope.comments.forEach(function(comment) {
+        comment.que_busca = comment.que_busca.split(',');
       });
+    });
 
-
-
+    function correctWebLinks(place){
+      var columns = ['web_distrib','web_dc','web_ile','web_infectologia','web_mac','web_testeo','web_ssr','web_vac'];
+      var patt = new RegExp("^(http:\/\/|https:\/\/).+$");
+      for (var i = 0; i < columns.length; i++) {
+        if(place[columns[i]] && !patt.test(place[columns[i]])){
+          place[columns[i]] = "http://" + place[columns[i]];
+        }
+      }
+      return place;
+    }
 
     $http({
       method: "GET",
       url: urlShow
     }).then(function mySucces(response) {
+      place = response.data[0];
 
+      place = correctWebLinks(place);
       $rootScope.main = false;
       $rootScope.geo = false;
-      $scope.province = response.data[0].nombre_provincia;
-      $scope.provinceId = response.data[0].idProvincia;
-      $scope.city = response.data[0].nombre_partido;
-      $scope.cityId = response.data[0].idPartido;
-      $scope.ciudadId = response.data[0].idCiudad;
-      $rootScope.ciudad = response.data[0].nombre_ciudad;
-      $scope.country = response.data[0].nombre_pais;
-      $scope.countryId = response.data[0].idPais;
+      $scope.province = place.nombre_provincia;
+      $scope.provinceId = place.idProvincia;
+      $scope.city = place.nombre_partido;
+      $scope.cityId = place.idPartido;
+      $scope.ciudadId = place.idCiudad;
+      $rootScope.ciudad = place.nombre_ciudad;
+      $scope.country = place.nombre_pais;
+      $scope.countryId = place.idPais;
 
       setTimeout(function(){
         $('.mdi-hardware-keyboard-arrow-down').each(function(e) { $(this).click()});
       },200)
-      $scope.showCurrent = function(i, p) {
-        $scope.currentMarker = p;
-      }
 
-      $scope.closeCurrent = function() {
-        $scope.currentMarker = undefined;
-      }
-      $rootScope.places = [response.data[0]];
-      $rootScope.currentMarker = response.data[0];
-      $scope.currentMarker = response.data[0];
+      $rootScope.places = place;
+      $rootScope.currentMarker = place;
+      $scope.currentMarker = place;
 
       $rootScope.moveMapTo = {
         latitude: parseFloat($rootScope.currentMarker.latitude),
         longitude: parseFloat($rootScope.currentMarker.longitude),
-        zoom: 18,
-        center: true,
       };
+      $rootScope.currentZoom = {'rand': Math.random(), 'zoom': 'location'};
+
       $rootScope.centerMarkers = [];
       $rootScope.centerMarkers.push($rootScope.currentMarker);
 
-    console.log($rootScope.currentMarker.establecimiento);
-    console.log($rootScope.currentMarker.placeId);
-    console.log($rootScope.currentMarker.nombre_pais);
-    console.log($rootScope.currentMarker.nombre_ciudad);
-
-    gtag('event','ver_centro', {
-          'event_category': $rootScope.currentMarker.establecimiento,
+      gtag('event','ver_centro', {
+        'event_category': $rootScope.currentMarker.establecimiento,
       }); 
 
     }); //del get

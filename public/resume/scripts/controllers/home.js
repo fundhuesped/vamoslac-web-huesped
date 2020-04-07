@@ -28,19 +28,30 @@ angular.module('dondeDataVizApp').controller('HomeCtrl',
       var anchor = document.querySelector('#mainMap');
       smoothScroll.animateScroll(anchor);
     }
+
+    function correctWebLinks(place){
+      var columns = ['web_distrib','web_dc','web_ile','web_infectologia','web_mac','web_testeo','web_ssr','web_vac'];
+      var patt = new RegExp("^(http:\/\/|https:\/\/).+$");
+      for (var i = 0; i < columns.length; i++) {
+        if(place[columns[i]] && !patt.test(place[columns[i]])){
+          place[columns[i]] = "http://" + place[columns[i]];
+        }
+      }
+      return place;
+    }
+
     $scope.showDetail = function(z, p) {
       $scope.currentMarker = p;
       for (var i = 0; i < $scope.ciudades.length; i++) {
-      var c = $scope.ciudades[i];
+        var c = $scope.ciudades[i];
 
         if (c.id === p.idCiudad) {
+          p = correctWebLinks(p);
           p.nombre_ciudad = c.nombre_ciudad;
           p.nombre_partido = c.nombre_partido;
           p.nombre_provincia = c.nombre_provincia;
           p.nombre_pais = c.nombre_pais;
           p.serviceCode = 'resume';
-
-          
           break;
         }
       }
@@ -54,8 +65,6 @@ angular.module('dondeDataVizApp').controller('HomeCtrl',
     $http.get('api/v2/countries/ranking').then(function(d) {
       $scope.ranking = d.data;
     });
-
-
 
     $scope.data = [];
     var preData = [];
@@ -84,6 +93,5 @@ angular.module('dondeDataVizApp').controller('HomeCtrl',
     };
 
     getStats();
-
 
   });

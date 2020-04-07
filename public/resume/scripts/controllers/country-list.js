@@ -1,6 +1,8 @@
 angular.module('dondeDataVizApp').controller('countryListController',
   function($timeout, $scope, $rootScope, $http, $translate, $cookies) {
+
     $rootScope.selectedLanguage;
+
     try {
       var userLang = navigator.language || navigator.userLanguage; // es-AR
       var userLang = userLang.split('-')[0]; // es
@@ -20,18 +22,18 @@ angular.module('dondeDataVizApp').controller('countryListController',
         $rootScope.selectedLanguage = 'es';
       }
       $http.get('changelang/' + localStorage.lang)
-        .then(
-          function(response) {
+      .then(
+        function(response) {
 
-            if (response.statusText == 'OK') {
+          if (response.statusText == 'OK') {
 
-            } else {
-              Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-            }
-          },
-          function(response) {
+          } else {
             Materialize.toast('Intenta nuevamente mas tarde.', 5000);
           }
+        },
+        function(response) {
+          Materialize.toast('Intenta nuevamente mas tarde.', 5000);
+        }
         );
     } catch (err) {
 
@@ -39,7 +41,6 @@ angular.module('dondeDataVizApp').controller('countryListController',
         localStorage.setItem("lang", "es");
       }
     }
-
 
     $rootScope.selectedLanguageFunc = function(lang) {
 
@@ -53,7 +54,6 @@ angular.module('dondeDataVizApp').controller('countryListController',
       }
     }
 
-
     $rootScope.changeLanguage = function() {
 
       localStorage.setItem("lang", $rootScope.selectedLanguage);
@@ -61,18 +61,18 @@ angular.module('dondeDataVizApp').controller('countryListController',
       $translate.use($rootScope.selectedLanguage);
       $cookies.put('lang', $rootScope.selectedLanguage);
       $http.get('changelang/' + $rootScope.selectedLanguage)
-        .then(
-          function(response) {
+      .then(
+        function(response) {
 
-            if (response.statusText == 'OK') {
+          if (response.statusText == 'OK') {
 
-            } else {
-              Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-            }
-          },
-          function(response) {
+          } else {
             Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-          });
+          }
+        },
+        function(response) {
+          Materialize.toast('Intenta nuevamente mas tarde.', 5000);
+        });
 
       return;
     }
@@ -85,9 +85,9 @@ angular.module('dondeDataVizApp').controller('countryListController',
           zoom: 3
         };
       }, 500);
+
     $rootScope.places = [];
     $rootScope.navigating = true;
-    console.log("TERRIBLE TEST");
     $scope.currentMarker = undefined;
 
     $rootScope.main = true;

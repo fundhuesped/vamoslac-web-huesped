@@ -21,7 +21,7 @@ class MainRouteController extends Controller
 
   }
 
-  public function shareDetail($lang, $id)
+  public function shareDetail($id)
     {
       $p = DB::table('places')
       ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
@@ -39,8 +39,7 @@ class MainRouteController extends Controller
       // dd($p[0]);
 
       return view('share')
-      ->with('p', $p[0])
-      ->with('lang', $lang);
+      ->with('p', $p[0]);
     }
     /**
      * Display a listing of the resource.

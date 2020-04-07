@@ -36,10 +36,8 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat='p in places'>
-
-            <td ng-show='p.altura'><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.calle]] [[p.altura]]</a></td>
-				  <td ng-show='!p.altura' ><a class="item-seo" ng-href="share/[[lang]]/[[p.placeId]]">[[p.calle]] Sin número</a></td>
-
+				<td ng-show='p.altura'><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.calle]] [[p.altura]]</a></td>
+				<td ng-show='!p.altura' ><a class="item-seo" ng-href="share/[[lang]]/[[p.placeId]]">[[p.calle]] Sin número</a></td>
 				<td><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.establecimiento]]</a></td>
 				<td><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.horario]]</a></td>
 				<td><a class="item-seo" ng-href="share/[[p.placeId]]">[[p.responsable]]</a></td>

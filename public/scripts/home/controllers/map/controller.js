@@ -57,9 +57,11 @@ dondev2App.controller('mapController',
           var item = places[i];
           pushMarker(item,false);
         }
-        for (var i = 0; i < centers.length; i++) {
-          var item = centers[i];
-          pushMarker(item,true);
+        if(centers){
+          for (var i = 0; i < centers.length; i++) {
+            var item = centers[i];
+            pushMarker(item,true);
+          }
         }
       }
     });
@@ -67,10 +69,12 @@ dondev2App.controller('mapController',
     // Watch out changes on center markers. Must delete a present place marker before
     $rootScope.$watch('currentMarker', function(){
       var centers = $rootScope.centerMarkers;
-      for (var i = 0; i < centers.length; i++) {
-        var item = centers[i];
-        deleteMarkerByID(item.placeId);
-        pushMarker(item,true);
+      if(centers){
+        for (var i = 0; i < centers.length; i++) {
+          var item = centers[i];
+          deleteMarkerByID(item.placeId);
+          pushMarker(item,true);
+        }
       }
     });
 
@@ -88,10 +92,12 @@ dondev2App.controller('mapController',
 
     // Get rid of centers that are present on places, avoiding double markers
     function filterPlacesOverCenters(places, centers){
-      for (var j = 0; j < centers.length; j++) {
-        for (var i = 0; i < places.length; i++) {
-          if(centers[j].placeId == places[i].placeId){
-            places.splice(i, 1);
+      if(centers){
+        for (var j = 0; j < centers.length; j++) {
+          for (var i = 0; i < places.length; i++) {
+            if(centers[j].placeId == places[i].placeId){
+              places.splice(i, 1);
+            }
           }
         }
       }
@@ -127,7 +133,7 @@ dondev2App.controller('mapController',
 
     $timeout(function(){
       initMap();
-    },1000);
+    },100);
 
     //Bind 'click' function on map
     function showCurrent (place){

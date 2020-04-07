@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('meta')
 
-    <?php
-        \App::setlocale($lang);
-    ?>
-
     <title>VAMOS | vamoslac.org</title>
     <meta name="description" content="{{$p->establecimiento}} en {{$p->nombre_ciudad}}, {{$p->calle}} {{$p->altura}}  ">
     <meta name="author" content="@lang('page_title')">
@@ -35,10 +31,7 @@
 
 @section('js')
     <script>
-    var url = "../../#/detail/{{$lang}}/"+{{$p->placeId}};
-        console.log("{{$p->establecimiento}}");
-        console.log("{{$p->nombre_pais}}");
-        console.log("{{$p->placeId}}");
-      document.location.href=url;
+    var url = "../../#/detail/" + {{$p->placeId}};
+    document.location.href=url;
     </script>
 @stop
