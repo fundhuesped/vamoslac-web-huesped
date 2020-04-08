@@ -453,7 +453,7 @@ var translations_br = {
   "countryText_honduras" : "Informe-se sobre a saúde sexual e reprodutiva acessando o website de ASHONPLAFA, a Associação membro da IPPF / RHO em Honduras: www.ashonplafa.org",
   "countryText_jamaica" : "Informe-se sobre a saúde sexual e reprodutiva acessando o website de JFPA, a Associação membro da IPPF / RHO na Jamaica: www.famplan.wordpress.com",
   "countryText_mexico" : "Informe-se sobre a saúde sexual e reprodutiva acessando o website de MexFam, a Associação membro da IPPF / RHO no México: www.mexfam.org.mx",
-  "countryText_panama" : "Informe-se sobre a saúde sexual e reprodutiva acessando o website de APLAFA, a Associação membro da IPPF / RHO no Panamá: www.aplafa.org.pa",
+  "countryText_panama" : "Informe-se sobre a saúde sexual e reprodutiva acessando o website de APLAFA, a Associação membro da IPPF / RHO no Panamá: https://www.aplafapanama.org/",
   "countryText_paraguay" : "Informe-se sobre a saúde sexual e reprodutiva acessando o website de CEPEP, a Associação membro da IPPF / RHO no Paraguai: www.cepep.org.py",
   "countryText_peru" : "Informe-se sobre a saúde sexual e reprodutiva acessando o website de INPPARES, a Associação membro da IPPF / RHO no Peru: www.inppares.org",
   "countryText_puertorico" : "Informe-se sobre a saúde sexual e reprodutiva acessando o website de Profamilias, a Associação membro da IPPF / RHO em Porto Rico: www.profamiliaspr.org",
