@@ -1,5 +1,5 @@
 var translations_en =
- {
+{
    "condones_name": "Condoms",
    "condones_desc": "Using a condom correctly is the only way to prevent unplanned pregnancies and sexually transmitted infections. Find out where you can get condoms in your country.",
    "condones_short_desc": "Find out where you can get condoms in your country.",
@@ -59,8 +59,9 @@ var translations_en =
    "customize_search_service_label": "Customize your search for [[service]]",
    "search": "Search",
    "select_country": "(Select Country)*",
-   "select_state": "(Select State)",
-   "select_department": "(Select Department)",
+   "select_state": "(Select State)*",
+   "select_department": "(Select Department)*",
+      "select_city": "(Select City)*",
    "neighborhood": "Neighborhood, city, or department",
    "responsable": "Responsible",
    "select_location": "Select Location",
@@ -73,9 +74,9 @@ var translations_en =
    "page_title": "VAMOS - Find Sexual and reproductive health services nearby - IPPF/WHR and Fundación Huésped",
    "form_intro_text": "Complete the following form with information about the new establishment. Field marked with * are mandatory.",
    "form_establishment_name": "Establishment name*",
-   "form_establishment_type": "Type",
-   "form_establishment_street": "Street",
-   "form_establishment_street_height": "Street Number",
+   "form_establishment_type": "Type*",
+   "form_establishment_street": "Street*",
+   "form_establishment_street_height": "Street Number*",
    "form_establishment_street_intersection": "Crossing",
    "form_establishment_floor": "Apartment",
    "schedule": "Schedule",
@@ -298,7 +299,6 @@ var translations_en =
    "about_ippf_description_2": "In 2016, IPPF/WHR partners provided more than 30 million sexual and reproductive health services, averted more than two million unintended pregnancies, and provided access to a wide range of services, including contraception, breast and cervical cancer screening tests, HIV prevention, and safe abortion.",
    "about_ippf_description_3": "",
    "about_ippf_description_4": "",
-   "select_city": "(Select City)",
    "seo_countries_headertitle": "IPPF/WHR and Fundacion Huesped - Countries with sexual and reproductive health services",
    "seo_meta_description_content": "Place where to get condoms, contraceptives, HIV and other STI testing, breast cancer and cervical cancer screening, legal abortion counseling and sexual and reproductive health services in different countries.",
    "seo_meta_author_content": "IPPF/WHR and Fundacion Huesped",
@@ -628,4 +628,4 @@ var translations_en =
    "places_lists_mundito" : "Places by country" ,
    "talk_to_someone" : "Chat with us",
    "have_any_doubts" : "Have any doubts? Chat with us",
- }
+}

@@ -17,7 +17,7 @@ class CheckLang {
 
 		$lang = session('lang');
 		if (($lang != 'null') && ($lang == 'en' || $lang == 'es' || $lang == 'br')){
-		 app()->setLocale(\Session::get('lang'));
+			app()->setLocale(\Session::get('lang'));
 		}
 		return $next($request);
 	}

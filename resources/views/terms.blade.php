@@ -67,26 +67,11 @@
 			<br />
 			<br />
 
-			<h4 id="menu" translate="tyc_title"> </h4>
-
-			<br/>
-
-            <p translate="tyc_description_1"></p>
-			<p translate="tyc_description_2"></p>
-			<p translate="tyc_description_3"></p>
-			<p translate="tyc_description_4"></p>
-			<p translate="tyc_description_5"></p>
-			<p translate="tyc_description_6"></p>
-			<p translate="tyc_description_7"></p>
-            <p translate="tyc_description_8"></p>
-            <p translate="tyc_description_9"></p>
-            <p translate="tyc_description_10"></p>
-			<p><span translate="tyc_description_11"></span>
-			  <a href="mailto:vamoslacapp@gmail.com" rel="external" target="_blank" class="ui-link" translate="vamos_mail"></a>
-			</p>
-
-
-
+			@if (session('lang') == 'es')
+			@include("t&c.spanish")
+			@else
+			@include("t&c.english")
+			@endif
 		</div>
 	</div>
 

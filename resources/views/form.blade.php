@@ -42,7 +42,7 @@
         <!-- INPUT -->
         <div class="row">
           <div class="input-field col s12">
-            <input id="establecimiento" type="text" name="establecimiento" class="validate" ng-model="place.establecimiento"         required pattern="\S+.*"
+            <input id="establecimiento" type="text" name="establecimiento" class="validate" ng-model="place.establecimiento" required pattern="\S+.*"
             ng-change="formChange()">
             <label for="establecimiento" translate="form_establishment_name"></label>
           </div>
@@ -50,7 +50,7 @@
         <!-- INPUT -->
         <div class="row">
           <div class="input-field col s12">
-            <input id="tipo" type="text" name="tipo"
+            <input id="tipo" type="text" name="tipo" required
             class="validate" ng-model="place.tipo" 
             ng-change="formChange()">
             <label for="tipo" translate="form_establishment_type"></label>
@@ -59,7 +59,7 @@
         <!-- INPUT -->
         <div class="row">
           <div class="input-field col s12">
-            <input id="calle" type="text"
+            <input id="calle" type="text" required
             name="calle" class="validate"
             ng-model="place.calle" ng-change="formChange()">
             <label for="calle" translate="form_establishment_street">*</label>
@@ -68,7 +68,7 @@
         <!-- INPUT -->
         <div class="row">
           <div class="input-field col s12">
-            <input id="altura" type="text" name="altura" class="validate" ng-model="place.altura" ng-change="formChange()">
+            <input id="altura" type="text" required name="altura" class="validate" ng-model="place.altura" ng-change="formChange()">
             <label for="altura" translate="form_establishment_street_height"></label>
           </div>
         </div>
@@ -438,7 +438,7 @@
     <div class="row">
       <div class="input-field col s12">
         <p>
-          <input type="checkbox" name="acepta_terminos"
+          <input type="checkbox" name="acepta_terminos" required
           class="filled-in" id="terminosCheck"
           ng-change="formChange()"
           ng-model="aceptaTerminos"/>

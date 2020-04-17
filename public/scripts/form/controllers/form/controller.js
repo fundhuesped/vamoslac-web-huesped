@@ -96,22 +96,20 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
       (!$scope.place.establecimiento || 0 === $scope.place.establecimiento.length));
     if (!flag) {
       return (
-        ($scope.place.condones && (typeof $scope.place.servicetype_condones === "undefined" || $scope.place.servicetype_condones === null)) ||
-        ($scope.place.ile && (typeof $scope.place.servicetype_ile === "undefined" || $scope.place.servicetype_ile === null)) ||
-        ($scope.place.prueba && (typeof $scope.place.servicetype_prueba === "undefined" || $scope.place.servicetype_prueba === null)) ||
-        ($scope.place.mac && (typeof $scope.place.servicetype_mac === "undefined" || $scope.place.servicetype_mac === null)) ||
-        ($scope.place.ssr && (typeof $scope.place.servicetype_ssr === "undefined" || $scope.place.servicetype_ssr === null)) ||
-        ($scope.place.dc && (typeof $scope.place.servicetype_dc === "undefined" || $scope.place.servicetype_dc === null))
+        !($scope.place.condones && !(typeof $scope.place.servicetype_condones === "undefined" || $scope.place.servicetype_condones === null))  &&
+        !($scope.place.ile      && !(typeof $scope.place.servicetype_ile === "undefined" || $scope.place.servicetype_ile === null))            &&   
+        !($scope.place.prueba   && !(typeof $scope.place.servicetype_prueba === "undefined" || $scope.place.servicetype_prueba === null))      &&
+        !($scope.place.mac      && !(typeof $scope.place.servicetype_mac === "undefined" || $scope.place.servicetype_mac === null))            &&
+        !($scope.place.ssr      && !(typeof $scope.place.servicetype_ssr === "undefined" || $scope.place.servicetype_ssr === null))            &&
+        !($scope.place.dc       && !(typeof $scope.place.servicetype_dc === "undefined" || $scope.place.servicetype_dc === null))
       );
     } else return true;
   }
-
 
   function invalidCity() {
     return false; //((typeof $scope.myCity === "undefined") && (!$scope.otra_localidad || 0 === $scope.otra_localidad.length));
 
   }
-
 
   $scope.formChange = function() {
     //if (invalidForm() || invalidCity()) {
@@ -207,7 +205,14 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
   }
 
   $scope.clicky = function() {
-
+    $scope.formChange();
+    if($scope.invalid){
+      if($rootScope.selectedLanguage == "es")
+        Materialize.toast("Completa el formulario", 5000);
+      else
+        Materialize.toast("Complete the form", 5000);
+      return;
+    }
     $scope.invalid = true;
     $scope.spinerflag = true;
 
@@ -283,7 +288,7 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
     localStorage.setItem("lang", $rootScope.selectedLanguage);
     localStorage.setItem("selectedByUser", true);
     $translate.use($rootScope.selectedLanguage);
-    $cookies.put('lang', $rootScope.selectedLanguage);
+    // $cookies.put('lang', $rootScope.selectedLanguage);
     $http.get('changelang/' + $rootScope.selectedLanguage)
       .then(
         function(response) {
