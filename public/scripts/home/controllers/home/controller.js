@@ -65,9 +65,8 @@ dondev2App.controller('homeController',
       $http.get('changelang/' + $rootScope.selectedLanguage)
         .then(
           function(response) {
-
             if (response.statusText == 'OK') {
-
+              $scope.setTyC();
             } else {
               Materialize.toast('Intenta nuevamente mas tarde.', 5000);
             }
@@ -88,4 +87,19 @@ dondev2App.controller('homeController',
     $scope.collapsibleElements = copyService.getAll();
 
     $scope.zendeskTriggerNotes = "El usuario se encontraba en el home";
+
+    // Términos y condiciones
+    $scope.setTyC = function() {
+      var tyc = $("#tyc");
+      if(tyc){
+        if(localStorage.getItem("lang") == "es"){
+          tyc.load("./scripts/home/controllers/t&c/t&c-spanish.html");  
+        }
+        else{
+          tyc.load("./scripts/home/controllers/t&c/t&c-english.html");
+        }
+      }
+    }
+    $scope.setTyC();
+
 });
