@@ -76,6 +76,7 @@ var translations_br = {
   "select_state": "(Selecione um Estado)*",
   "select_department": "(Elegir Partido o Departamento)*",
   "select_city" : "(Elegir Cidade)*",
+  "select_establishment_services" : "Por favor, selecione os serviços oferecidos pelo estabelecimento",
   "neighborhood": "Cidade, Estado ou cidade",
   "responsable": "Responsable",
   "select_location": "escolha a localização",

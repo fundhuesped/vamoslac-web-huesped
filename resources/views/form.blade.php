@@ -177,6 +177,10 @@
           </div>
         </div>
 
+        <div class="row">
+          <label>[[ 'select_establishment_services' | translate ]]*</label>
+        </div>
+
         <!-- CONDOMS CARD -->
         <div class="card-panel">
           <input  type="checkbox"

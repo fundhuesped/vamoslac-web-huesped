@@ -66,6 +66,7 @@ var translations_es =
    "responsable": "Responsable",
    "select_location": "Elegir ubicación",
    "search_department_description": "Ingresa tu barrio, ciudad o departamento",
+   "select_establishment_services" : "Por favor, seleccioná los servicios que ofrece el establecimiento",
    "not_found_result_label": "No encontramos resultados",
    "Mas info en": "Más información en",
    "share_this_place": "Comparte este lugar",
