@@ -1173,8 +1173,8 @@ class PlacesRESTController extends Controller
             $place->web_vac = $request_params['web_vac'];
             $place->comentarios_vac = $request_params['comentarios_vac'];
 
-        //nuevos datos para checkBox
-        $place->es_rapido = $request_params['es_rapido'];
+            //nuevos datos para checkBox
+            $place->es_rapido = $request_params['es_rapido'];
 
 
             $place->mac = $request_params['mac'];
@@ -1194,6 +1194,24 @@ class PlacesRESTController extends Controller
             $place->tel_ile = $request_params['tel_ile'];
             $place->web_ile = $request_params['web_ile'];
             $place->comentarios_ile = $request_params['comentarios_ile'];
+
+            $place->ssr = $request_params['ssr'];
+            $place->responsable_ssr = $request_params['responsable_ssr'];
+            $place->ubicacion_ssr = $request_params['ubicacion_ssr'];
+            $place->horario_ssr = $request_params['horario_ssr'];
+            $place->mail_ssr = $request_params['mail_ssr'];
+            $place->tel_ssr = $request_params['tel_ssr'];
+            $place->web_ssr = $request_params['web_ssr'];
+            $place->comentarios_ssr = $request_params['comentarios_ssr'];
+
+            $place->dc = $request_params['dc'];
+            $place->responsable_dc = $request_params['responsable_dc'];
+            $place->ubicacion_dc = $request_params['ubicacion_dc'];
+            $place->horario_dc = $request_params['horario_dc'];
+            $place->mail_dc = $request_params['mail_dc'];
+            $place->tel_dc = $request_params['tel_dc'];
+            $place->web_dc = $request_params['web_dc'];
+            $place->comentarios_dc = $request_params['comentarios_dc'];
 
             $place->servicetype_dc = $request_params['servicetype_dc'];
             $place->servicetype_ssr = $request_params['servicetype_ssr'];

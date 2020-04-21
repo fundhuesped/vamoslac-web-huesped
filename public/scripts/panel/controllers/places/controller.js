@@ -214,16 +214,29 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
   }
 
-  function invalidForm() {
+  function isValidAttr(attr){
+    return !(typeof attr === "undefined" || attr === null);
+  }
 
-    return false;
+  function isValidForm() {
+    return (
+      ( $scope.place.condones || $scope.place.ile || $scope.place.prueba ||
+        $scope.place.mac      || $scope.place.ssr || $scope.place.dc     )
+      &&
+      ( !($scope.place.condones && !isValidAttr($scope.place.servicetype_condones)) &&
+        !($scope.place.ile      && !isValidAttr($scope.place.servicetype_ile))      &&   
+        !($scope.place.prueba   && !isValidAttr($scope.place.servicetype_prueba))   &&
+        !($scope.place.mac      && !isValidAttr($scope.place.servicetype_mac))      &&
+        !($scope.place.ssr      && !isValidAttr($scope.place.servicetype_ssr))      &&
+        !($scope.place.dc       && !isValidAttr($scope.place.servicetype_dc))        )
+    );
   }
 
   $scope.formChange = function() {
-    if (invalidForm()) {
-      $scope.invalid = true;
-    } else {
+    if (isValidForm()) {
       $scope.invalid = false;
+    } else {
+      $scope.invalid = true;
     }
   };
 
@@ -252,7 +265,17 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
       });
     }
   };
+
   $scope.clickyApr = function() {
+
+    $scope.formChange();
+    if($scope.invalid){
+      if(localStorage.lang == "es")
+        Materialize.toast("Revisa la información ingresada, faltan completar datos en algún servicio", 5000);
+      else
+        Materialize.toast("Check out the information given, some servicie need more data to complete", 5000);
+      return;
+    }
 
     if (confirm("Desea realmente aprobar la peticion de la lugar " + $rootScope.place.establecimiento + "?")) {
 
@@ -363,6 +386,15 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
   $scope.clicky = function() {
 
+    $scope.formChange();
+    if($scope.invalid){
+      if(localStorage.lang == "es")
+        Materialize.toast("Revisa la información ingresada, faltan completar datos en algún servicio", 5000);
+      else
+        Materialize.toast("Check out the information given, some servicie need more data to complete", 5000);
+      return;
+    }
+
     $scope.spinerflag = true;
 
     var httpdata = $rootScope.place;
@@ -472,5 +504,29 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
     return service == icon;
   };
+
+
+ $rootScope.changeLanguage = function() {
+
+      localStorage.setItem("lang", $rootScope.selectedLanguage);
+      localStorage.setItem("selectedByUser", true);
+      $translate.use($rootScope.selectedLanguage);
+      $http.get('../../changelang/' + $rootScope.selectedLanguage)
+        .then(
+          function(response) {
+
+            if (response.statusText == 'OK') {
+
+            } else {
+              Materialize.toast('Intenta nuevamente mas tarde.', 5000);
+            }
+          },
+          function(response) {
+            Materialize.toast('Intenta nuevamente mas tarde.', 5000);
+          });
+
+      return;
+    }
+
 
 });
