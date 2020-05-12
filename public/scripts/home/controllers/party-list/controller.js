@@ -59,12 +59,9 @@ dondev2App.controller('partyListController',
 
     placesFactory.getPlacesByParty(search, function(data) {
 
+      // Cargar markers en el mapa. Actualiza el mapa automaticamente
       $rootScope.places = $scope.places = data;
       $scope.cantidad = $scope.places.length;
-
-      //Actualizar el mapa en la posición del primer elemento
-      $rootScope.moveMapTo = {latitude: data[0].latitude, longitude: data[0].longitude};
-      $rootScope.currentZoom = {'rand': Math.random(), 'zoom': 'location'};
 
       if ($scope.country != null && $scope.country.length > 0) {
 
@@ -180,11 +177,9 @@ dondev2App.controller('partyListController',
         });
       });
 
+      // Actualizar el marker seleccionado. Actualiza el mapa automaticamente
       $rootScope.currentMarker = item;
       $rootScope.centerMarkers.push($rootScope.currentMarker);
-
-      $rootScope.moveMapTo = {latitude: item.latitude, longitude: item.longitude};
-      $rootScope.currentZoom = {'rand': Math.random(), 'zoom': 'place'};
 
       $location.path('/' + $scope.country + '/' +
         $scope.province + '/' +

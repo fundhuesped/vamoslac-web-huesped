@@ -9026,7 +9026,8 @@ textarea {
 textarea.materialize-textarea {
   overflow-y: hidden;
   /* prevents scroll bar flash */
-  padding: 1.6rem 0;
+  /*padding: 1.6rem 0;*/
+  padding-top: 0.5rem; padding-bottom: 0px;
   /* prevents text jump on Enter keypress */
   resize: none;
   min-height: 3rem;

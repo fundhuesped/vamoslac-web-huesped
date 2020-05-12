@@ -33,8 +33,10 @@ angular.module('dondeDataVizApp').controller('HomeCtrl',
       var columns = ['web_distrib','web_dc','web_ile','web_infectologia','web_mac','web_testeo','web_ssr','web_vac'];
       var patt = new RegExp("^(http:\/\/|https:\/\/).+$");
       for (var i = 0; i < columns.length; i++) {
-        if(place[columns[i]] && !patt.test(place[columns[i]])){
-          place[columns[i]] = "http://" + place[columns[i]];
+        var str = place[columns[i]];
+        if(str && !patt.test(str)){
+          str = str.toLowerCase();
+          place[columns[i]] = "http://" + str;
         }
       }
       return place;

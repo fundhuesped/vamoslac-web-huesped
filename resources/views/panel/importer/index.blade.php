@@ -5,16 +5,16 @@ session()->forget('datosRepetidos');
 session()->forget('datosIncompletos');
 session()->forget('datosUnificar');
 session()->forget('datosDescartados');
+session()->forget('datosActualizar');
 
 ?>
 
-@extends('layouts.panel-master')
+@extends('layouts.panel-import-master')
 
 {!!Html::style('styles/import.min.css')!!}
-{!!Html::style('bower_components/materialize/bin/materialize.css')!!}
-{!!Html::script('bower_components/materialize/bin/materialize.js')!!}
 
 @section('content')
+{{ csrf_field() }}
 
 <div ng-controller="panelImporterController">
 
@@ -47,7 +47,7 @@ session()->forget('datosDescartados');
 
 			<div class="row centrada">
 
-				<a id="openModalButton" ng-click="cleardb()" class="waves-effect waves-light btn">LIMPIAR BASE DE DATOS</a>
+				<a id="openModalButton" ng-click="openCleardbModal()" class="waves-effect waves-light btn">LIMPIAR BASE DE DATOS</a>
 
 			</div>
 
@@ -83,7 +83,10 @@ session()->forget('datosDescartados');
 
 @section('js')
 
-{!!Html::script('scripts/panel/controllers/importer/controller.js')!!}
 {!!Html::script('bower_components/ngmap/build/scripts/ng-map.min.js')!!}
+{!!Html::script('bower_components/angucomplete-alt/dist/angucomplete-alt.min.js')!!}
+
+{!!Html::script('scripts/panel/app.js')!!}
+{!!Html::script('scripts/panel/controllers/importer/controller.js')!!}
 
 @stop

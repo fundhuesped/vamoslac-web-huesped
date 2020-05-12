@@ -1,12 +1,11 @@
 dondev2App.config(function($interpolateProvider, $locationProvider) {
   $interpolateProvider.startSymbol('[[');
   $interpolateProvider.endSymbol(']]');
-}).controller('panelplaceController', function($timeout, copyService, placesFactory, NgMap, $scope, $rootScope, $http, $location, $route, $routeParams, $window, $translate) {
-
+})
+.controller('panelplaceController', function($timeout, autocompleteService, copyService, placesFactory, NgMap, $scope, $rootScope, $http, $location, $route, $routeParams, $window, $translate) {
   $scope.spinerflag = false;
 
   angular.element(document).ready(function() {
-
     $scope.loading = true;
     $scope.onDragEnd = function(e) {
       $rootScope.place.latitude = e.latLng.lat();
@@ -22,53 +21,52 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     $http.get('../../api/v1/panel/places/' + $scope.placeId).success(function(response) {
       $rootScope.place = response[0];
       response[0].es_rapido = (response[0].es_rapido == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].mac = (response[0].mac == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].ile = (response[0].ile == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].condones = (response[0].condones == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].prueba = (response[0].prueba == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].vacunatorio = (response[0].vacunatorio == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].infectologia = (response[0].infectologia == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].ssr = (response[0].ssr == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].dc = (response[0].dc == 1)
-        ? true
-        : false;
+      ? true
+      : false;
 
       response[0].friendly_ile = (response[0].friendly_ile == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].friendly_prueba = (response[0].friendly_prueba == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].friendly_condones = (response[0].friendly_condones == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].friendly_mac = (response[0].friendly_mac == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].friendly_ssr = (response[0].friendly_ssr == 1)
-        ? true
-        : false;
+      ? true
+      : false;
       response[0].friendly_dc = (response[0].friendly_dc == 1)
-        ? true
-        : false;
+      ? true
+      : false;
 
-      //controlador exportar avaluaciones
       $rootScope.exportEvaluation = function(evaluationList) {
         var data = evaluationList;
         var req = {
@@ -84,30 +82,27 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
         }
 
         $http(req).then(function(response) {}, function(response) {});
-
       }
 
       $scope.evaluationList = [];
       $http.get('../../api/v2/evaluacion/panel/comentarios/' + $scope.placeId).success(function(response) {
-
         for (var i = response.length - 1; i >= 0; i--) {
           response[i].info_ok = response[i].info_ok == 1
-            ? "Si"
-            : "No";
+          ? "Si"
+          : "No";
           response[i].privacidad_ok = response[i].privacidad_ok == 1
-            ? "SI"
-            : "No";
+          ? "SI"
+          : "No";
           response[i].comodo = response[i].comodo == 1
-            ? "SI"
-            : "No";
+          ? "SI"
+          : "No";
           response[i].es_gratuito = response[i].es_gratuito == 1
-            ? "SI"
-            : "No";
+          ? "SI"
+          : "No";
           response[i].informacion_vacunas = response[i].informacion_vacunas == 1
-            ? "SI"
-            : "No";
+          ? "SI"
+          : "No";
           response[i].que_busca = response[i].que_busca.split(',');
-
         }
         $scope.evaluationList = response;
       });
@@ -116,106 +111,115 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
         if (typeof response[0].latitude !== "undefined" && response[0].latitude != 0) {
           var lat = response[0].latitude;
           var lon = response[0].longitude;
-
-
-          var reg = new RegExp("^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}");
           if(isNaN(lat) || lat < -127 || lat > 75 || isNaN(lon) || lon < -127 || lon > 75){
             lat = 0;
             lon = 0;
           }
-          var imageSize = Math.round($(window).width() / 2);
-
-          var imageHeight = Math.round($(window).height() * 0.75);
-          if ($(window).height() < 800) {
-            imageHeight = Math.round($(window).height() / 3);
-          }
-
-          var formatedSize = imageSize + "x" + imageHeight;
-          var googleMaps = "https://maps.googleapis.com/maps/api/staticmap?center=" + lat + "," + lon + "&zoom=14&size=" + formatedSize;
-          googleMaps += "&markers=color:blue%7Clabel:C%7C" + lat + "," + lon;
-          var streetView = "https://maps.googleapis.com/maps/api/streetview?size=" + formatedSize + "&location=" + lat + "," + lon + "&heading=100"
-          $scope.googleMaps = googleMaps;
-          $scope.streetView = streetView;
-          $rootScope.place.position = [lat, lon];
-
-          $scope.positions = [];
-          $scope.positions.push($rootScope.place);
-          $scope.center = [lat, lon];
-
-          $scope.loading = false;
-
-          $http.get('../../api/v1/countries/all').success(function(countries) {
-
-            $scope.countries = countries;
-            $scope.loadCity();
-            $scope.showProvince();
-
-          });
-          var map = NgMap.initMap('mapEditor');
-
-          map.panTo(new google.maps.LatLng(lat, lon));
-
-        } else {
+        }
+        else {
           var lat = 0;
           var lon = 0;
-
-          var imageSize = Math.round($(window).width() / 2);
-
-          var imageHeight = Math.round($(window).height() * 0.75);
-          if ($(window).height() < 800) {
-            imageHeight = Math.round($(window).height() / 3);
-          }
-
-          var formatedSize = imageSize + "x" + imageHeight;
-          var googleMaps = "https://maps.googleapis.com/maps/api/staticmap?center=" + lat + "," + lon + "&zoom=14&size=" + formatedSize;
-          googleMaps += "&markers=color:blue%7Clabel:C%7C" + lat + "," + lon;
-          var streetView = "https://maps.googleapis.com/maps/api/streetview?size=" + formatedSize + "&location=" + lat + "," + lon + "&heading=100"
-          $scope.googleMaps = googleMaps;
-          $scope.streetView = streetView;
-          $rootScope.place.position = [lat, lon];
-
-          $scope.positions = [];
-          $scope.positions.push($rootScope.place);
-          $scope.center = [lat, lon];
-
-          $scope.loading = false;
-
-          $http.get('../../api/v1/countries/all').success(function(countries) {
-
-            $scope.countries = countries;
-            $scope.loadCity();
-            $scope.showProvince();
-
-          });
-          var map = NgMap.initMap('mapEditor');
-
-          map.panTo(new google.maps.LatLng(lat, lon));
         }
+
+        var imageSize = Math.round($(window).width() / 2);
+        var imageHeight = Math.round($(window).height() * 0.75);
+        if ($(window).height() < 800) {
+          imageHeight = Math.round($(window).height() / 3);
+        }
+
+        var formatedSize = imageSize + "x" + imageHeight;
+        var googleMaps = "https://maps.googleapis.com/maps/api/staticmap?center=" + lat + "," + lon + "&zoom=14&size=" + formatedSize;
+        googleMaps += "&markers=color:blue%7Clabel:C%7C" + lat + "," + lon;
+        var streetView = "https://maps.googleapis.com/maps/api/streetview?size=" + formatedSize + "&location=" + lat + "," + lon + "&heading=100"
+        $scope.googleMaps = googleMaps;
+        $scope.streetView = streetView;
+        $rootScope.place.position = [lat, lon];
+
+        $scope.positions = [];
+        $scope.positions.push($rootScope.place);
+        $scope.center = [lat, lon];
+
+        $scope.loading = false;
+        $http.get('../../api/v1/panel/countries/all').success(function(countries) {
+
+          $scope.countries = countries;
+          $scope.loadProvinces();
+          $scope.loadDistricts();
+          $scope.loadCities();
+        });
+        var map = NgMap.initMap('mapEditor');
+        map.panTo(new google.maps.LatLng(lat, lon));
       }
     });
-  });
+});
 
-  $scope.loadCity = function() {
-    $scope.showCity = true;
-
-    $http.get('../../api/v1/panel/provinces/' + $rootScope.place.idProvincia + '/cities').success(function(cities) {
-      $scope.cities = cities;
-      $rootScope.cities = cities;
-    });
-
-  };
-
-  $scope.showProvince = function() {
-
-    $scope.provinceOn = true;
-    $http.get('../../api/v1/countries/' + $rootScope.place.idPais + '/provinces').success(function(provinces) {
+  $scope.loadProvinces = function() {
+    $http.get('../../api/v1/panel/countries/' + $rootScope.place.idPais + '/provinces').success(function(provinces) {
       $scope.provinces = provinces;
     });
+  }
 
+  $scope.loadDistricts = function() {
+    $http.get('../../api/v1/panel/provinces/' + $rootScope.place.idProvincia + '/districts').success(function(districts) {
+      $scope.districts = districts;
+    });
+  }
+
+  $scope.loadCities = function() {
+    $http.get('../../api/v1/panel/districts/' + $rootScope.place.idPartido + '/cities').success(function(cities) {
+      $scope.cities = cities;
+    });
+  };
+
+  autocompleteService.initAutocomplete(checkAutocomplete);
+  $scope.outputAutocomplete = "";
+
+  function checkAutocomplete(){
+    $scope.autocompleteForm = autocompleteService.fillInCity();
+    var valid = isValidAutocomplete();
+    if(valid){
+      var str = commaParsing($scope.autocompleteForm);
+      $scope.outputAutocomplete = str;
+      $scope.$apply();
+    }
+  };
+
+  function isValidAutocomplete(){
+    var valid = true;
+    if(!$scope.autocompleteForm) return false;
+    for (var i = 0; i < $scope.autocompleteForm.length; i++) {
+      var component = $scope.autocompleteForm[i];
+      if(component == "")
+        valid = false;
+    }
+    return valid;
+  }
+
+  function commaParsing(array){
+    var str = "";
+    for (var i = 0; i < array.length; i++) {
+      var component = array[i];
+      if(component != ""){
+        if(i == 0)
+          str = str + component;
+        else
+          str =  str  + ", " + component;
+      }
+    }
+    return str;
+  }
+
+  function placeAutocompleteParsing(){
+    if(!isValidAutocomplete()) return;
+    $scope.place.nombre_ciudad    = $scope.autocompleteForm[0];
+    $scope.place.nombre_partido   = $scope.autocompleteForm[1];
+    $scope.place.nombre_provincia = $scope.autocompleteForm[2];
+    $scope.place.nombre_pais      = $scope.autocompleteForm[3];
+    $scope.place.newCityAdded = true;
   }
 
   function isValidAttr(attr){
-    return !(typeof attr === "undefined" || attr === null);
+    return !(typeof attr === "undefined" || attr === null || 0 === attr.length);
   }
 
   function isValidForm() {
@@ -229,7 +233,7 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
         !($scope.place.mac      && !isValidAttr($scope.place.servicetype_mac))      &&
         !($scope.place.ssr      && !isValidAttr($scope.place.servicetype_ssr))      &&
         !($scope.place.dc       && !isValidAttr($scope.place.servicetype_dc))        )
-    );
+      );
   }
 
   $scope.formChange = function() {
@@ -310,20 +314,20 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
       for (var i = response.length - 1; i >= 0; i--) {
         response[i].info_ok = response[i].info_ok == 1
-          ? "Si"
-          : "No";
+        ? "Si"
+        : "No";
         response[i].privacidad_ok = response[i].privacidad_ok == 1
-          ? "SI"
-          : "No";
+        ? "SI"
+        : "No";
         response[i].comodo = response[i].comodo == 1
-          ? "SI"
-          : "No";
+        ? "SI"
+        : "No";
         response[i].informacion_vacunas = response[i].informacion_vacunas == 1
-          ? "SI"
-          : "No";
+        ? "SI"
+        : "No";
         response[i].es_gratuito = response[i].es_gratuito == 1
-          ? "SI"
-          : "No";
+        ? "SI"
+        : "No";
       }
       $scope.evaluationList = response;
     });
@@ -341,8 +345,8 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
           Materialize.toast(response.data[propertyName], 5000);
         };
       }
-    }, //del then
-        function(response) {
+    },
+    function(response) {
       Materialize.toast('Hemos cometido un error al procesar tu peticion, intenta nuevamente mas tarde.', 5000);
     });
   }
@@ -358,8 +362,8 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
           Materialize.toast(response.data[propertyName], 5000);
         };
       }
-    }, //del then
-        function(response) {
+    },
+    function(response) {
       Materialize.toast('Hemos cometido un error al procesar tu peticion, intenta nuevamente mas tarde.', 5000);
     });
   }
@@ -369,19 +373,6 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
       return true;
     else
       return false;
-      /*
-      if (d === 1 || d === true){
-        return true;
-      }
-      else {
-        return false;
-      }
-      */
-    }
-
-  $scope.trackPartido = function() {
-    $scope.place.nombre_partido = $scope.place.partido.nombre_partido;
-    $scope.place.idPartido = $scope.place.partido.id;
   }
 
   $scope.clicky = function() {
@@ -394,6 +385,8 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
         Materialize.toast("Check out the information given, some servicie need more data to complete", 5000);
       return;
     }
+
+    placeAutocompleteParsing();
 
     $scope.spinerflag = true;
 
@@ -409,8 +402,10 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     $http.post('../../api/v1/panel/places/' + $rootScope.place.placeId + '/update', httpdata).then(function(response) {
       if (response.data.length == 0) {
 
-        Materialize.toast('Hemos guardado los datos de  ' + $rootScope.place.establecimiento, 5000);
-        //document.location.href = $location.path() + '../../panel';
+        Materialize.toast('Hemos guardado los datos de  ' + $rootScope.place.establecimiento, 3000);
+        setTimeout(function() {
+          $window.location.reload();
+        }, 3000);
 
       } else {
         for (var propertyName in response.data) {
@@ -469,7 +464,6 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
   };
 
   $scope.exportEvaluationsFilterByService = function(placeId) {
-    //$rootScope.loadingPost = true;
 
     var f = document.createElement("form");
     f.setAttribute('method', "post");
@@ -497,36 +491,31 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     document.getElementsByTagName('body')[0].appendChild(f);
     f.submit();
     document.removeChild(f);
-
   };
 
   $scope.showCondonIcon = function(service, icon) {
-
     return service == icon;
   };
 
+  $rootScope.changeLanguage = function() {
 
- $rootScope.changeLanguage = function() {
+    localStorage.setItem("lang", $rootScope.selectedLanguage);
+    localStorage.setItem("selectedByUser", true);
+    $translate.use($rootScope.selectedLanguage);
+    $http.get('../../changelang/' + $rootScope.selectedLanguage)
+    .then(
+      function(response) {
+        if (response.statusText == 'OK') {
 
-      localStorage.setItem("lang", $rootScope.selectedLanguage);
-      localStorage.setItem("selectedByUser", true);
-      $translate.use($rootScope.selectedLanguage);
-      $http.get('../../changelang/' + $rootScope.selectedLanguage)
-        .then(
-          function(response) {
+        } else {
+          Materialize.toast('Intenta nuevamente mas tarde.', 5000);
+        }
+      },
+      function(response) {
+        Materialize.toast('Intenta nuevamente mas tarde.', 5000);
+      });
 
-            if (response.statusText == 'OK') {
-
-            } else {
-              Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-            }
-          },
-          function(response) {
-            Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-          });
-
-      return;
-    }
-
+    return;
+  }
 
 });

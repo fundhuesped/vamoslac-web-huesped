@@ -27,238 +27,244 @@ class PlacesRESTController extends Controller
 
     public static function showAll($pais, $provincia, $partido, $ciudad, $service)
     {
-        $places = DB::table('places')
-          ->join('ciudad', 'places.idciudad', '=', 'ciudad.id')
-          ->join('partido', 'places.idPartido', '=', 'partido.id')
-          ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
-          ->join('pais', 'places.idPais', '=', 'pais.id')
-          ->where($service, '=', 1)
-          ->where('nombre_ciudad', $ciudad)
-          ->where('nombre_pais', $pais)
-          ->where('nombre_provincia', $provincia)
-          ->where('nombre_partido', $partido)
-          ->where('places.aprobado', '=', 1)
-          ->select()
-          ->get();
+      $places = DB::table('places')
+      ->join('ciudad', 'places.idciudad', '=', 'ciudad.id')
+      ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+      ->join('pais', 'places.idPais', '=', 'pais.id')
+      ->where($service, '=', 1)
+      ->where('nombre_ciudad', $ciudad)
+      ->where('nombre_pais', $pais)
+      ->where('nombre_provincia', $provincia)
+      ->where('nombre_partido', $partido)
+      ->where('places.aprobado', '=', 1)
+      ->select()
+      ->get();
       // dd($service);
 
       $resu = array();
 
-        if ($service == "condones") {
-            $resu['title'] = 'Condones';
-            $resu['icon'] = 'iconos-new_preservativos-3.png';
-            $resu['titleCopySeo'] = 'consigo Condones';
-            $resu['descriptionCopy'] = 'los lugares para retirar condones gratis';
+      $str = "friendly_";
+      $i = strpos($service,$str);
+      if ($i !== false){
+        $service = substr($service,$i + strlen($str));
+      }
 
-            $resu['titleCopySingle'] = 'lugar que distribuye Condones de forma gratuita.';
-            $resu['titleCopyMultiple'] = 'lugares que distribuyen Condones de forma gratuita.';
+      if ($service == "condones") {
+        $resu['title'] = 'Condones';
+        $resu['icon'] = 'iconos-new_preservativos-3.png';
+        $resu['titleCopySeo'] = 'consigo Condones';
+        $resu['descriptionCopy'] = 'los lugares para retirar condones gratis';
 
-            $resu['newServiceTitle'] = ' Condones ';
-            $resu['newServiceTitleSingle'] = ' Condones ';
+        $resu['titleCopySingle'] = 'lugar que distribuye Condones de forma gratuita.';
+        $resu['titleCopyMultiple'] = 'lugares que distribuyen Condones de forma gratuita.';
 
-            $resu['preCopyFound'] = ' lugares de entrega gratuita de ';
-            $resu['preCopyFoundSingle'] = ' lugar de entrega gratuita de ';
+        $resu['newServiceTitle'] = ' Condones ';
+        $resu['newServiceTitleSingle'] = ' Condones ';
 
-            $resu['titleCopyNotFound'] = 'No tenemos registrados lugares de entrega gratuita de  ';
-        }
+        $resu['preCopyFound'] = ' lugares de entrega gratuita de ';
+        $resu['preCopyFoundSingle'] = ' lugar de entrega gratuita de ';
 
-
-        if ($service == "prueba") {
-            $resu['title'] = 'Prueba VIH';
-            $resu['icon'] = 'iconos-new_analisis-3.png';
-            $resu['titleCopySeo'] = 'puedo hacer Prueba VIH';
-            $resu['descriptionCopy'] = 'los lugares que realizan la prueba de VIH de manera gratuita';
-
-            $resu['titleCopySingle'] = 'lugar para hacer Prueba VIH.';
-            $resu['titleCopyMultiple'] = 'lugares que hagan Prueba VIH.';
-
-            $resu['newServiceTitle'] = ' Centros de Testeo de VIH ';
-            $resu['newServiceTitleSingle'] = ' Centro de Testeo de VIH ';
-
-            $resu['preCopyFound'] = '';
-            $resu['preCopyFoundSingle'] = '';
-
-            $resu['titleCopyNotFound'] = 'No tenemos registrados  ';
-        }
-
-        if ($service == "infectologia") {
-            $resu['title'] = 'Centros de Infectología';
-            $resu['icon'] = 'iconos-new_atencion-3.png';
-            $resu['titleCopySeo'] = 'hay Centros de Infectología';
-            $resu['descriptionCopy'] = 'dónde hay Centros de Infectología';
-
-            $resu['titleCopySingle'] = ' Centro de Infectología.';
-            $resu['titleCopyMultiple'] = 'Centros de Infectología.';
-
-            $resu['newServiceTitle'] = ' Centros de Infectología ';
-            $resu['newServiceTitleSingle'] = ' Centro de Infectología ';
-
-            $resu['preCopyFound'] = '';
-            $resu['preCopyFoundSingle'] = '';
-
-            $resu['titleCopyNotFound'] = "No tenemos registrados " ;
-        }
-
-        if ($service == "vacunatorio") {
-            $resu['title'] = 'Vacunatorios';
-            $resu['icon'] = 'iconos-new_vacunacion-3.png';
-            $resu['titleCopySeo'] = 'hay vacunatorios';
-
-            $resu['titleCopySingle'] = 'Vacunatorio.';
-            $resu['descriptionCopy'] = 'los vacunatorios más cercanos, sus horarios de atención e información de contacto';
-            $resu['titleCopyMultiple'] = 'Vacunatorios.';
-
-            $resu['newServiceTitle'] = ' Vacunatorios ';
-            $resu['newServiceTitleSingle'] = ' Vacunatorio ';
-
-            $resu['preCopyFound'] = '';
-            $resu['preCopyFoundSingle'] = '';
-
-            $resu['titleCopyNotFound'] = 'No tenemos registrados ';
-        }
+        $resu['titleCopyNotFound'] = 'No tenemos registrados lugares de entrega gratuita de  ';
+      }
 
 
-        if ($service == "mac") {
-            $resu['title'] = 'Servicios de Salud Sexual y Reproductiva';
-            $resu['icon'] = 'iconos-new_sssr-3.png';
-            $resu['titleCopySeo'] = 'obtengo métodos anticonceptivos';
-            $resu['descriptionCopy'] = 'dónde obtener métodos anticonceptivos';
+      if ($service == "prueba") {
+        $resu['title'] = 'Prueba VIH';
+        $resu['icon'] = 'iconos-new_analisis-3.png';
+        $resu['titleCopySeo'] = 'puedo hacer Prueba VIH';
+        $resu['descriptionCopy'] = 'los lugares que realizan la prueba de VIH de manera gratuita';
 
-            $resu['titleCopySingle'] = 'lugar para obtener información y métodos anticonceptivos.';
-            $resu['titleCopyMultiple'] = 'lugares para obtener información y métodos anticonceptivos.';
+        $resu['titleCopySingle'] = 'lugar para hacer Prueba VIH.';
+        $resu['titleCopyMultiple'] = 'lugares que hagan Prueba VIH.';
 
-            $resu['newServiceTitle'] = ' métodos anticonceptivos ';
-            $resu['newServiceTitleSingle'] = ' métodos anticonceptivos ';
+        $resu['newServiceTitle'] = ' Centros de Testeo de VIH ';
+        $resu['newServiceTitleSingle'] = ' Centro de Testeo de VIH ';
 
-            $resu['preCopyFound'] = ' lugares de entrega gratuita de ';
-            $resu['preCopyFoundSingle'] = ' lugar de entrega gratuita de ';
+        $resu['preCopyFound'] = '';
+        $resu['preCopyFoundSingle'] = '';
 
-            $resu['titleCopyNotFound'] = 'No tenemos registrados lugares de entrega gratuita de ';
-        }
+        $resu['titleCopyNotFound'] = 'No tenemos registrados  ';
+      }
 
-        if ($service == "ile") {
-            $resu['title'] = 'Interrupción Legal del Embarazo';
-            $resu['icon'] = 'iconos-new_ile-3.png';
-            $resu['titleCopySeo'] = 'puedo obtener información sobre Interrupción Legal del Embarazo';
+      if ($service == "infectologia") {
+        $resu['title'] = 'Centros de Infectología';
+        $resu['icon'] = 'iconos-new_atencion-3.png';
+        $resu['titleCopySeo'] = 'hay Centros de Infectología';
+        $resu['descriptionCopy'] = 'dónde hay Centros de Infectología';
 
-            $resu['titleCopySingle'] = 'lugar para obtener información sobre Interrupción Legal del Embarazo.';
-            $resu['descriptionCopy'] = 'dónde obtener información sobre Interrupción Legal del Embarazo';
-            $resu['titleCopyMultiple'] = 'lugares para obtener información sobre Interrupción Legal del Embarazo.';
+        $resu['titleCopySingle'] = ' Centro de Infectología.';
+        $resu['titleCopyMultiple'] = 'Centros de Infectología.';
 
-            $resu['newServiceTitle'] = ' Interrupción Legal del Embarazo';
-            $resu['newServiceTitleSingle'] = ' Interrupción Legal del Embarazo';
+        $resu['newServiceTitle'] = ' Centros de Infectología ';
+        $resu['newServiceTitleSingle'] = ' Centro de Infectología ';
 
-            $resu['preCopyFound'] = ' lugares para obtener información sobre';
-            $resu['preCopyFoundSingle'] = ' lugar para obtener información sobre ';
+        $resu['preCopyFound'] = '';
+        $resu['preCopyFoundSingle'] = '';
 
-            $resu['titleCopyNotFound'] = 'No tenemos registrados lugares para obtener información sobre ';
-        }
+        $resu['titleCopyNotFound'] = "No tenemos registrados " ;
+      }
 
-        if ($service == "ssr") {
-            $resu['title'] = 'Interrupción Legal del Embarazo';
-            $resu['icon'] = 'iconos-new_ile-3.png';
-            $resu['titleCopySeo'] = 'puedo obtener información sobre Interrupción Legal del Embarazo';
+      if ($service == "vacunatorio") {
+        $resu['title'] = 'Vacunatorios';
+        $resu['icon'] = 'iconos-new_vacunacion-3.png';
+        $resu['titleCopySeo'] = 'hay vacunatorios';
 
-            $resu['titleCopySingle'] = 'lugar para obtener información sobre Interrupción Legal del Embarazo.';
-            $resu['descriptionCopy'] = 'dónde obtener información sobre Interrupción Legal del Embarazo';
-            $resu['titleCopyMultiple'] = 'lugares para obtener información sobre Interrupción Legal del Embarazo.';
+        $resu['titleCopySingle'] = 'Vacunatorio.';
+        $resu['descriptionCopy'] = 'los vacunatorios más cercanos, sus horarios de atención e información de contacto';
+        $resu['titleCopyMultiple'] = 'Vacunatorios.';
 
-            $resu['newServiceTitle'] = ' Interrupción Legal del Embarazo';
-            $resu['newServiceTitleSingle'] = ' Interrupción Legal del Embarazo';
+        $resu['newServiceTitle'] = ' Vacunatorios ';
+        $resu['newServiceTitleSingle'] = ' Vacunatorio ';
 
-            $resu['preCopyFound'] = ' lugares para obtener información sobre';
-            $resu['preCopyFoundSingle'] = ' lugar para obtener información sobre ';
+        $resu['preCopyFound'] = '';
+        $resu['preCopyFoundSingle'] = '';
 
-            $resu['titleCopyNotFound'] = 'No tenemos registrados lugares para obtener información sobre ';
-        }
-
-        if ($service == "dc") {
-            $resu['title'] = 'Interrupción Legal del Embarazo';
-            $resu['icon'] = 'iconos-new_ile-3.png';
-            $resu['titleCopySeo'] = 'puedo obtener información sobre Interrupción Legal del Embarazo';
-
-            $resu['titleCopySingle'] = 'lugar para obtener información sobre Interrupción Legal del Embarazo.';
-            $resu['descriptionCopy'] = 'dónde obtener información sobre Interrupción Legal del Embarazo';
-            $resu['titleCopyMultiple'] = 'lugares para obtener información sobre Interrupción Legal del Embarazo.';
-
-            $resu['newServiceTitle'] = ' Interrupción Legal del Embarazo';
-            $resu['newServiceTitleSingle'] = ' Interrupción Legal del Embarazo';
-
-            $resu['preCopyFound'] = ' lugares para obtener información sobre';
-            $resu['preCopyFoundSingle'] = ' lugar para obtener información sobre ';
-
-            $resu['titleCopyNotFound'] = 'No tenemos registrados lugares para obtener información sobre ';
-        }
+        $resu['titleCopyNotFound'] = 'No tenemos registrados ';
+      }
 
 
+      if ($service == "mac") {
+        $resu['title'] = 'Servicios de Salud Sexual y Reproductiva';
+        $resu['icon'] = 'iconos-new_sssr-3.png';
+        $resu['titleCopySeo'] = 'obtengo métodos anticonceptivos';
+        $resu['descriptionCopy'] = 'dónde obtener métodos anticonceptivos';
 
-        $horario='';
-        $responsable='';
-        $telefono='';
+        $resu['titleCopySingle'] = 'lugar para obtener información y métodos anticonceptivos.';
+        $resu['titleCopyMultiple'] = 'lugares para obtener información y métodos anticonceptivos.';
 
-        foreach ($places as $p) {
-            switch ($p) {
+        $resu['newServiceTitle'] = ' métodos anticonceptivos ';
+        $resu['newServiceTitleSingle'] = ' métodos anticonceptivos ';
+
+        $resu['preCopyFound'] = ' lugares de entrega gratuita de ';
+        $resu['preCopyFoundSingle'] = ' lugar de entrega gratuita de ';
+
+        $resu['titleCopyNotFound'] = 'No tenemos registrados lugares de entrega gratuita de ';
+      }
+
+      if ($service == "ile") {
+        $resu['title'] = 'Interrupción Legal del Embarazo';
+        $resu['icon'] = 'iconos-new_ile-3.png';
+        $resu['titleCopySeo'] = 'puedo obtener información sobre Interrupción Legal del Embarazo';
+
+        $resu['titleCopySingle'] = 'lugar para obtener información sobre Interrupción Legal del Embarazo.';
+        $resu['descriptionCopy'] = 'dónde obtener información sobre Interrupción Legal del Embarazo';
+        $resu['titleCopyMultiple'] = 'lugares para obtener información sobre Interrupción Legal del Embarazo.';
+
+        $resu['newServiceTitle'] = ' Interrupción Legal del Embarazo';
+        $resu['newServiceTitleSingle'] = ' Interrupción Legal del Embarazo';
+
+        $resu['preCopyFound'] = ' lugares para obtener información sobre';
+        $resu['preCopyFoundSingle'] = ' lugar para obtener información sobre ';
+
+        $resu['titleCopyNotFound'] = 'No tenemos registrados lugares para obtener información sobre ';
+      }
+
+      if ($service == "ssr") {
+        $resu['title'] = 'Interrupción Legal del Embarazo';
+        $resu['icon'] = 'iconos-new_ile-3.png';
+        $resu['titleCopySeo'] = 'puedo obtener información sobre Interrupción Legal del Embarazo';
+
+        $resu['titleCopySingle'] = 'lugar para obtener información sobre Interrupción Legal del Embarazo.';
+        $resu['descriptionCopy'] = 'dónde obtener información sobre Interrupción Legal del Embarazo';
+        $resu['titleCopyMultiple'] = 'lugares para obtener información sobre Interrupción Legal del Embarazo.';
+
+        $resu['newServiceTitle'] = ' Interrupción Legal del Embarazo';
+        $resu['newServiceTitleSingle'] = ' Interrupción Legal del Embarazo';
+
+        $resu['preCopyFound'] = ' lugares para obtener información sobre';
+        $resu['preCopyFoundSingle'] = ' lugar para obtener información sobre ';
+
+        $resu['titleCopyNotFound'] = 'No tenemos registrados lugares para obtener información sobre ';
+      }
+
+      if ($service == "dc") {
+        $resu['title'] = 'Interrupción Legal del Embarazo';
+        $resu['icon'] = 'iconos-new_ile-3.png';
+        $resu['titleCopySeo'] = 'puedo obtener información sobre Interrupción Legal del Embarazo';
+
+        $resu['titleCopySingle'] = 'lugar para obtener información sobre Interrupción Legal del Embarazo.';
+        $resu['descriptionCopy'] = 'dónde obtener información sobre Interrupción Legal del Embarazo';
+        $resu['titleCopyMultiple'] = 'lugares para obtener información sobre Interrupción Legal del Embarazo.';
+
+        $resu['newServiceTitle'] = ' Interrupción Legal del Embarazo';
+        $resu['newServiceTitleSingle'] = ' Interrupción Legal del Embarazo';
+
+        $resu['preCopyFound'] = ' lugares para obtener información sobre';
+        $resu['preCopyFoundSingle'] = ' lugar para obtener información sobre ';
+
+        $resu['titleCopyNotFound'] = 'No tenemos registrados lugares para obtener información sobre ';
+      }
+
+
+
+      $horario='';
+      $responsable='';
+      $telefono='';
+
+      foreach ($places as $p) {
+        switch ($p) {
           case ($service == "condones"):
-            $p->horario = $p->horario_distrib;
-            $p->responsable = $p->responsable_distrib;
-            $p->telefono = $p->tel_distrib;
-            break;
+          $p->horario = $p->horario_distrib;
+          $p->responsable = $p->responsable_distrib;
+          $p->telefono = $p->tel_distrib;
+          break;
 
           case ($service == "prueba"):
-            $p->horario = $p->horario_testeo;
-            $p->responsable = $p->responsable_testeo;
-            $p->telefono = $p->tel_testeo;
-            break;
+          $p->horario = $p->horario_testeo;
+          $p->responsable = $p->responsable_testeo;
+          $p->telefono = $p->tel_testeo;
+          break;
 
           case ($service == "vacunatorio"):
-            $p->horario = $p->horario_vac;
-            $p->responsable = $p->responsable_vac;
-            $p->telefono = $p->tel_vac;
-            break;
+          $p->horario = $p->horario_vac;
+          $p->responsable = $p->responsable_vac;
+          $p->telefono = $p->tel_vac;
+          break;
 
           case ($service == "infectologia"):
-            $p->horario = $p->horario_infectologia;
-            $p->responsable = $p->responsable_infectologia;
-            $p->telefono = $p->tel_infectologia;
-            break;
+          $p->horario = $p->horario_infectologia;
+          $p->responsable = $p->responsable_infectologia;
+          $p->telefono = $p->tel_infectologia;
+          break;
 
           case ($service == "mac"):
-            $p->horario = $p->horario_mac;
-            $p->responsable = $p->responsable_mac;
-            $p->telefono = $p->tel_mac;
-            break;
+          $p->horario = $p->horario_mac;
+          $p->responsable = $p->responsable_mac;
+          $p->telefono = $p->tel_mac;
+          break;
 
           case ($service == "ile"):
-            $p->horario = $p->horario_ile;
-            $p->responsable = $p->responsable_ile;
-            $p->telefono = $p->tel_ile;
-            break;
+          $p->horario = $p->horario_ile;
+          $p->responsable = $p->responsable_ile;
+          $p->telefono = $p->tel_ile;
+          break;
 
-            case ($service == "dc"):
-              $p->horario = $p->horario_dc;
-              $p->responsable = $p->responsable_dc;
-              $p->telefono = $p->tel_dc;
-              break;
+          case ($service == "dc"):
+          $p->horario = $p->horario_dc;
+          $p->responsable = $p->responsable_dc;
+          $p->telefono = $p->tel_dc;
+          break;
 
-            case ($service == "ssr"):
-              $p->horario = $p->horario_ssr;
-              $p->responsable = $p->responsable_ssr;
-              $p->telefono = $p->tel_ssr;
-              break;
-      }
-            if (($p->horario == "" || $p->horario == " ")) {
-                $p->horario = " - ";
-            }
-            if (($p->responsable == "" || $p->responsable == " ")) {
-                $p->responsable = " - ";
-            }
-            if (($p->telefono == "" || $p->telefono == " ")) {
-                $p->telefono = " - ";
-            }
+          case ($service == "ssr"):
+          $p->horario = $p->horario_ssr;
+          $p->responsable = $p->responsable_ssr;
+          $p->telefono = $p->tel_ssr;
+          break;
         }
-        $cantidad = count($places);
+        if (($p->horario == "" || $p->horario == " ")) {
+          $p->horario = " - ";
+        }
+        if (($p->responsable == "" || $p->responsable == " ")) {
+          $p->responsable = " - ";
+        }
+        if (($p->telefono == "" || $p->telefono == " ")) {
+          $p->telefono = " - ";
+        }
+      }
+      $cantidad = count($places);
 
-        return json_encode(array('lugares' => $places, 'cantidad' => $cantidad, 'textos' => $resu));
+      return json_encode(array('lugares' => $places, 'cantidad' => $cantidad, 'textos' => $resu));
 
        // return view('seo.placesList', compact('places', 'cantidad', 'pais', 'provincia', 'partido','ciudad', 'resu'));
     }
@@ -1046,15 +1052,14 @@ class PlacesRESTController extends Controller
         return $resu;
     }
 
-    public function showPanel($id)
-    {
-        return DB::table('places')
-        ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
+    public function showPanel($id){
+      return DB::table('places')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
       ->where('places.placeId', '=', $id)
-      ->select()
+      ->select('places.*','ciudad.nombre_ciudad', 'partido.nombre_partido', 'provincia.nombre_provincia', 'pais.nombre_pais')
       ->get();
     }
 
@@ -1099,15 +1104,17 @@ class PlacesRESTController extends Controller
 
         $rules = array(
           'establecimiento' => 'required|max:150|min:2',
-          'nombre_partido' => 'required|max:50|min:2',
-          'nombre_provincia' => 'required|max:50|min:2',
-          'nombre_pais' => 'required|max:50|min:4',
-      );
+          'idCiudad' => 'required|exists:ciudad,id',
+          'idPartido' => 'required|exists:partido,id',
+          'idProvincia' => 'required|exists:provincia,id',
+          'idPais' => 'required|exists:pais,id',
+        );
 
         $messages = array(
-          'required'    => 'El :attribute es requerido.',
-          'max'    => 'El :attribute debe poseer un maximo de :max caracteres.',
-        'min'    => 'El :attribute debe poseer un minimo de :min caracteres.');
+          'required'  => 'El :attribute es requerido.',
+          'max'       => 'El :attribute debe poseer un maximo de :max caracteres.',
+          'min'       => 'El :attribute debe poseer un minimo de :min caracteres.'
+        );
 
         $validator = Validator::make($request_params, $rules, $messages);
 
@@ -1121,8 +1128,8 @@ class PlacesRESTController extends Controller
             $placeLog->save();
 
             $place->establecimiento = $request_params['establecimiento'];
-            $place->calle = $request_params['calle'];
             $place->tipo = $request_params['tipo'];
+            $place->calle = $request_params['calle'];
             $place->altura = $request_params['altura'];
             $place->piso_dpto = $request_params['piso_dpto'];
             $place->observacion = $request_params['observacion'];
@@ -1135,7 +1142,7 @@ class PlacesRESTController extends Controller
             $place->idPais = $request_params['idPais'];
             $place->idProvincia = $request_params['idProvincia'];
             $place->idPartido = $request_params['idPartido'];
-
+            $place->idCiudad = $request_params['idCiudad'];
 
             $place->prueba = $request_params['prueba'];
             $place->responsable_testeo = $request_params['responsable_testeo'];
@@ -1227,37 +1234,14 @@ class PlacesRESTController extends Controller
             $place->friendly_prueba = $request_params['friendly_prueba'];
             $place->friendly_condones = $request_params['friendly_condones'];
 
-
-        //Updating localidad
-
-        if (isset($request_params['otro_partido'])) {
-            if ($request_params['otro_partido'] != '') {
-                $localidad_tmp =
-               DB::table('partido')
-                ->where('partido.idPais', $place->idPais)
-                ->where('partido.idProvincia', $place->idProvincia)
-                ->where('nombre_partido', '=', $request_params['otro_partido'])
-                ->select()
-                ->get();
-
-
-
-                if (count($localidad_tmp) === 0) {
-                    $localidad = new Partido;
-                    $localidad->nombre_partido =
-                    $request_params['otro_partido'];
-                    $localidad->idProvincia = $place->idProvincia;
-                    $localidad->idPais = $place->idPais;
-                    $localidad->habilitado = true;
-                    $localidad->updated_at = date("Y-m-d H:i:s");
-                    $localidad->created_at = date("Y-m-d H:i:s");
-                    $localidad->save();
-                    $place->idPartido = $localidad->id;
-                } else {
-                    $place->idPartido = $localidad_tmp[0]->id;
-                }
+            if (isset($request_params['newCityAdded'])) {
+              // Ingreso de nueva localidad
+              $this->addOrCreateNewLocations($place,$request_params);
             }
-        }
+            else{
+              // Update localidad existente
+              $this->updateLocationsAvailability($place);
+            }
 
             $place->updated_at = date("Y-m-d H:i:s");
             $place->logId = $placeLog->id;
@@ -1265,6 +1249,111 @@ class PlacesRESTController extends Controller
         }
 
         return $validator->messages();
+    }
+
+    public function updateAvailability($table, $id){
+      DB::table($table)->where('id',$id)->update(['habilitado' => 1]);
+    }
+
+    public function updateLocationsAvailability($place){
+      $this->updateAvailability('pais',$place->idPais);
+      $this->updateAvailability('provincia',$place->idProvincia);
+      $this->updateAvailability('partido',$place->idPartido);
+      $this->updateAvailability('ciudad',$place->idCiudad);
+    }
+
+    public function addOrCreateNewLocations($place,$request){
+      $nombre_pais = $request['nombre_pais'];
+      $nombre_provincia = $request['nombre_provincia'];
+      $nombre_partido = $request['nombre_partido'];
+      $nombre_ciudad = $request['nombre_ciudad'];
+      
+      $place->idPais = DB::table('pais')
+      ->where('pais.nombre_pais', '=', $nombre_pais)
+      ->value('id');
+
+      if ( !$place->idPais ){
+        $place->idPais = DB::table('pais')->max('id') + 1;
+        DB::table('pais')->insert([
+          'id' => $place->idPais,
+          'nombre_pais' => $nombre_pais,
+          'habilitado' => 1,
+          'created_at' => date("Y-m-d H:i:s")
+        ]);
+      }
+      else{
+        $this->updateAvailability('pais',$place->idPais);
+      }
+
+      $place->idProvincia = DB::table('provincia')
+      ->join('pais','pais.id','=','provincia.idPais')
+      ->where('pais.nombre_pais', '=', $nombre_pais)
+      ->where('provincia.nombre_provincia', '=', $nombre_provincia)
+      ->value('provincia.id');
+
+      if ( !$place->idProvincia ){
+        $place->idProvincia = DB::table('provincia')->max('id') + 1;
+        DB::table('provincia')->insert([
+          'id' => $place->idProvincia,
+          'nombre_provincia' => $nombre_provincia,
+          'habilitado' => 1,
+          'created_at' => date("Y-m-d H:i:s"),
+          'idPais'    => $place->idPais
+        ]);
+      }
+      else{
+        $this->updateAvailability('provincia',$place->idProvincia);
+      }
+
+      $place->idPartido = DB::table('partido')
+      ->join('provincia','provincia.id','=','partido.idProvincia')
+      ->join('pais','pais.id','=','partido.idPais')
+      ->where('pais.nombre_pais', '=', $nombre_pais)
+      ->where('provincia.nombre_provincia', '=', $nombre_provincia)
+      ->where('partido.nombre_partido', '=', $nombre_partido)
+      ->value('partido.id');
+
+      if ( !$place->idPartido ){
+        $place->idPartido = DB::table('partido')->max('id') + 1;
+        DB::table('partido')->insert([
+          'id' => $place->idPartido,
+          'nombre_partido' => $nombre_partido,
+          'habilitado' => 1,
+          'created_at' => date("Y-m-d H:i:s"),
+          'idPais'    => $place->idPais,
+          'idProvincia'  => $place->idProvincia,
+        ]);
+      }
+      else{
+        $this->updateAvailability('partido',$place->idPartido);
+      }
+
+      $place->idCiudad = DB::table('ciudad')
+      ->join('partido','partido.id','=','ciudad.idPartido')
+      ->join('provincia','provincia.id','=','ciudad.idProvincia')
+      ->join('pais','pais.id','=','ciudad.idPais')
+      ->where('pais.nombre_pais', '=', $nombre_pais)
+      ->where('provincia.nombre_provincia', '=', $nombre_provincia)
+      ->where('partido.nombre_partido', '=', $nombre_partido)
+      ->where('ciudad.nombre_ciudad', '=', $nombre_ciudad)
+      ->value('ciudad.id');
+
+      if ( !$place->idCiudad ){
+        $place->idCiudad = DB::table('ciudad')->max('id') + 1;
+        DB::table('ciudad')->insert([
+          'id' => $place->idCiudad,
+          'nombre_ciudad' => $nombre_ciudad,
+          'habilitado' => 1,
+          'created_at' => date("Y-m-d H:i:s"),
+          'idPais'    => $place->idPais,
+          'idProvincia'  => $place->idProvincia,
+          'idPartido'  => $place->idPartido,
+        ]);
+      }
+      else{
+        $this->updateAvailability('ciudad',$place->idCiudad);
+      }
+
     }
 
     public function getAllPlaces(Request $request)

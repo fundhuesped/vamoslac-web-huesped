@@ -25,6 +25,7 @@ angular.module('dondeDataVizApp').controller('placeCtrl',
     $scope.nameCity = $routeParams.ciudad;
     $scope.serviceCode = $routeParams.code;
     $scope.translateKeyService = $routeParams.code + "_name";
+    $scope.translateKeyService = checkFriendlyCode($scope.translateKeyService);
     $translate($routeParams.code + "_name").then(function(t){
       $scope.serviceName =   t;
     })
@@ -34,7 +35,11 @@ angular.module('dondeDataVizApp').controller('placeCtrl',
       .success(function(places) {
         $scope.places = places.lugares;
         console.log($scope.cPlaces = places.cantidad);
+      })
+      .error(function(response){
+        console.log(response);
       });
+      
 
     $http.get('api/v1/single/service/'+ $scope.serviceCode)
     .success(function(service) {
@@ -42,5 +47,13 @@ angular.module('dondeDataVizApp').controller('placeCtrl',
       console.log($scope.service);
     });
 
+    function checkFriendlyCode(code){
+      var str = "friendly_";
+      var i = code.indexOf(str);
+      if (i != -1){
+        code = code.substr(i + str.length);
+      }
+      return code;
+    }
 
   });

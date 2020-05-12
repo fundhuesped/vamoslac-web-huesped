@@ -11,9 +11,6 @@
 |
 */
 
-
-
-
 Route::get('/', function () {
     return view('home');
 });
@@ -54,7 +51,10 @@ Route::resource('votar', '\App\Http\Controllers\EvaluationRESTController');
 Route::get('api/v1/panel/places/{id}', '\App\Http\Controllers\PlacesRESTController@showPanel');
 Route::get('api/v1/places2/{id}', '\App\Http\Controllers\PlacesRESTController@showPanel');
 
-
+Route::get('api/v1/panel/clear/ciudad/clearAllEmtpy', '\App\Http\Controllers\CiudadRESTController@clearCiudadesNoCenters');
+Route::get('api/v1/panel/clear/provincia/clearAllEmtpy', '\App\Http\Controllers\CiudadRESTController@clearProvinciaNoCenters');
+Route::get('api/v1/panel/clear/pais/clearAllEmtpy', '\App\Http\Controllers\CiudadRESTController@clearPaisNoCenters');
+Route::get('api/v1/panel/clear/partido/clearAllEmtpy', '\App\Http\Controllers\CiudadRESTController@clearPartidoNoCenters');
 
 /*
 |--------------------------------------------------------------------------
@@ -203,9 +203,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('confirmation-email', '\App\Http\Controllers\MainRouteController@sendConfirmation');
 //------------------------------------------------------------------------------------------
 
-
-    Route::get('api/v1/panel/provinces/{id}/cities', '\App\Http\Controllers\PaisRESTController@getAllCities');
-
     Route::get('api/v1panelplaces/ranking', '\App\Http\Controllers\PlacesRESTController@getCitiRanking');
     Route::get('api/v1panelplaces/nonGeo', '\App\Http\Controllers\PlacesRESTController@getNonGeo');
     Route::get('api/v1panelplaces/nongeofilterbyuser', '\App\Http\Controllers\PlacesRESTController@getNonGeoFilterByUser');
@@ -247,6 +244,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('api/v1/panel/partido/update/{id}', '\App\Http\Controllers\PartidoRESTController@updateHabilitado');
 
     Route::get('api/v1/panel/ciudad/panel', '\App\Http\Controllers\CiudadRESTController@showCities');
+    Route::get('api/v1/panel/ciudad/panel/{per_page}/', '\App\Http\Controllers\CiudadRESTController@showCitiespp');
+    Route::get('api/v1/panel/ciudad/panel/{per_page}/{q}', '\App\Http\Controllers\CiudadRESTController@showCitiespp');
     Route::post('api/v1/panel/ciudad/update/{id}', '\App\Http\Controllers\CiudadRESTController@updateHabilitado');
 
     Route::post('api/v1/panel/places/{id}/update', '\App\Http\Controllers\PlacesRESTController@update');
@@ -299,21 +298,16 @@ Route::get('api/v1/single/service/{code}', '\App\Http\Controllers\ServiceControl
 Route::get('api/v1/places/{pid}/{cid}/{bid}', '\App\Http\Controllers\PlacesRESTController@getScalar');
 
 Route::get('api/v1/countries/byuser', '\App\Http\Controllers\PaisRESTController@getCountriesByUser');
-Route::get('api/v1/countries/all', '\App\Http\Controllers\PaisRESTController@getAll');
-Route::get('api/v1/countries/{id}/provinces', '\App\Http\Controllers\PaisRESTController@getProvinces');
 
-Route::get('api/v1/provinces/{id}/partidos', '\App\Http\Controllers\PaisRESTController@getPartidos');
-
-Route::get('api/v1/parties/{id}/cities', '\App\Http\Controllers\PaisRESTController@getCitiesByParty');
-
-Route::get('api/v1/provinces/{id}/cities', '\App\Http\Controllers\PaisRESTController@getCities');
+Route::get('api/v1/panel/countries/all', '\App\Http\Controllers\PaisRESTController@getAll');
+Route::get('api/v1/panel/countries/{id}/provinces', '\App\Http\Controllers\PaisRESTController@getProvinces');
+Route::get('api/v1/panel/provinces/{id}/districts', '\App\Http\Controllers\PaisRESTController@getDistricts');
+Route::get('api/v1/panel/districts/{id}/cities', '\App\Http\Controllers\PaisRESTController@getCities');
 
 //ordenar places por comentarios
 Route::get('api/v2/places/comments/{id}', '\App\Http\Controllers\PlacesRESTController@getBestRatedPlaces');
 
 Route::resource('seo', '\App\Http\Controllers\SeoController');
-
-
 
 Auth::routes();
 

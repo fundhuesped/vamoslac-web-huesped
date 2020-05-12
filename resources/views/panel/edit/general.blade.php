@@ -1,9 +1,10 @@
 <form class="col s12 m6">
+    <label translate="establishment"></label>
     <div class="row">
         <div class="input-field col s12">
             <input id="establecimiento" type="text" name="establecimiento" class="validate" ng-model="place.establecimiento"
             ng-change="formChange()">
-            <label for="establecimiento" translate="establishment"></label>
+            <label for="establecimiento" translate="form_establishment_name"></label>
         </div>
     </div>
     <div class="row">
@@ -11,14 +12,15 @@
             <input id="tipo" type="text" name="tipo"
             class="validate" ng-model="place.tipo"
             ng-change="formChange()">
-            <label for="tipo" translate="type"></label>
+            <label for="tipo" translate="form_establishment_type"></label>
         </div>
     </div>
 
+    <label translate="address"></label>
     <div class="row">
         <div class="input-field col s12">
             <input id="calle" type="text" name="calle" class="validate" ng-model="place.calle" ng-change="formChange()">
-            <label for="calle" translate="street_address"></label>
+            <label for="calle" translate="form_establishment_street"></label>
         </div>
     </div>
     <div class="row">
@@ -27,14 +29,12 @@
             <label for="altura" translate="form_establishment_street_height"></label>
         </div>
     </div>
-
     <div class="row">
         <div class="input-field col s12">
             <input id="cruce" type="text" name="cruce" class="validate" ng-model="place.cruce" ng-change="formChange()">
             <label for="cruce" translate="form_establishment_street_intersection"></label>
         </div>
     </div>
-
     <div class="row">
         <div class="input-field col s12">
             <input id="piso_dpto" type="text" name="piso_dpto" class="validate" ng-model="place.piso_dpto" ng-change="formChange()">
@@ -42,55 +42,37 @@
         </div>
     </div>
 
+    <label translate="location"></label>
     <div class="row">
         <div class="input-field col s12">
-            <input disabled id="nombre_pais" type="text" name="nombre_pais" ng-model="place.nombre_pais" ng-change="formChange()">
-            <label for="nombre_pais" translate="country"></label>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="input-field col s12">
-            <input disabled id="nombre_provincia" type="text" name="nombre_provincia" ng-model="place.nombre_provincia" ng-change="formChange()">
-            <label for="nombre_provincia" translate="state"></label>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="input-field col s12">
-            <input disabled id="nombre_partido" type="text" name="nombre_partido" ng-model="place.nombre_partido" ng-change="formChange()">
-            <label for="nombre_partido" translate="district"></label>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="input-field col s12">
-            <select ng-change="showProvince()" ng-model="place.idPais" ng-options="v.id as v.nombre_pais for v in countries" material-select watch>
+            <select ng-change="loadProvinces()" ng-options="v.id as v.nombre_pais for v in countries" ng-model="place.idPais" material-select watch>
                 <option value="" disabled selected translate="select_country"></option>
             </select>
+            <label for="country" translate="country"></label>
         </div>
     </div>
-
     <div class="row">
         <div class="input-field col s12">
-            <select ng-change="loadCity()" ng-options="item.id as item.nombre_provincia for item in provinces track by item.id" ng-model="place.idProvincia" material-select watch>
-                <option value="" selected translate="select_state"></option>
+            <select ng-change="loadDistricts()" ng-options="v.id as v.nombre_provincia for v in provinces" ng-model="place.idProvincia" material-select watch>
+                <option value="" disabled selected translate="select_state"></option>
             </select>
+            <label for="state" translate="state"></label>
         </div>
     </div>
-
     <div class="row">
         <div class="input-field col s12">
-            <select class="wow" ng-change="trackPartido()" ng-disabled="!showCity" ng-options="v as v.nombre_partido for v in cities track by v.id" ng-model="place.partido" material-select watch>
+            <select ng-change="loadCities()" ng-options="v.id as v.nombre_partido for v in districts" ng-model="place.idPartido" material-select watch>
                 <option value="" disabled selected translate="select_department"></option>
             </select>
+            <label for="district" translate="district"></label>
         </div>
     </div>
-
     <div class="row">
         <div class="input-field col s12">
-            <input id="otro_partido" type="text" name="otro_partido" class="validate" ng-model="place.otro_partido" ng-change="formChange()">
-            <label for="otro_partido" translate="panel_detail_general_seggest"></label>
+            <select ng-options="v.id as v.nombre_ciudad for v in cities" ng-model="place.idCiudad" material-select watch>
+                <option value="" disabled selected translate="select_city"></option>
+            </select>
+            <label for="city" translate="city"></label>
         </div>
     </div>
 
@@ -103,29 +85,27 @@
 
     <div class="row">
         <div class="input-field col s12">
-            <input id="mail" type="email" name="mail" class="validate" ng-model="place.mail" ng-change="formChange()">
-            <label for="mail" translate="email"></label>
+            <input id="autocomplete" placeholder="" type="text" class="validate" />
+            <label for="autocomplete" translate="panel_detail_general_suggest"></label>
+        </div>
+    </div>
+    <div class="row" ng-hide="!outputAutocomplete">
+        <div class="input-field col s12">
+            <input id="autocomplete_output" type="text" ng-model="outputAutocomplete" disabled style="color: red" />
+            <label for="autocomplete_output" translate="panel_warning_autocomplete" style="color: red"></label>
         </div>
     </div>
 
     <div class="row">
         <div class="input-field col s12">
-            <input id="tel" type="text" name="tel" class="validate" ng-model="place.tel" ng-change="formChange()">
-            <label for="tel" translate="tel"></label>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="input-field col s12">
-            <textarea id="observacion" type="text"
-            name="observacion"
+            <textarea id="observacion" type="text" name="observacion"
             class="validate materialize-textarea" ng-model="place.observacion" ng-change="formChange()"></textarea>
             <label for="observacion" translate="observations"></label>
         </div>
     </div>
 
     <br>
-    <div class="row">
+{{--     <div class="row">
         <div class="valign-demo  valign-wrapper">
             <div class="valign full-width actions">
                 <p>
@@ -134,7 +114,7 @@
                 </p>
             </div>
         </div>
-    </div>
+    </div> --}}
 </form>
 
 <div class="col s12 m6">

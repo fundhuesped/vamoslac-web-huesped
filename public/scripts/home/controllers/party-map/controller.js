@@ -38,6 +38,19 @@ dondev2App.controller('partyMapController',
       $scope.voteLimit++;
     }
 
+    function correctWebLinks(place){
+      var columns = ['web_distrib','web_dc','web_ile','web_infectologia','web_mac','web_testeo','web_ssr','web_vac'];
+      var patt = new RegExp("^(http:\/\/|https:\/\/).+$");
+      for (var i = 0; i < columns.length; i++) {
+        var str = place[columns[i]];
+        if(str && !patt.test(str)){
+          str = str.toLowerCase();
+          place[columns[i]] = "http://" + str;
+        }
+      }
+      return place;
+    }
+
     $scope.nextShowUp = function(item) {
 
       var urlCount = "api/v2/evaluacion/cantidad/" + item.placeId;
@@ -133,28 +146,29 @@ dondev2App.controller('partyMapController',
 
     if ($rootScope.places.length > 0 && $rootScope.currentMarker) {
 
-      $rootScope.centerMarkers = [];
+      $rootScope.currentMarker = correctWebLinks($rootScope.currentMarker);
+      // $rootScope.centerMarkers = [];
       //tengo que mostrar arriba en el map si es dekstop.
       $rootScope.centerMarkers.push($rootScope.currentMarker);
 
-      $rootScope.moveMapTo = {
-        latitude: parseFloat($rootScope.currentMarker.latitude),
-        longitude: parseFloat($rootScope.currentMarker.longitude),
-        zoom: 18,
-        center: true,
-      };
+      // $rootScope.moveMapTo = {
+      //   latitude: parseFloat($rootScope.currentMarker.latitude),
+      //   longitude: parseFloat($rootScope.currentMarker.longitude),
+      //   zoom: 18,
+      //   center: true,
+      // };
     } else {
       placesFactory.getAllFor(search, function(data) {
         $rootScope.places = $scope.places = data;
         $rootScope.currentMarker = $scope.currentMarker = $scope.places[0];
 
-        $rootScope.moveMapTo = {
-          latitude: $rootScope.currentMarker.latitude,
-          longitude: $rootScope.currentMarker.longitude,
-          zoom: 14,
-          center: true,
-        };
-        $rootScope.centerMarkers = [];
+        // $rootScope.moveMapTo = {
+        //   latitude: $rootScope.currentMarker.latitude,
+        //   longitude: $rootScope.currentMarker.longitude,
+        //   zoom: 14,
+        //   center: true,
+        // };
+        // $rootScope.centerMarkers = [];
         //tengo que mostrar arriba en el map si es dekstop.
         $rootScope.centerMarkers.push($rootScope.currentMarker);
 

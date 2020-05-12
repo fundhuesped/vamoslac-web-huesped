@@ -1,6 +1,7 @@
 @extends('layouts.panel-master')
 
 @section('content')
+{{ csrf_field() }}
 <div class="home" ng-controller="panelplaceController" ng-init="placeId={{$placeId}}">
     <div ng-cloak ng-show="loading">
         <div class="progress">
@@ -74,29 +75,5 @@
 @stop
 
 @section('js')
-
-{!!Html::script('libs/trabex-genosha-geolibs.js')!!}
-{!!Html::script('bower_components/ngmap/build/scripts/ng-map.min.js')!!}
-
-{!!Html::script('scripts/panel/app.js')!!}
 {!!Html::script('scripts/panel/controllers/places/controller.js')!!}
-{!!Html::script('scripts/home/services/places.js')!!}
-{!!Html::script('scripts/home/services/copy.js')!!}
-{!!Html::script('bower_components/angular-translate/angular-translate.js')!!}
-{!!Html::script('scripts/translations/es.js')!!}
-{!!Html::script('scripts/translations/en.js')!!}
-{!!Html::script('scripts/translations/br.js')!!}
-
 @stop
-
-
-
-
-
-{{-- <div id="Infecciosas" class="col s12">
-    @include('panel/edit/infectologia')
-</div>
-
-<div id="Vacunacion" class="col s12">
-    @include('panel/edit/vac')
-</div> --}}

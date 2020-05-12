@@ -152,13 +152,9 @@ dondev2App.controller('locateListController',
 
         });
 
-      //Actualizar markers seleccionados en el mapa
+      //Actualizar markers seleccionados. Actualiza el mapa automaticamente
       $rootScope.currentMarker = item;
       $rootScope.centerMarkers.push($rootScope.currentMarker);
-
-      //Actualizar el mapa
-      $rootScope.moveMapTo = {latitude: item.latitude, longitude: item.longitude};
-      $rootScope.currentZoom = {'rand': Math.random(), 'zoom': 'place'};
 
       //con esto centro el mapa en el place correspondiente
       $location.path('/localizar' + '/' + $routeParams.servicio + '/mapa');
@@ -281,13 +277,9 @@ dondev2App.controller('locateListController',
             }
           }
 
-          //Cargar markers en el mapa
+          // Cargar markers en el mapa. Actualiza el mapa automaticamente
           $rootScope.places = $scope.places = $scope.closer = resultTemp;
           $scope.cantidad = $scope.places.length;
-
-          //Actualizar el mapa
-          $rootScope.moveMapTo = position.coords;
-          $rootScope.currentZoom = {'rand': Math.random(), 'zoom': 'location'};
 
 					if (typeof $rootScope.places[0] != 'undefined' && $rootScope.places[0].idPais != undefined){
 						var url = "api/v2/getiletag/" + $rootScope.places[0].idPais;
