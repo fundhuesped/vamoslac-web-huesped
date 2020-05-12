@@ -18,10 +18,21 @@ dondev2App.factory('placesFactory', function($http, $filter) {
 		},
 
 		forLocation: function(l,cb){
-
 	  		$http.get('api/v1/places/geo/' + l.latitude + '/' + l.longitude)
 				.success(function(cercanos){
 					cb(cercanos);
+			});
+		},
+
+		load: function(cb){
+			cb();
+		},
+
+		getCountriesFilterByUser:function(cb){
+			$http.get('api/v1/countries/byuser')
+				.success(function(countries){
+					factory.countries = countries;
+					cb(countries);
 			});
 		},
 
@@ -33,22 +44,8 @@ dondev2App.factory('placesFactory', function($http, $filter) {
 			});
 		},
 
-		getCountriesFilterByUser:function(cb){
-			$http.get('api/v1/countries/byuser')
-				.success(function(countries){
-					factory.countries = countries;
-					cb(countries);
-			});
-		},
-
-		load: function(cb){
-
-			cb();
-
-		},
-
 		getProvincesForCountry:function(p,cb){
-			$http.get('api/v1/countries/'+ p +'/provinces')
+			$http.get('api/v1/panel/countries/'+ p +'/provinces')
 				.success(function(provinces){
 					factory.provinces[p] = provinces;
 					cb(provinces);
@@ -57,25 +54,7 @@ dondev2App.factory('placesFactory', function($http, $filter) {
 		},
 
 		getPartidosForProvince:function(p,cb){
-			$http.get('api/v1/provinces/'+ p + '/partidos')
-				.success(function(cities){
-					factory.cities[p] = cities;
-					cb(cities);
-			});
-
-		},
-
-		getAllFor:function(s,cb){
-
-			$http.get('api/v1/places/'+ s.pais +'/'+  s.provincia +'/'+ s.partido + '/' + s.ciudad + '/' + s.service)
-				.success(function(places){
-					cb(places);
-
-			});
-		},
-
-		getCitiesForProvince: function(p,cb){
-			$http.get('api/v1/provinces/'+ p.id +'/cities')
+			$http.get('api/v1/panel/provinces/'+ p + '/districts')
 				.success(function(cities){
 					factory.cities[p] = cities;
 					cb(cities);
@@ -84,7 +63,24 @@ dondev2App.factory('placesFactory', function($http, $filter) {
 		},
 
 		getCitiesForPartidos: function(p,cb){
-			$http.get('api/v1/parties/'+ p.id +'/cities')
+			$http.get('api/v1/panel/districts/'+ p.id +'/cities')
+				.success(function(cities){
+					factory.cities[p] = cities;
+					cb(cities);
+			});
+
+		},
+
+		getAllFor:function(s,cb){
+			$http.get('api/v1/places/'+ s.pais +'/'+  s.provincia +'/'+ s.partido + '/' + s.ciudad + '/' + s.service)
+				.success(function(places){
+					cb(places);
+
+			});
+		},
+
+		getCitiesForProvince: function(p,cb){
+			$http.get('api/v1/panel/provinces/'+ p.id +'/cities')
 				.success(function(cities){
 					factory.cities[p] = cities;
 					cb(cities);
@@ -93,7 +89,6 @@ dondev2App.factory('placesFactory', function($http, $filter) {
 		},
 
 		getPlacesByParty: function(p,cb){
-
 			$http.get('api/v1/places/'+ p.partido + '/' + p.service)
 				.success(function(establecimientos){
 					factory.establecimientos[p] = establecimientos;

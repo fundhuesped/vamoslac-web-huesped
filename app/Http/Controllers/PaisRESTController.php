@@ -78,6 +78,13 @@ class PaisRESTController extends Controller{
         return $cities;
     }
 
+    public function getCitiesForProvince($id){
+        $cities = Ciudad::where('idProvincia', $id)
+        ->orderBy('nombre_ciudad')
+        ->get();
+        return $cities;
+    }
+
     public function showCountries(){
         $countries =  DB::table('pais')->orderBy('nombre_pais')->get();
         return view('seo.countries', compact('countries'));

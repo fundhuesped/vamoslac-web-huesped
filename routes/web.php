@@ -302,6 +302,7 @@ Route::get('api/v1/countries/byuser', '\App\Http\Controllers\PaisRESTController@
 Route::get('api/v1/panel/countries/all', '\App\Http\Controllers\PaisRESTController@getAll');
 Route::get('api/v1/panel/countries/{id}/provinces', '\App\Http\Controllers\PaisRESTController@getProvinces');
 Route::get('api/v1/panel/provinces/{id}/districts', '\App\Http\Controllers\PaisRESTController@getDistricts');
+Route::get('api/v1/panel/provinces/{id}/cities', '\App\Http\Controllers\PaisRESTController@getCitiesForProvince');
 Route::get('api/v1/panel/districts/{id}/cities', '\App\Http\Controllers\PaisRESTController@getCities');
 
 //ordenar places por comentarios
