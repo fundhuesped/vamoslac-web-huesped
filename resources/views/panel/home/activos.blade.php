@@ -80,8 +80,7 @@ ng-model="selectedCity" material-select watch>
         </div>
       </nav>
 
-      <ng-map id="mapEditor" zoom-to-include-markers='true'
-      lazy-init="true">
+      <ng-map id="mapEditor" zoom-to-include-markers='true' lazy-init="true">
       <marker ng-repeat="pos in places"
 
       position="[[pos.latitude]], [[pos.longitude]]"
@@ -96,7 +95,7 @@ ng-model="selectedCity" material-select watch>
   <nav >
     <div class="ng-cloak nav-wrapper"  ng-cloak ng-hide="loadingPost && places.length === 0">
       <form>
-        <div class"row">
+        <div class="row">
           <div class="col s12 m12">
             <div class="input-field">
               <input type="search" ng-change="filterAllplaces()" ng-model="searchExistence"
