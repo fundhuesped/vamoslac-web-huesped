@@ -11,9 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/test', function () {
     return redirect("/#/como-buscas/prueba/");
@@ -311,5 +310,3 @@ Route::get('api/v2/places/comments/{id}', '\App\Http\Controllers\PlacesRESTContr
 Route::resource('seo', '\App\Http\Controllers\SeoController');
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
