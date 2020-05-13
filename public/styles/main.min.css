@@ -6,8 +6,6 @@
   font-style: normal;
 }
 
-
-
 /* Error pages */
 .error-container {
   background-color: #dddddd;
@@ -1962,4 +1960,9 @@ input:not([type]).invalid+label:after, input:not([type]):focus.invalid+label:aft
 
 .ml-3{
   margin-left: 3rem;
+}
+
+table.orderded th {
+    cursor: pointer;
+    text-decoration: underline;
 }
