@@ -130,6 +130,26 @@
             <label for="barrio_localidad" translate="neighborhood"></label>
           </div>
         </div>
+
+        {{-- Api google maps --}}
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="autocomplete" placeholder="" type="text" autocomplete="no" ng-model="inputAutocomplete"/>
+                <label for="autocomplete" translate="panel_detail_general_suggest"></label>
+            </div>
+        </div>
+        <div class="row" ng-hide="!outputAutocomplete">
+            <div class="input-field col s9">
+                <input id="autocomplete_output" type="text" ng-model="outputAutocomplete" disabled style="color: red" />
+                <label for="autocomplete_output" translate="panel_warning_autocomplete" style="color: red"></label>
+            </div>
+            <div class="col s3">
+                <button class="waves-effect waves-light btn btn-large full" ng-click="cancelNewCity()">
+                    <i class="mdi-navigation-cancel"></i>
+                </button>
+            </div>
+        </div>
+
         <!-- INPUT -->
         <div class="row">
           <div class="input-field col s12">
@@ -491,11 +511,20 @@
 {!!Html::script('bower_components/ngmap/build/scripts/ng-map.min.js')!!}
 {!!Html::script('bower_components/angular-recaptcha/release/angular-recaptcha.min.js')!!}
 {!!Html::script('bower_components/angular-translate/angular-translate.js')!!}
+
 {!!Html::script('scripts/translations/es.js')!!}
 {!!Html::script('scripts/translations/en.js')!!}
 {!!Html::script('scripts/translations/br.js')!!}
+
 {!!Html::script('scripts/form/app.js')!!}
-{!!Html::script('scripts/form/controllers/form/controller.js')!!}
+{!!Html::script('scripts/services/autocomplete.js')!!}
 {!!Html::script('scripts/home/services/places.js')!!}
 
+{!!Html::script('scripts/form/controllers/form/controller.js')!!}
+
+<script type="text/javascript">
+  $('#autocomplete').focus(function() {
+    $(this).attr('autocomplete', 'no');
+});
+</script>
 @stop

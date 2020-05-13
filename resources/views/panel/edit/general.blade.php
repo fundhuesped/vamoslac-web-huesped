@@ -85,14 +85,19 @@
 
     <div class="row">
         <div class="input-field col s12">
-            <input id="autocomplete" placeholder="" type="text" class="validate" />
+            <input id="autocomplete" placeholder="" type="text" class="validate" autocomplete="chrome-off" ng-model="inputAutocomplete"/>
             <label for="autocomplete" translate="panel_detail_general_suggest"></label>
         </div>
     </div>
     <div class="row" ng-hide="!outputAutocomplete">
-        <div class="input-field col s12">
+        <div class="input-field col s9">
             <input id="autocomplete_output" type="text" ng-model="outputAutocomplete" disabled style="color: red" />
             <label for="autocomplete_output" translate="panel_warning_autocomplete" style="color: red"></label>
+        </div>
+        <div class="col s3">
+            <button class="waves-effect waves-light btn btn-large full" ng-click="cancelNewCity()">
+                <i class="mdi-navigation-cancel"></i>
+            </button>
         </div>
     </div>
 

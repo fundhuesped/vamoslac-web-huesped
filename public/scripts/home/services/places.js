@@ -37,7 +37,7 @@ dondev2App.factory('placesFactory', function($http, $filter) {
 		},
 
 		getCountries:function(cb){
-			$http.get('api/v1/countries/all')
+			$http.get('api/v1/panel/countries/all')
 				.success(function(countries){
 					factory.countries = countries;
 					cb(countries);

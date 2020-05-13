@@ -13,6 +13,7 @@ use App\PlaceLog;
 use Validator;
 use DB;
 use Auth;
+use App;
 
 class PlacesRESTController extends Controller
 {
@@ -1104,10 +1105,10 @@ class PlacesRESTController extends Controller
 
         $rules = array(
           'establecimiento' => 'required|max:150|min:2',
-          'idCiudad' => 'required|exists:ciudad,id',
-          'idPartido' => 'required|exists:partido,id',
-          'idProvincia' => 'required|exists:provincia,id',
-          'idPais' => 'required|exists:pais,id',
+          'idCiudad'        => 'required_without_all:newCityAdded|exists:ciudad,id',
+          'idPartido'       => 'required_without_all:newCityAdded|exists:partido,id',
+          'idProvincia'     => 'required_without_all:newCityAdded|exists:provincia,id',
+          'idPais'          => 'required_without_all:newCityAdded|exists:pais,id',
         );
 
         $messages = array(
@@ -1236,11 +1237,11 @@ class PlacesRESTController extends Controller
 
             if (isset($request_params['newCityAdded'])) {
               // Ingreso de nueva localidad
-              $this->addOrCreateNewLocations($place,$request_params);
+              App::make('App\Services\LocationService')->getOrCreateNewLocation($place,$request_params);
             }
             else{
               // Update localidad existente
-              $this->updateLocationsAvailability($place);
+              App::make('App\Services\LocationService')->updateLocationAvailability($place);
             }
 
             $place->updated_at = date("Y-m-d H:i:s");
@@ -1249,111 +1250,6 @@ class PlacesRESTController extends Controller
         }
 
         return $validator->messages();
-    }
-
-    public function updateAvailability($table, $id){
-      DB::table($table)->where('id',$id)->update(['habilitado' => 1]);
-    }
-
-    public function updateLocationsAvailability($place){
-      $this->updateAvailability('pais',$place->idPais);
-      $this->updateAvailability('provincia',$place->idProvincia);
-      $this->updateAvailability('partido',$place->idPartido);
-      $this->updateAvailability('ciudad',$place->idCiudad);
-    }
-
-    public function addOrCreateNewLocations($place,$request){
-      $nombre_pais = $request['nombre_pais'];
-      $nombre_provincia = $request['nombre_provincia'];
-      $nombre_partido = $request['nombre_partido'];
-      $nombre_ciudad = $request['nombre_ciudad'];
-      
-      $place->idPais = DB::table('pais')
-      ->where('pais.nombre_pais', '=', $nombre_pais)
-      ->value('id');
-
-      if ( !$place->idPais ){
-        $place->idPais = DB::table('pais')->max('id') + 1;
-        DB::table('pais')->insert([
-          'id' => $place->idPais,
-          'nombre_pais' => $nombre_pais,
-          'habilitado' => 1,
-          'created_at' => date("Y-m-d H:i:s")
-        ]);
-      }
-      else{
-        $this->updateAvailability('pais',$place->idPais);
-      }
-
-      $place->idProvincia = DB::table('provincia')
-      ->join('pais','pais.id','=','provincia.idPais')
-      ->where('pais.nombre_pais', '=', $nombre_pais)
-      ->where('provincia.nombre_provincia', '=', $nombre_provincia)
-      ->value('provincia.id');
-
-      if ( !$place->idProvincia ){
-        $place->idProvincia = DB::table('provincia')->max('id') + 1;
-        DB::table('provincia')->insert([
-          'id' => $place->idProvincia,
-          'nombre_provincia' => $nombre_provincia,
-          'habilitado' => 1,
-          'created_at' => date("Y-m-d H:i:s"),
-          'idPais'    => $place->idPais
-        ]);
-      }
-      else{
-        $this->updateAvailability('provincia',$place->idProvincia);
-      }
-
-      $place->idPartido = DB::table('partido')
-      ->join('provincia','provincia.id','=','partido.idProvincia')
-      ->join('pais','pais.id','=','partido.idPais')
-      ->where('pais.nombre_pais', '=', $nombre_pais)
-      ->where('provincia.nombre_provincia', '=', $nombre_provincia)
-      ->where('partido.nombre_partido', '=', $nombre_partido)
-      ->value('partido.id');
-
-      if ( !$place->idPartido ){
-        $place->idPartido = DB::table('partido')->max('id') + 1;
-        DB::table('partido')->insert([
-          'id' => $place->idPartido,
-          'nombre_partido' => $nombre_partido,
-          'habilitado' => 1,
-          'created_at' => date("Y-m-d H:i:s"),
-          'idPais'    => $place->idPais,
-          'idProvincia'  => $place->idProvincia,
-        ]);
-      }
-      else{
-        $this->updateAvailability('partido',$place->idPartido);
-      }
-
-      $place->idCiudad = DB::table('ciudad')
-      ->join('partido','partido.id','=','ciudad.idPartido')
-      ->join('provincia','provincia.id','=','ciudad.idProvincia')
-      ->join('pais','pais.id','=','ciudad.idPais')
-      ->where('pais.nombre_pais', '=', $nombre_pais)
-      ->where('provincia.nombre_provincia', '=', $nombre_provincia)
-      ->where('partido.nombre_partido', '=', $nombre_partido)
-      ->where('ciudad.nombre_ciudad', '=', $nombre_ciudad)
-      ->value('ciudad.id');
-
-      if ( !$place->idCiudad ){
-        $place->idCiudad = DB::table('ciudad')->max('id') + 1;
-        DB::table('ciudad')->insert([
-          'id' => $place->idCiudad,
-          'nombre_ciudad' => $nombre_ciudad,
-          'habilitado' => 1,
-          'created_at' => date("Y-m-d H:i:s"),
-          'idPais'    => $place->idPais,
-          'idProvincia'  => $place->idProvincia,
-          'idPartido'  => $place->idPartido,
-        ]);
-      }
-      else{
-        $this->updateAvailability('ciudad',$place->idCiudad);
-      }
-
     }
 
     public function getAllPlaces(Request $request)

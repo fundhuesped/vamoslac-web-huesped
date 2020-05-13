@@ -184,9 +184,15 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     }
   };
 
+  $scope.cancelNewCity = function(){
+    $scope.outputAutocomplete = "";
+    $scope.inputAutocomplete = "";
+    $scope.autocompleteForm = [];
+  }
+
   function isValidAutocomplete(){
     var valid = true;
-    if(!$scope.autocompleteForm) return false;
+    if(!$scope.autocompleteForm || $scope.autocompleteForm.length === 0) return false;
     for (var i = 0; i < $scope.autocompleteForm.length; i++) {
       var component = $scope.autocompleteForm[i];
       if(component == "")

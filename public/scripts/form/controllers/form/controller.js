@@ -1,4 +1,4 @@
-dondev2App.controller('formController', function(NgMap, vcRecaptchaService, placesFactory, $scope, $rootScope, $http, $interpolate, $location, $translate) {
+dondev2App.controller('formController', function(NgMap, autocompleteService, vcRecaptchaService, placesFactory, $scope, $rootScope, $http, $interpolate, $location, $translate) {
 
   $rootScope.main = true;
   $scope.invalid = true;
@@ -23,14 +23,14 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
     if (typeof localStorage.lang !== "undefined") {
 
       $http.get('changelang/' + localStorage.lang)
-        .success(
-          function(response) {
+      .success(
+        function(response) {
 
-            $translate.use(localStorage.getItem("lang"));
-          },
-          function(response) {
-            Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-          });
+          $translate.use(localStorage.getItem("lang"));
+        },
+        function(response) {
+          Materialize.toast('Intenta nuevamente mas tarde.', 5000);
+        });
     } else {
       var userLang = navigator.language || navigator.userLanguage; // es-AR
       var userLang = userLang.split('-')[0]; // es
@@ -44,7 +44,6 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
     }
   }
 
-
   var onLocationFound = function(position) {
 
     $scope.$apply(function() {
@@ -54,7 +53,6 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
       var lon = position.coords.longitude;
       $scope.place.latitude = lat;
       $scope.place.longitude = lon;
-
 
       $scope.place.position = [lat, lon];
 
@@ -80,39 +78,52 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
     } else {
       ga('send', 'event', 'geolalizacion', 'localizacioNoFunciona', "");
       alert("no location found");
-
     }
-
-
   };
+
+  function isValidAttr(attr){
+    return !(typeof attr === "undefined" || attr === null || 0 === attr.length);
+  }
 
   function invalidForm() {
     var flag = (
       (!$scope.aceptaTerminos) ||
-      (typeof $scope.place.idPais === "undefined") ||
-      (typeof $scope.place.idProvincia === "undefined") ||
-      (typeof $scope.place.idPartido === "undefined") ||
-      (typeof $scope.place.idCiudad === "undefined") ||
+      (!isValidLocation()) ||
       (!$scope.place.establecimiento || 0 === $scope.place.establecimiento.length));
     if (!flag) {
-      return (
-        !($scope.place.condones && !(typeof $scope.place.servicetype_condones === "undefined" || $scope.place.servicetype_condones === null))  &&
-        !($scope.place.ile      && !(typeof $scope.place.servicetype_ile === "undefined" || $scope.place.servicetype_ile === null))            &&   
-        !($scope.place.prueba   && !(typeof $scope.place.servicetype_prueba === "undefined" || $scope.place.servicetype_prueba === null))      &&
-        !($scope.place.mac      && !(typeof $scope.place.servicetype_mac === "undefined" || $scope.place.servicetype_mac === null))            &&
-        !($scope.place.ssr      && !(typeof $scope.place.servicetype_ssr === "undefined" || $scope.place.servicetype_ssr === null))            &&
-        !($scope.place.dc       && !(typeof $scope.place.servicetype_dc === "undefined" || $scope.place.servicetype_dc === null))
-      );
+      return !isValidServices();
     } else return true;
   }
 
-  function invalidCity() {
-    return false; //((typeof $scope.myCity === "undefined") && (!$scope.otra_localidad || 0 === $scope.otra_localidad.length));
+  function isValidServices(){
+    if(( $scope.place.condones || $scope.place.ile || $scope.place.prueba ||
+      $scope.place.mac      || $scope.place.ssr || $scope.place.dc      )
+      &&
+      ( !($scope.place.condones && !isValidAttr($scope.place.servicetype_condones)) &&
+        !($scope.place.ile      && !isValidAttr($scope.place.servicetype_ile))      &&   
+        !($scope.place.prueba   && !isValidAttr($scope.place.servicetype_prueba))   &&
+        !($scope.place.mac      && !isValidAttr($scope.place.servicetype_mac))      &&
+        !($scope.place.ssr      && !isValidAttr($scope.place.servicetype_ssr))      &&
+        !($scope.place.dc       && !isValidAttr($scope.place.servicetype_dc))        )
+      )
+      return true;
+    else
+      return false;
+  }
 
+  function isValidLocation() {
+    var valid = true;
+    if((typeof $scope.place.idPais      === "undefined")  ||
+      (typeof $scope.place.idProvincia  === "undefined")  ||
+      (typeof $scope.place.idPartido    === "undefined")  ||
+      (typeof $scope.place.idCiudad     === "undefined")  )
+      valid = false;
+    if(isValidAutocomplete())
+      valid = true;
+    return valid;
   }
 
   $scope.formChange = function() {
-    //if (invalidForm() || invalidCity()) {
     if (invalidForm()) {
       $scope.invalid = true;
     } else {
@@ -204,6 +215,86 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
 
   }
 
+  placesFactory.getCountries(function(countries) {
+    $scope.countries = countries;
+  })
+
+  $scope.showProvince = function() {
+    $scope.provinceOn = true;
+    placesFactory.getProvincesForCountry($scope.place.idPais, function(data) {
+      $scope.provinces = data;
+    });
+  }
+
+  $scope.showPartido = function() {
+    $scope.partidoOn = true;
+    placesFactory.getPartidosForProvince($scope.place.idProvincia, function(data) {
+      $scope.partidos = data;
+    });
+  }
+
+  $scope.loadCity = function() {
+    $scope.showCity = true;
+    placesFactory.getCitiesForPartidos({
+      id: $scope.place.idPartido
+    }, function(data) {
+      $scope.cities = data;
+    })
+  };
+
+  autocompleteService.initAutocomplete(checkAutocomplete);
+  $scope.outputAutocomplete = "";
+
+  function checkAutocomplete(){
+    $scope.autocompleteForm = autocompleteService.fillInCity();
+    var valid = isValidAutocomplete();
+    if(valid){
+      var str = commaParsing($scope.autocompleteForm);
+      $scope.outputAutocomplete = str;
+      $scope.$apply();
+    }
+  };
+
+  $scope.cancelNewCity = function(){
+    $scope.outputAutocomplete = "";
+    $scope.inputAutocomplete = "";
+    $scope.autocompleteForm = [];
+  }
+
+  function isValidAutocomplete(){
+    var valid = true;
+    if(!$scope.autocompleteForm || $scope.autocompleteForm.length === 0) return false;
+    for (var i = 0; i < $scope.autocompleteForm.length; i++) {
+      var component = $scope.autocompleteForm[i];
+      if(component == "")
+        valid = false;
+    }
+    return valid;
+  }
+
+  function commaParsing(array){
+    var str = "";
+    for (var i = 0; i < array.length; i++) {
+      var component = array[i];
+      if(component != ""){
+        if(i == 0)
+          str = str + component;
+        else
+          str =  str  + ", " + component;
+      }
+    }
+    return str;
+  }
+
+  function placeAutocompleteParsing(){
+    if(!isValidAutocomplete()) return;
+    $scope.place.nombre_ciudad    = $scope.autocompleteForm[0];
+    $scope.place.nombre_partido   = $scope.autocompleteForm[1];
+    $scope.place.nombre_provincia = $scope.autocompleteForm[2];
+    $scope.place.nombre_pais      = $scope.autocompleteForm[3];
+    $scope.place.newCityAdded = true;
+  }
+
   $scope.clicky = function() {
     $scope.formChange();
     if($scope.invalid){
@@ -213,6 +304,8 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
         Materialize.toast("Complete the form", 5000);
       return;
     }
+    placeAutocompleteParsing();
+
     $scope.invalid = true;
     $scope.spinerflag = true;
 
@@ -220,68 +313,29 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
     var data = $scope.place;
 
     $http.post('api/v1/places', data)
-      .then(
-        function(response) {
-          $scope.spinerflag = false;
-          if (response.data.length === 0) {
-            Materialize.toast('Su peticion a sido enviada!', 5000);
-            $("button").remove();
-            $("input").val("");
-            document.location.href = $location.path();
-          } else {
-            for (var propertyName in response.data) {
-              Materialize.toast(response.data[propertyName], 10000);
-            }
-            $scope.spinerflag = false;
-            $scope.formChange();
+    .then(
+      function(response) {
+        $scope.spinerflag = false;
+        if (response.data.length === 0) {
+          Materialize.toast('Su peticion a sido enviada!', 5000);
+          $("button").remove();
+          $("input").val("");
+          document.location.href = $location.path();
+        } else {
+          for (var propertyName in response.data) {
+            Materialize.toast(response.data[propertyName], 10000);
           }
-
-        },
-        function(response) {
-          Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-          $scope.invalid = false;
           $scope.spinerflag = false;
+          $scope.formChange();
+        }
 
-        });
-
+      },
+      function(response) {
+        Materialize.toast('Intenta nuevamente mas tarde.', 5000);
+        $scope.invalid = false;
+        $scope.spinerflag = false;
+      });
   };
-
-  placesFactory.getCountries(function(countries) {
-    $scope.countries = countries;
-  })
-
-
-
-
-
-  $scope.loadCity = function() {
-    $scope.showCity = true;
-    placesFactory.getCitiesForPartidos({
-      id: $scope.place.idPartido
-    }, function(data) {
-      $scope.cities = data;
-    })
-
-  };
-
-
-  $scope.showProvince = function() {
-
-    $scope.provinceOn = true;
-    placesFactory.getProvincesForCountry($scope.place.idPais, function(data) {
-      $scope.provinces = data;
-    });
-
-  }
-
-  $scope.showPartido = function() {
-
-    $scope.partidoOn = true;
-    placesFactory.getPartidosForProvince($scope.place.idProvincia, function(data) {
-      $scope.partidos = data;
-    });
-
-  }
 
   $rootScope.changeLanguage = function() {
 
@@ -290,18 +344,18 @@ dondev2App.controller('formController', function(NgMap, vcRecaptchaService, plac
     $translate.use($rootScope.selectedLanguage);
     // $cookies.put('lang', $rootScope.selectedLanguage);
     $http.get('changelang/' + $rootScope.selectedLanguage)
-      .then(
-        function(response) {
+    .then(
+      function(response) {
 
-          if (response.statusText == 'OK') {
+        if (response.statusText == 'OK') {
 
-          } else {
-            Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-          }
-        },
-        function(response) {
+        } else {
           Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-        });
+        }
+      },
+      function(response) {
+        Materialize.toast('Intenta nuevamente mas tarde.', 5000);
+      });
 
     return;
   }
