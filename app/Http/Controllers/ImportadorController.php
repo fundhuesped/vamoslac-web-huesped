@@ -57,10 +57,27 @@ class ImportadorController extends Controller {
 
 	public function preparePlaceToImport($book,$status){
 		$id = $book['id'];									//save 'id' data
-		array_shift($book); 								//pop the 'id' column
+		unset($book['id']); 								//pop the 'id' column
 		$book = array_merge(['placeId' => $id], $book);		//push the 'placeId' column
 		$book = array_merge(['status' => $status], $book);	//push the 'status' value
 		return $book;
+	}
+
+	public function preparePlaceToExport($array){		
+		$id = $array['placeId'];							//save 'id' data
+		unset($array['status']);							//pop the 'status' column
+		unset($array['placeId']);							//pop the 'placeId' column
+		$array = array_merge(['id' => $id], $array);		//push the 'id' column
+		return $array;
+	}
+
+	public function filterCsvColumns($array){
+		$place = array();
+		$columns = $this->csvColumns_arrayFormat;
+		foreach ($columns as $key => $column) {
+			$place[$column] = $array[$column];
+		}
+		return $place;
 	}
 
 	public function insertDataIntoCsv_places($data){
@@ -70,116 +87,10 @@ class ImportadorController extends Controller {
 		$csv->insertOne($this->csvColumns);
 	    //body
 		foreach ($data as $key => $p) {
-			$p = (array)$p;
-			$p['condones']= $this->parseToExport($p['condones']);
-			$p['prueba']= $this->parseToExport($p['prueba']);
-			$p['vacunatorio']= $this->parseToExport($p['vacunatorio']);
-			$p['ile']= $this->parseToExport($p['ile']);
-			$p['ssr']= $this->parseToExport($p['ssr']);
-			$p['infectologia']= $this->parseToExport($p['infectologia']);
-			$p['es_rapido']= $this->parseToExport($p['es_rapido']);
-			$p['friendly_ile']= $this->parseToExport($p['friendly_ile']);
-			$p['friendly_mac']= $this->parseToExport($p['friendly_mac']);
-			$p['friendly_condones']= $this->parseToExport($p['friendly_condones']);
-			$p['friendly_prueba']= $this->parseToExport($p['friendly_prueba']);
-			$p['friendly_ssr']= $this->parseToExport($p['friendly_ssr']);
-			$p['friendly_dc']= $this->parseToExport($p['friendly_dc']);
-
-
-			if (!isset($p['nombre_ciudad'])) { $p['nombre_ciudad'] = $p['ciudad']; }
-			if (!isset($p['nombre_partido'])) { $p['nombre_partido'] = $p['partido_comuna']; }
-			if (!isset($p['nombre_provincia'])) { $p['nombre_provincia'] = $p['provincia_region']; }
-			if (!isset($p['nombre_pais'])) { $p['nombre_pais'] = $p['pais']; }
-			if (!isset($p['formattedaddress'])) { $p['formattedaddress'] = ''; }
-			if (!isset($p['uploader_name'])) { $p['uploader_name'] = ''; }
-			if (!isset($p['uploader_tel'])) { $p['uploader_tel'] = ''; }
-			if (!isset($p['uploader_email'])) { $p['uploader_email'] = ''; }
-
-			$csv->insertOne([
-				$p['placeId'],
-				$p['establecimiento'],
-				$p['tipo'],
-				$p['calle'],
-				$p['altura'],
-				$p['piso_dpto'],
-				$p['cruce'],
-				$p['barrio_localidad'],
-				$p['nombre_ciudad'],
-				$p['nombre_partido'],
-				$p['nombre_provincia'],
-				$p['nombre_pais'],
-				$p['aprobado'],
-				$p['observacion'],
-				$p['formattedaddress'],
-				$p['latitude'],
-				$p['longitude'],
-				$p['habilitado'],
-				$p['confidence'],
-				$p['condones'],
-				$p['prueba'],
-				$p['vacunatorio'],
-				$p['ile'],
-				$p['infectologia'],
-				$p['ssr'],
-				$p['es_rapido'],
-				$p['tel_distrib'],
-				$p['mail_distrib'],
-				$p['horario_distrib'],
-				$p['responsable_distrib'],
-				$p['web_distrib'],
-				$p['ubicacion_distrib'],
-				$p['comentarios_distrib'],
-				$p['tel_testeo'],
-				$p['mail_testeo'],
-				$p['horario_testeo'],
-				$p['responsable_testeo'],
-				$p['web_testeo'],
-				$p['ubicacion_testeo'],
-				$p['observaciones_testeo'],
-				$p['tel_vac'],
-				$p['mail_vac'],
-				$p['horario_vac'],
-				$p['responsable_vac'],
-				$p['web_vac'],
-				$p['ubicacion_vac'],
-				$p['comentarios_vac'],
-				$p['tel_ile'],
-				$p['mail_ile'],
-				$p['horario_ile'],
-				$p['responsable_ile'],
-				$p['web_ile'],
-				$p['ubicacion_ile'],
-				$p['comentarios_ile'],
-				$p['tel_infectologia'],
-				$p['mail_infectologia'],
-				$p['horario_infectologia'],
-				$p['responsable_infectologia'],
-				$p['web_infectologia'],
-				$p['ubicacion_infectologia'],
-				$p['comentarios_infectologia'],
-				$p['tel_ssr'],
-				$p['mail_ssr'],
-				$p['horario_ssr'],
-				$p['responsable_ssr'],
-				$p['web_ssr'],
-				$p['ubicacion_ssr'],
-				$p['comentarios_ssr'],
-				strtolower($p['servicetype_condones']),
-				strtolower($p['servicetype_prueba']),
-				strtolower($p['servicetype_mac']),
-				strtolower($p['servicetype_ile']),
-				strtolower($p['servicetype_dc']),
-				strtolower($p['servicetype_ssr']),
-				$p['friendly_condones'],
-				$p['friendly_prueba'],
-				$p['friendly_mac'],
-				$p['friendly_ile'],
-				$p['friendly_dc'],
-				$p['friendly_ssr'],
-				$p['uploader_name'],
-				$p['uploader_email'],
-				$p['uploader_tel'],
-			]);
+			$p = $this->preparePlaceToExport($p);
+			$p = $this->parseServicesToExport($p);
+			$p = $this->filterCsvColumns($p);
+			$csv->insertOne($p);
 		}
 		return $csv;
 	}
@@ -2123,6 +2034,16 @@ class ImportadorController extends Controller {
 				$book[$mainService] = 1;
 			}
 		}
+		return $book;
+	}
+
+	// Transforma servicios para importar
+	public function parseServicesToExport($book){
+		$services = array_merge($this->placeMainServices, array_keys($this->placeOptServices), $this->placeFriendlys);
+		foreach ($services as $key => $service) {
+			$book[$service] = $this->parseToExport($book[$service]);
+		}
+
 		return $book;
 	}
 

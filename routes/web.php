@@ -154,8 +154,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     //get export errors dowload links
     Route::get('panel/importer/nuevo', '\App\Http\Controllers\ImportadorController@exportNuevos'); //preview/places
-    Route::get('panel/importer/repetido', '\App\Http\Controllers\ImportadorController@exportReptidos'); //preview/places
-    Route::get('panel/importer/incompleto', '\App\Http\Controllers\ImportadorController@exportInompletos'); //preview/places
+    Route::get('panel/importer/repetido', '\App\Http\Controllers\ImportadorController@exportRepetidos'); //preview/places
+    Route::get('panel/importer/incompleto', '\App\Http\Controllers\ImportadorController@exportIncompletos'); //preview/places
     Route::get('panel/importer/unificar', '\App\Http\Controllers\ImportadorController@exportUnificar'); //preview/places
     Route::get('panel/importer/bc', '\App\Http\Controllers\ImportadorController@exportBC'); //preview/places
     Route::get('panel/importer/actualizar', '\App\Http\Controllers\ImportadorController@exportActualizar'); //preview/places

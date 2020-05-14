@@ -41,9 +41,9 @@
 				<td class="services2">
 					<img ng-show="{{ $p['condones'] }}" title="Este lugar distribuye preservativos" src="../../images/condones.svg">
 					<img ng-show="{{ $p['prueba'] }}" title="Este lugar puede hacer prueba de HIV" src="../../images/vih.svg">
-					{{-- <img ng-show="{{ $p['mac'] }}" title="Este lugar cuenta con métodos anticonceptivos" src="../../images/mac.svg"> --}}
+					<img ng-show="{{ $p['mac'] }}" title="Este lugar cuenta con métodos anticonceptivos" src="../../images/mac.svg">
 					<img ng-show="{{ $p['ile'] }}" title="Este lugar cuenta con interrupción legal del embarazo" src="../../images/ile.svg">
-					{{-- <img ng-show="{{ $p['dc'] }}" title="Este lugar cuenta con detección dle cáncer" src="../../images/deteccion.svg"> --}}
+					<img ng-show="{{ $p['dc'] }}" title="Este lugar cuenta con detección dle cáncer" src="../../images/deteccion.svg">
 					<img ng-show="{{ $p['ssr'] }}" title="Este lugar cuenta con servicios de salud sexual y reproductiva" src="../../images/salud.svg">
 				</td>
 			</tr>
