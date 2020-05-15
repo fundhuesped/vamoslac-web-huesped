@@ -94,6 +94,7 @@ var translations_en =
    "tel": "Phone Number",
    "form_select_condones": "Does the establishment distribute condoms?",
    "form_select_service_type_title": "Service type:",
+   "form_service_type_option_not_av": "Not available",
    "form_service_type_option_arancel": "Special price",
    "form_service_type_option_gratuito": "Free",
    "form_service_type_option_consultar": "Ask coverage.",

@@ -22,6 +22,10 @@
         <label translate="form_select_service_type_title"></label>
       </p>
       <p>
+        <input type="radio" id="st_prueba0" name="servicetype_prueba" value="no_disponible" ng-model="place.servicetype_prueba" ng-change="formChange()">
+        <label for="st_prueba0" translate="form_service_type_option_not_av"></label>
+      </p>
+      <p>
         <input type="radio" id="st_prueba1" name="servicetype_prueba" value="arancel" ng-model="place.servicetype_prueba" ng-change="formChange()">
         <label for="st_prueba1" translate="form_service_type_option_arancel"></label>
       </p>

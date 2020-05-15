@@ -14,6 +14,10 @@
 				<label translate="form_select_service_type_title"></label>
 			</p>
 			<p>
+				<input type="radio" id="st_ile0" name="servicetype_ile" value="no_disponible" ng-model="place.servicetype_ile" ng-change="formChange()">
+				<label for="st_ile0" translate="form_service_type_option_not_av"></label>
+			</p>
+			<p>
 				<input type="radio" id="st_ile1" name="servicetype_ile" value="arancel" ng-model="place.servicetype_ile" ng-change="formChange()">
 				<label for="st_ile1" translate="form_service_type_option_arancel"></label>
 			</p>

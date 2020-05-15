@@ -156,6 +156,7 @@ var translations_br = {
   "tel": "telefone",
   "form_select_condones": "Preservativos de rendição?",
   "form_select_service_type_title": "Tipo de Serviço",
+  "form_service_type_option_not_av": "Não disponível",
   "form_service_type_option_arancel": "Tarifa diferencial",
   "form_service_type_option_gratuito": "Livre",
   "form_service_type_option_consultar": "Consultar cobertura",
