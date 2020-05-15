@@ -2133,7 +2133,7 @@ class ImportadorController extends Controller {
 		}
 		else {
 			for ($i=0; $i < count($rowColumns) ; $i++) {
-				if (strcmp($correctCvs[$i],$rowColumns[$i]) != 0){
+				if (strcmp(strtolower($correctCvs[$i]),strtolower($rowColumns[$i])) != 0){
 					$status = false;
 					array_push($columns, $correctCvs[$i] );
 					continue;
