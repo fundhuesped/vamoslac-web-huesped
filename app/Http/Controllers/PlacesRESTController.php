@@ -1201,7 +1201,7 @@ class PlacesRESTController extends Controller
             $place->tel_dc = $request_params['tel_dc'];
             $place->web_dc = $request_params['web_dc'];
             $place->comentarios_dc = $request_params['comentarios_dc'];
-
+            
             $place->servicetype_dc = $request_params['servicetype_dc'];
             $place->servicetype_ssr = $request_params['servicetype_ssr'];
             $place->servicetype_mac = $request_params['servicetype_mac'];
