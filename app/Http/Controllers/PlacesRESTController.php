@@ -1145,6 +1145,9 @@ class PlacesRESTController extends Controller
             $place->idPartido = $request_params['idPartido'];
             $place->idCiudad = $request_params['idCiudad'];
 
+            //nuevos datos para checkBox
+            $place->es_rapido = $request_params['es_rapido'];
+
             $place->prueba = $request_params['prueba'];
             $place->responsable_testeo = $request_params['responsable_testeo'];
             $place->ubicacion_testeo = $request_params['ubicacion_testeo'];
@@ -1162,28 +1165,6 @@ class PlacesRESTController extends Controller
             $place->tel_distrib = $request_params['tel_distrib'];
             $place->web_distrib = $request_params['web_distrib'];
             $place->comentarios_distrib = $request_params['comentarios_distrib'];
-
-            $place->infectologia = $request_params['infectologia'];
-            $place->responsable_infectologia = $request_params['responsable_infectologia'];
-            $place->ubicacion_infectologia = $request_params['ubicacion_infectologia'];
-            $place->horario_infectologia = $request_params['horario_infectologia'];
-            $place->mail_infectologia = $request_params['mail_infectologia'];
-            $place->tel_infectologia = $request_params['tel_infectologia'];
-            $place->web_infectologia = $request_params['web_infectologia'];
-            $place->comentarios_infectologia = $request_params['comentarios_infectologia'];
-
-            $place->vacunatorio = $request_params['vacunatorio'];
-            $place->responsable_vac = $request_params['responsable_vac'];
-            $place->ubicacion_vac = $request_params['ubicacion_vac'];
-            $place->horario_vac = $request_params['horario_vac'];
-            $place->mail_vac = $request_params['mail_vac'];
-            $place->tel_vac = $request_params['tel_vac'];
-            $place->web_vac = $request_params['web_vac'];
-            $place->comentarios_vac = $request_params['comentarios_vac'];
-
-            //nuevos datos para checkBox
-            $place->es_rapido = $request_params['es_rapido'];
-
 
             $place->mac = $request_params['mac'];
             $place->responsable_mac = $request_params['responsable_mac'];
