@@ -178,14 +178,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('panel/importer/front-export/{search}', '\App\Http\Controllers\ImportadorController@exportarPanelSearch');//para la busqueda de places
 
-    Route::get('panel/importer/front-export-eval/{pid}/{cid}/{bid}', '\App\Http\Controllers\ImportadorController@exportarPanelEvalFormed');//para la busqueda de places
+    Route::get('panel/importer/front-export-eval/{pid?}/{cid?}/{bid?}', '\App\Http\Controllers\ImportadorController@exportarPanelEvalFormed');//para la busqueda de places
 
     Route::post('panel/importer/activePlacesEvaluationsExport', '\App\Http\Controllers\ImportadorController@activePlacesEvaluationsExport');//exportar evluacion lugares activos con filtro por servicios servicio
 
     Route::post('panel/importer/filteredEvaluations', '\App\Http\Controllers\ImportadorController@getFilteredEvaluations');//exportar evluacion lugares activos con filtro por servicios servicio
 
     Route::get('panel/importer/front-export-eval/{search}', '\App\Http\Controllers\ImportadorController@exportarPanelEvalSearch');//para la busqueda de places
-  Route::post('panel/importer/activePlacesExport', '\App\Http\Controllers\ImportadorController@activePlacesExport');//exportar lugares activos
+    Route::post('panel/importer/activePlacesExport', '\App\Http\Controllers\ImportadorController@activePlacesExport');//exportar lugares activos
     Route::post('panel/importer/evaluationsExportFilterByService', '\App\Http\Controllers\ImportadorController@evaluationsExportFilterByService');//exportar evluacion lugares activos con filtro por servicios servicio
     Route::get('panel/importer/eval-export/{id}', '\App\Http\Controllers\ImportadorController@exportarEvaluaciones');//para las evaluaciones
 

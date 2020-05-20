@@ -596,75 +596,103 @@ class PlacesRESTController extends Controller
         return $places;
     }
 
-  public static function getAprobedPlaces($idPais, $idProvincia, $idPartido, $idCiudad)
-    {
-
-     // Export filter by country
-     if ((isset($idPais)) && ($idPais != "null") && (($idProvincia == "null") || (!isset($idProvincia)))) {
-      $places = DB::table('places')
-      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
-      ->join('partido', 'places.idPartido', '=', 'partido.id')
-      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
-      ->join('pais', 'places.idPais', '=', 'pais.id')
-      ->where('places.idPais', $idPais)
-      ->where('places.aprobado', '=', 1)
-      ->get();
+    // Parse Ids from view to array
+    private function arrayLocationIds($idPais, $idProvincia, $idPartido, $idCiudad){
+      $arr = [$idPais,$idProvincia,$idPartido,$idCiudad];
+      return $arr;
     }
 
-    // Export filter by country and province
-    if ((isset($idPais)) && ($idPais != "null") && (isset($idProvincia)) && ($idProvincia != "null") && (($idPartido == "null") || (!isset($idPartido)))) {
-      $places = DB::table('places')
-      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
-      ->join('partido', 'places.idPartido', '=', 'partido.id')
-      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
-      ->join('pais', 'places.idPais', '=', 'pais.id')
-      ->where('places.idPais', $idPais)
-      ->where('places.idProvincia', $idProvincia)
-      ->where('places.aprobado', '=', 1)
-      ->get();
+    // Check if it's valid attr
+    private function isValidAttr($attr){
+      return isset($attr) && $attr != "null";
     }
 
-    // Export filter by country, province and party
-    if ((isset($idPais)) && ($idPais != "null") && (isset($idProvincia)) && ($idProvincia != "null") && (isset($idPartido)) && ($idPartido != "null") && (($idCiudad == "null") || (!isset($idCiudad)))) {
-      $places = DB::table('places')
-      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
-      ->join('partido', 'places.idPartido', '=', 'partido.id')
-      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
-      ->join('pais', 'places.idPais', '=', 'pais.id')
-      ->where('places.idPais', $idPais)
-      ->where('places.idProvincia', $idProvincia)
-      ->where('places.idPartido', $idPartido)
-      ->where('places.aprobado', '=', 1)
-      ->get();
+    // Define level of filtering. Eg: level=1 => Country Level
+    private function defineLevel(array $location){
+      if(count($location) <= 0 ||count($location) > 4) return 0;
+
+      $level = 0;
+      if($this->isValidAttr($location[0])){
+        if($this->isValidAttr($location[1])){
+          if($this->isValidAttr($location[2])){
+            if($this->isValidAttr($location[3])){
+              $level = 4;
+            }
+            else
+              $level = 3;
+          }
+          else
+            $level = 2;
+        }
+        else
+          $level = 1;
+      }
+      return $level;
     }
 
-    // Export filter by country, province, party and city
-    if ((isset($idPais)) && ($idPais != "null") && (isset($idProvincia)) && ($idProvincia != "null") && (isset($idPartido)) && ($idPartido != "null") && (isset($idCiudad) && ($idCiudad != "null"))) {
-      $places = DB::table('places')
-      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
-      ->join('partido', 'places.idPartido', '=', 'partido.id')
-      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
-      ->join('pais', 'places.idPais', '=', 'pais.id')
-      ->where('places.idPais', $idPais)
-      ->where('places.idProvincia', $idProvincia)
-      ->where('places.idPartido', $idPartido)
-      ->where('places.idCiudad', $idCiudad)
-      ->where('places.aprobado', '=', 1)
-      ->get();
+    // Add "Where" clauses to Query by level of filter
+    private function addLocationFilters(array $location, int $level){
+      $filters = array();
+      if($level < 0 || $level > 4) return $filters;
+
+      if($level >= 1) //pais
+        array_push($filters,['column' => 'places.idPais', 'op' => '=', 'value' => $location[0]]);
+      if($level >= 2) //provincia
+        array_push($filters,['column' => 'places.idProvincia', 'op' => '=', 'value' => $location[1]]);
+      if($level >= 3) //partido
+        array_push($filters,['column' => 'places.idPartido', 'op' => '=', 'value' => $location[2]]);
+      if($level == 4) //ciudad
+        array_push($filters,['column' => 'places.idCiudad', 'op' => '=', 'value' => $location[3]]);
+      return $filters;
     }
 
-    // Export all
-    if ( $idPais == "null"  &&  $idProvincia == "null" && $idPartido == "null" && $idCiudad == "null") {
-      $places = DB::table('places')
-      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
-      ->join('partido', 'places.idPartido', '=', 'partido.id')
-      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
-      ->join('pais', 'places.idPais', '=', 'pais.id')
-      ->where('places.aprobado', '=', 1)
-      ->get();
+    // Add "Join" clauses to Query by level of filter
+    private function createJoins($table,int $level){
+      $joins = array();
+      if($level < 0 || $level > 4) return $joins;
+
+      if($level >= 1) //pais
+        array_push($joins,['fkTable' => 'pais','id' => 'pais.id', 'op' => '=', 'fkID' => $table.'.idPais']);
+      if($level >= 2) //provincia
+        array_push($joins,['fkTable' => 'provincia','id' => 'provincia.id', 'op' => '=', 'fkID' => $table.'.idProvincia']);
+      if($level >= 3) //partido
+        array_push($joins,['fkTable' => 'partido','id' => 'partido.id', 'op' => '=', 'fkID' => $table.'.idPartido']);
+      if($level == 4) //ciudad
+        array_push($joins,['fkTable' => 'ciudad','id' => 'ciudad.id', 'op' => '=', 'fkID' => $table.'.idCiudad']);
+
+      return $joins;
     }
 
-        return $places;
+    // Add "Select" clause to Query by level of filter
+    public function createSelects(int $level){
+      $selects = ['places.*'];
+      if($level < 0 || $level > 4) return $selects;
+
+      if($level >= 1) //pais
+        array_push($selects,'pais.nombre_pais');
+      if($level >= 2) //provincia
+        array_push($selects,'provincia.nombre_provincia');
+      if($level >= 3) //partido
+        array_push($selects,'partido.nombre_partido');
+      if($level == 4) //ciudad
+        array_push($selects,'ciudad.nombre_ciudad');
+
+      return $selects;
+    }
+
+    public function getAprobedPlaces($idPais, $idProvincia, $idPartido, $idCiudad){
+
+      $locationArr = $this->arrayLocationIds($idPais, $idProvincia, $idPartido, $idCiudad);
+      $level = $this->defineLevel($locationArr);
+      $joins = $this->createJoins('places',4);
+      $filters = $this->addLocationFilters($locationArr,$level);
+      $selects = $this->createSelects(4);
+      
+      $places = Places::customJoining(collect($joins))
+                      ->customFiltering(collect($filters))
+                      ->select($selects)
+                      ->get();
+      return $places;
     }
 
     public static function counters()

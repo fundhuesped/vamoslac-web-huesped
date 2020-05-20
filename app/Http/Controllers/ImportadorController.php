@@ -25,7 +25,7 @@ use Exception;
 use App\Exceptions\CustomException;
 use App\Exceptions\ImporterException;
 use App\Exceptions\CsvException;
-
+use Illuminate\Support\Collection;
 
 use App\PlaceLog;
 use PHPExcel_Cell;
@@ -47,6 +47,9 @@ class ImportadorController extends Controller {
 	public $placeFriendlys = array('friendly_condones','friendly_prueba','friendly_mac','friendly_ile','friendly_ssr','friendly_dc');
 	public $placeServicetypes = array('servicetype_condones','servicetype_prueba','servicetype_mac','servicetype_ile','servicetype_dc','servicetype_ssr');
 
+	public $csvHeaderEvaluations = 'Id Evaluación,¿Que buscó?,¿Se lo dieron?,Información clara,Privacidad,Edad,Género,Puntuación,Comentario,¿Aprobado?,id,Fecha';
+	public $csvColumnsEvaluations = array('id','que_busca','le_dieron','info_ok','privacidad_ok','edad','genero','voto','comentario','aprobado','idPlace','created_at');
+
 	public function debug_to_console( $data ) {
 		$output = $data;
 		if ( is_array( $output ) )
@@ -55,7 +58,7 @@ class ImportadorController extends Controller {
 		echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
 	}
 
-	public function preparePlaceToImport($book,$status){
+	function preparePlaceToImport($book,$status){
 		$id = $book['id'];									//save 'id' data
 		unset($book['id']); 								//pop the 'id' column
 		$book = array_merge(['placeId' => $id], $book);		//push the 'placeId' column
@@ -63,146 +66,56 @@ class ImportadorController extends Controller {
 		return $book;
 	}
 
-	public function preparePlaceToExport($array){		
-		$id = $array['placeId'];							//save 'id' data
-		unset($array['status']);							//pop the 'status' column
-		unset($array['placeId']);							//pop the 'placeId' column
-		$array = array_merge(['id' => $id], $array);		//push the 'id' column
+	function filterByCsvColumns($array,$columns){
+		$data = array();
+		foreach ($columns as $key => $column) {
+			$data[$column] = $array[$column];
+		}
+		return $data;
+	}
+
+	function convertToArray($data){
+		if ($data instanceof Collection)
+			$data = $data->toArray();
+		else if(!is_array($data))
+			$data = (array) $data;
+		return $data;
+	}
+
+	function replaceArrayKey($array, $oldKey, $newKey){
+		if(!array_key_exists($oldKey,$array)) return $array;
+		if(array_key_exists($newKey,$array)) return $array;
+		$array[$newKey] = $array[$oldKey];
+		unset($array[$oldKey]);
 		return $array;
 	}
 
-	public function filterCsvColumns($array){
-		$place = array();
-		$columns = $this->csvColumns_arrayFormat;
-		foreach ($columns as $key => $column) {
-			$place[$column] = $array[$column];
-		}
-		return $place;
+	// This parsing is due to DB column names are not exactly the same as Csv column names
+	function parseDBToCsvNames($array){
+		$array = $this->replaceArrayKey($array,"placeId","id");
+		$array = $this->replaceArrayKey($array,"nombre_ciudad","ciudad");
+		$array = $this->replaceArrayKey($array,"nombre_partido","partido_comuna");
+		$array = $this->replaceArrayKey($array,"nombre_provincia","provincia_region");
+		$array = $this->replaceArrayKey($array,"nombre_pais","pais");
+		$array = $this->replaceArrayKey($array,"formattedAddress","formattedaddress");
+		return $array;
 	}
 
-	public function insertDataIntoCsv_places($data){
-
+	function exportDataToCsv($data){
+		$data = $this->convertToArray($data);
+		$columns = $this->csvColumns_arrayFormat;
+		
 		$csv = Writer::createFromFileObject(new SplTempFileObject());
 		//header
 		$csv->insertOne($this->csvColumns);
 	    //body
 		foreach ($data as $key => $p) {
-			$p = $this->preparePlaceToExport($p);
+			$p = $this->convertToArray($p);
+			$p = $this->parseDBToCsvNames($p);
 			$p = $this->parseServicesToExport($p);
-			$p = $this->filterCsvColumns($p);
+			$p = $this->filterByCsvColumns($p,$columns);
 			$csv->insertOne($p);
 		}
-		return $csv;
-	}
-
-	public function insertArraObejectsDataIntoCsv_places($data){
-
-		$csv = Writer::createFromFileObject(new SplTempFileObject());
-		//header
-		$csv->insertOne($this->csvColumns);
-	    //body
-		foreach ($data as $key => $p) {
-			$p->condones = $this->parseToExport($p->condones);
-			$p->prueba= $this->parseToExport($p->prueba);
-			$p->vacunatorio= $this->parseToExport($p->vacunatorio);
-			$p->ile = $this->parseToExport($p->ile);
-			$p->ssr = $this->parseToExport($p->ssr);
-			$p->infectologia= $this->parseToExport($p->infectologia);
-			$p->es_rapido= $this->parseToExport($p->es_rapido);
-			$p->friendly_ile= $this->parseToExport($p->friendly_ile);
-			$p->friendly_mac= $this->parseToExport($p->friendly_mac);
-			$p->friendly_condones= $this->parseToExport($p->friendly_condones);
-			$p->friendly_prueba= $this->parseToExport($p->friendly_prueba);
-			$p->friendly_ssr= $this->parseToExport($p->friendly_ssr);
-			$p->friendly_dc= $this->parseToExport($p->friendly_dc);
-
-			$csv->insertOne([
-				$p->placeId,
-				$p->establecimiento,
-				$p->tipo,
-				$p->calle,
-				$p->altura,
-				$p->piso_dpto,
-				$p->cruce,
-				$p->barrio_localidad,
-				$p->nombre_ciudad,
-				$p->nombre_partido,
-				$p->nombre_provincia,
-				$p->nombre_pais,
-				$p->aprobado,
-				$p->observacion,
-				$p->formattedAddress,
-				$p->latitude,
-				$p->longitude,
-				$p->habilitado,
-				$p->confidence,
-				$p->condones,
-				$p->prueba,
-				$p->vacunatorio,
-				$p->ile,
-				$p->infectologia,
-				$p->ssr,
-				$p->es_rapido,
-				$p->tel_distrib,
-				$p->mail_distrib,
-				$p->horario_distrib,
-				$p->responsable_distrib,
-				$p->web_distrib,
-				$p->ubicacion_distrib,
-				$p->comentarios_distrib,
-				$p->tel_testeo,
-				$p->mail_testeo,
-				$p->horario_testeo,
-				$p->responsable_testeo,
-				$p->web_testeo,
-				$p->ubicacion_testeo,
-				$p->observaciones_testeo,
-				$p->tel_vac,
-				$p->mail_vac,
-				$p->horario_vac,
-				$p->responsable_vac,
-				$p->web_vac,
-				$p->ubicacion_vac,
-				$p->comentarios_vac,
-				$p->tel_ile,
-				$p->mail_ile,
-				$p->horario_ile,
-				$p->responsable_ile,
-				$p->web_ile,
-				$p->ubicacion_ile,
-				$p->comentarios_ile,
-				$p->tel_infectologia,
-				$p->mail_infectologia,
-				$p->horario_infectologia,
-				$p->responsable_infectologia,
-				$p->web_infectologia,
-				$p->ubicacion_infectologia,
-				$p->comentarios_infectologia,
-				$p->tel_ssr,
-				$p->mail_ssr,
-				$p->horario_ssr,
-				$p->responsable_ssr,
-				$p->web_ssr,
-				$p->ubicacion_ssr,
-				$p->comentarios_ssr,
-				strtolower($p->servicetype_condones),
-				strtolower($p->servicetype_prueba),
-				strtolower($p->servicetype_mac),
-				strtolower($p->servicetype_ile),
-				strtolower($p->servicetype_dc),
-				strtolower($p->servicetype_ssr),
-				$p->friendly_condones,
-				$p->friendly_prueba,
-				$p->friendly_mac,
-				$p->friendly_ile,
-				$p->friendly_dc,
-				$p->friendly_ssr,
-				$p->uploader_name,
-				$p->uploader_email,
-				$p->uploader_tel
-			]);
-		}
-	        //descarga
 		return $csv;
 	}
 
@@ -215,7 +128,7 @@ class ImportadorController extends Controller {
 		if (session('csvname') != null)
 			$csvname = $csvname." - ".session('csvname');
 
-		$csv = $this->insertDataIntoCsv_places($data);
+		$csv = $this->exportDataToCsv($data);
 		$csv->output($csvname);		
 	}
 
@@ -243,24 +156,20 @@ class ImportadorController extends Controller {
 		$this->exportDataByKey('datosDescartados');
 	}
 
-	public function index()
-	{
+	public function index(){
 		return view('panel.importer.index');
 	}
 
-	public function picker()
-	{
+	public function picker(){
 		return view('panel.importer.picker');
 	}
 
-	function convertToISOCharset($string)
-	{
+	function convertToISOCharset($string){
 		$val = mb_convert_encoding($string, 'UTF-8', 'UTF-8');
 		return $string;
 	}
 
-	function convertfromISOCharset($string)
-	{
+	function convertfromISOCharset($string){
 		$val = mb_convert_encoding($string, 'UTF-8', 'UTF-8');
 		return $string;
 	}
@@ -275,525 +184,391 @@ class ImportadorController extends Controller {
 		return $this->convertToISOCharset($string);
 	}
 
-    /**
-     * Retrive an object with arrays of id's service evalautons.
-     *
-     * @param  string  $id
-     * @return void
-     */
-    public function exportarEvaluacionesPorServicios($id){
-    	$evaluations = new EvaluationRESTController;
-    	$evals = $evaluations->showPanelServiceEvaluations($id);
+	function parseEvaluationToExport($eval){
+		$columns = array('info_ok','privacidad_ok','aprobado');
 
-    	$copyCSV = ucwords($id).".csv";
+		foreach ($columns as $key => $column) {
+			$eval[$column] = $this->parseToExport($eval[$column]);
+		}
 
-    	$csv = Writer::createFromFileObject(new SplTempFileObject());
+		return $eval;
+	}
 
+	function exportEvaluationsToCsv($data){
+		$data = $this->convertToArray($data);
+		$columns = $this->csvColumnsEvaluations;
+		
+		$csv = Writer::createFromFileObject(new SplTempFileObject());
 		//header
-    	$csv->insertOne('Id Evaluación,¿Que buscó?,¿Se lo dieron?,Información clara,Privacidad,Edad,Género,Puntuación,Comentario,¿Aprobado?,id,Fecha');
+		$csv->insertOne($this->csvHeaderEvaluations);
+	    //body
+		foreach ($data as $key => $e) {
+			$e = $this->convertToArray($e);
+			$e = $this->parseEvaluationToExport($e);
+			$e = $this->filterByCsvColumns($e,$columns);
+			$csv->insertOne($e);
+		}
+		return $csv;
+	}
 
-        //body
-    	for ($i=0; $i < sizeof($evals); $i++) {
+	public function exportarEvaluacionesPorServicios($id){
+		$evaluations = new EvaluationRESTController;
+		$evals = $evaluations->showPanelServiceEvaluations($id);
+		$copyCSV = ucwords($id).".csv";
 
-    		$evals[$i]->info_ok = $this->parseToExport($evals[$i]->info_ok);
-    		$evals[$i]->privacidad_ok = $this->parseToExport($evals[$i]->privacidad_ok);
-    		$evals[$i]->aprobado = $this->parseToExport($evals[$i]->aprobado);
+		$csv = $this->exportEvaluationsToCsv($evals);
+		$csv->output($copyCSV);
+	}
 
-    		$csv->insertOne([
-    			$evals[$i]->id,
-    			$evals[$i]->que_busca,
-    			$evals[$i]->le_dieron,
-    			$evals[$i]->info_ok,
-    			$evals[$i]->privacidad_ok,
-    			$evals[$i]->edad,
-    			$evals[$i]->genero,
-    			$evals[$i]->voto,
-    			$evals[$i]->comentario,
-    			$evals[$i]->aprobado,
-    			$evals[$i]->idPlace,
-    			$evals[$i]->created_at ]);
-    	}
+	public function exportarEvaluaciones($id){
+		$evaluations = new EvaluationRESTController;
+		$evals = $evaluations->showPanelEvaluations($id);
 
-    	$csv->output($copyCSV);
-    }
+		$csv = $this->exportEvaluationsToCsv($evals);
+		$csv->output('Evaluaciones.csv');
+	}
 
-    public function exportarEvaluaciones($id){
-    	$evaluations = new EvaluationRESTController;
-    	$evals = $evaluations->showPanelEvaluations($id);
 
-    	$csv = Writer::createFromFileObject(new SplTempFileObject());
-    	
+	public function parseService($service){
+		$resu = "Sin especificar";
+		$serviceCtrl = new ServiceController();
+		$services = $serviceCtrl->getAllServices();
+		foreach ($services as $s) {
+			if ($s->shortname == $service) $resu = $s->name;
+		}
+		return $resu;
+
+	}
+
+	// Chequeo si esta entre 10 y 19 para crear la columna auxilar edad_especifica
+	function parseEdadEspecifica($edad){
+		$edadEspecifica="";
+		if ( ($edad > 9) && ($edad < 20) ){
+			$edadEspecifica = "Entre  10 y 19";
+		}
+		else{
+			$edadEspecifica = $edad;
+		}
+
+		return $edadEspecifica;
+
+	}
+
+	public $csvHeaderEvaluationsPlaces = 'id_establecimiento,nombre_establecimiento,direccion,barrio_localidad,ciudad,partido,provincia,pais,condones,prueba,mac,ile,dc,ssr,es_rapido,id_evaluacion,¿que_busco?,¿se_lo_dieron?,informacion_clara,privacidad,gratuito,comodo,información_vacunas,edad,genero,puntuacion,comentario,¿aprobado?,fecha,servicio,nombre,email,telefono';
+	public $csvColumnsEvaluationsPlaces = array('placeId','establecimiento','direccion','barrio_localidad','nombre_ciudad','nombre_partido','nombre_provincia','nombre_pais','condones','prueba','mac','ile','dc','ssr','es_rapido','id','que_busca','le_dieron','info_ok','privacidad_ok','es_gratuito','comodo','informacion_vacunas','edad','genero','voto','comentario','aprobadoEval','fechaEvaluacion','service','name','email','tel');
+
+	function parseEvaluationPlacesToExport($eval){
+		$columns = array('info_ok','privacidad_ok','aprobadoEval','es_gratuito','comodo','informacion_vacunas','condones','prueba','mac','ile','dc','ssr','es_rapido');
+
+		foreach ($columns as $key => $column) {
+			$eval[$column] = $this->parseToExport($eval[$column]);
+		}
+
+		$eval['service'] = $this->parseService($eval['service']);
+		$eval['direccion'] = $eval['calle']." ".$eval['altura'];
+
+		return $eval;
+	}
+
+	function exportEvaluationsPlacesToCsv($data){
+		$data = $this->convertToArray($data);
+		$columns = $this->csvColumnsEvaluationsPlaces;
+		
+		$csv = Writer::createFromFileObject(new SplTempFileObject());
+		$csv->insertOne($this->csvHeaderEvaluationsPlaces);
+
+		foreach ($data as $key => $e) {
+			$e = $this->convertToArray($e);
+			$e = $this->parseEvaluationPlacesToExport($e);
+			$e = $this->filterByCsvColumns($e,$columns);
+			$csv->insertOne($e);
+		}
+		return $csv;
+	}
+
+	public function exportarEvaluacionesFull($lang){
+
+		$evaluations = DB::table('evaluation')
+		->join('places','evaluation.idPlace','=','places.placeId')
+		->join('pais','pais.id','=','places.idPais')
+		->join('provincia','provincia.id','=','places.idProvincia')
+		->join('partido','partido.id','=','places.idPartido')
+		->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
+		->select('evaluation.*','places.*','ciudad.nombre_ciudad','partido.nombre_partido','provincia.nombre_provincia','pais.nombre_pais','evaluation.created_at as fechaEvaluacion', 'evaluation.aprobado as aprobadoEval')
+		->get();
+
+		if (sizeof($evaluations) > 0){
+			$copyCSV = "evaluaciones.csv";
+		}
+		else {
+			$copyCSV = "nodata.csv";
+		}
+
+		$csv = $this->exportEvaluationsPlacesToCsv($evaluations);
+		$csv->output($copyCSV);
+	}
+
+	public function exportarEvaluacionesByEstado($a){
+
+		$evaluations = DB::table('evaluation')
+		->join('places','evaluation.idPlace','=','places.placeId')
+		->join('pais','pais.id','=','places.idPais')
+		->join('provincia','provincia.id','=','places.idProvincia')
+		->join('partido','partido.id','=','places.idPartido')
+		->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
+		->where('evaluation.aprobado', $a)
+		->select('evaluation.*','places.*','ciudad.nombre_ciudad','partido.nombre_partido','provincia.nombre_provincia','pais.nombre_pais','evaluation.created_at as fechaEvaluacion', 'evaluation.aprobado as aprobadoEval')
+		->get();
+
+		if (sizeof($evaluations) > 0){
+			if($a == 1){
+				$copyCSV = "evaluacionesAprobadas.csv";
+			}
+			else{
+				$copyCSV = "evaluacionesRechazadas.csv";
+			}
+		}
+		else {
+			$copyCSV = "nodata.csv";
+		}
+
+		$csv = $this->exportEvaluationsPlacesToCsv($evaluations);
+		$csv->output($copyCSV);
+	}
+
+	public function show($a){
+		self::exportarEvaluacionesByEstado($a);
+	}
+
+	//=====================================================================================
+	//en caso de que escriba (segunda opt)
+	public function exportarPanelSearch($search){
+		$placesController = new PlacesRESTController;
+		$places = $placesController->search($search);
+		$csv = $this->exportDataToCsv($places);
+
+		$csv->output('Establecimientos con ' . $search . '.csv');
+	}
+
+	public function exportarPanelEvalSearch($search){
+		$placesController = new PlacesRESTController;
+		$places = $placesController->search($search);
+
+		$csv = Writer::createFromFileObject(new SplTempFileObject());
 		//header
-    	$csv->insertOne('Id Evaluación,¿Que buscó?,¿Se lo dieron?,Información clara,Privacidad,Edad,Género,Puntuación,Comentario,¿Aprobado?,id,Fecha');
-
-
-        //body
-    	for ($i=0; $i < sizeof($evals); $i++) {
-
-    		$evals[$i]->info_ok = $this->parseToExport($evals[$i]->info_ok);
-    		$evals[$i]->privacidad_ok = $this->parseToExport($evals[$i]->privacidad_ok);
-    		$evals[$i]->aprobado = $this->parseToExport($evals[$i]->aprobado);
-
-    		$csv->insertOne([
-    			$evals[$i]->id,
-    			$evals[$i]->que_busca,
-    			$evals[$i]->le_dieron,
-    			$evals[$i]->info_ok,
-    			$evals[$i]->privacidad_ok,
-    			$evals[$i]->edad,
-    			$evals[$i]->genero,
-    			$evals[$i]->voto,
-    			$evals[$i]->comentario,
-    			$evals[$i]->aprobado,
-    			$evals[$i]->idPlace,
-    			$evals[$i]->created_at ]);
-    	}
-    	
-    	$csv->output('Evaluaciones.csv');
-    }
-
-
-    public function parseService($service){
-    	$resu = "Sin especificar";
-    	$serviceCtrl = new ServiceController();
-    	$services = $serviceCtrl->getAllServices();
-    	foreach ($services as $s) {
-    		if ($s->shortname == $service) $resu = $s->name;
-    	}
-    	return $resu;
-
-    }
-
-	//recibo un int
-	//chequeo si esta entre 10 y 19 para crear la columna auxilar edad_especifica
-    public function parseEdadEspecifica($edad){
-    	$edadEspecifica="";
-    	if ( ($edad > 9) && ($edad < 20) ){
-    		$edadEspecifica = "Entre  10 y 19";
-    	}
-    	else{
-    		$edadEspecifica = $edad;
-    	}
-
-    	return $edadEspecifica;
-
-    }
-
-    public function exportarEvaluacionesFull($lang){
-
-    	if($lang == null){
-    		$lang = 'es';
-    	}
-
-    	$evaluations = DB::table('evaluation')
-    	->join('places','evaluation.idPlace','=','places.placeId')
-    	->join('pais','pais.id','=','places.idPais')
-    	->join('provincia','provincia.id','=','places.idProvincia')
-    	->join('partido','partido.id','=','places.idPartido')
-    	->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
-    	->select('evaluation.*','places.*','ciudad.nombre_ciudad','partido.nombre_partido','provincia.nombre_provincia','pais.nombre_pais','evaluation.created_at as fechaEvaluacion', 'evaluation.aprobado as aprobadoEval')
-    	->get();
-
-
-    	if (sizeof($evaluations) > 0){
-    		$copyCSV = "evaluaciones.csv";
-    	}
-    	else {
-    		$copyCSV = "nodata.csv";
-    	}
-
-    	$csv = Writer::createFromFileObject(new SplTempFileObject());
-    	
-		// HEADER
-
-    	$csv->insertOne('id_establecimiento,nombre_establecimiento,direccion,barrio_localidad,ciudad,partido,provincia,pais,condones,prueba,vacunatorio,ile,infectologia,ssr,es_rapido,id_evaluacion,¿que_busco?,¿se_lo_dieron?,informacion_clara,privacidad,gratuito,comodo,información_vacunas,edad,genero,puntuacion,comentario,¿aprobado?,fecha,servicio,nombre,email,telefono');
-
-        // BODY
-    	foreach ($evaluations as $key => $p) {
-    		$p = (array)$p;
-    		$p['service']= $this->parseService($p['service']);
-    		$p['es_gratuito']= $this->parseToExport($p['es_gratuito']);
-    		$p['condones']= $this->parseToExport($p['condones']);
-    		$p['prueba']= $this->parseToExport($p['prueba']);
-    		$p['vacunatorio']= $this->parseToExport($p['vacunatorio']);
-    		$p['ile']= $this->parseToExport($p['ile']);
-    		$p['ssr']= $this->parseToExport($p['ssr']);
-    		$p['infectologia']= $this->parseToExport($p['infectologia']);
-    		$p['es_rapido']= $this->parseToExport($p['es_rapido']);
-    		$p['info_ok']= $this->parseToExport($p['info_ok']);
-    		$p['privacidad_ok']= $this->parseToExport($p['privacidad_ok']);
-    		$p['aprobadoEval']= $this->parseToExport($p['aprobadoEval']);
-    		$p['comodo']= $this->parseToExport($p['comodo']);
-    		$p['informacion_vacunas']= $this->parseToExport($p['informacion_vacunas']);
-    		$p['direccion']= $p['calle']." ".$p['altura'];
-
-    		$csv->insertOne([
-    			$p['placeId'],
-    			$p['establecimiento'],
-    			$p['direccion'],
-    			$p['barrio_localidad'],
-    			$p['nombre_ciudad'],
-    			$p['nombre_partido'],
-    			$p['nombre_provincia'],
-    			$p['nombre_pais'],
-    			$p['condones'],
-    			$p['prueba'],
-    			$p['vacunatorio'],
-    			$p['ile'],
-    			$p['infectologia'],
-    			$p['ssr'],
-    			$p['es_rapido'],
-    			$p['id'],
-    			$p['que_busca'],
-    			$p['le_dieron'],
-    			$p['info_ok'],
-    			$p['privacidad_ok'],
-    			$p['es_gratuito'],
-    			$p['comodo'],
-    			$p['informacion_vacunas'],
-    			$p['edad'],
-    			$p['genero'],
-    			$p['voto'],
-    			"\"" . $p['comentario']  . "\"" ,
-    			$p['aprobadoEval'],
-    			$p['fechaEvaluacion'],
-    			$p['service'],
-    			$p['name'],
-    			$p['email'],
-    			$p['tel']
-
-    		]);
-    	}
-
-    	$csv->output($copyCSV);
-    }
-
-    public function exportarEvaluacionesByEstado($a){
-
-    	$evaluations = DB::table('evaluation')
-    	->join('places','evaluation.idPlace','=','places.placeId')
-    	->join('pais','pais.id','=','places.idPais')
-    	->join('provincia','provincia.id','=','places.idProvincia')
-    	->join('partido','partido.id','=','places.idPartido')
-    	->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
-    	->where('evaluation.aprobado', $a)
-    	->select('evaluation.*','places.*','ciudad.nombre_ciudad','partido.nombre_partido','provincia.nombre_provincia','pais.nombre_pais','evaluation.created_at as fechaEvaluacion', 'evaluation.aprobado as aprobadoEval')
-    	->get();
-
-
-    	if (sizeof($evaluations) > 0){
-    		if($a == 1){
-    			$copyCSV = "evaluacionesAprobadas.csv";
-    		}
-    		else{
-    			$copyCSV = "evaluacionesRechazadas.csv";
-    		}
-    		
-    	}
-    	else {
-    		$copyCSV = "nodata.csv";
-    	}
-
-    	$csv = Writer::createFromFileObject(new SplTempFileObject());
-    	
-		// HEADER
-
-    	$csv->insertOne('id_establecimiento,nombre_establecimiento,direccion,barrio_localidad,ciudad,partido,provincia,pais,condones,prueba,vacunatorio,ile,infectologia,ssr,es_rapido,id_evaluacion,¿que_busco?,¿se_lo_dieron?,informacion_clara,privacidad,gratuito,comodo,información_vacunas,edad,genero,puntuacion,comentario,¿aprobado?,fecha,servicio,nombre,email,telefono');
-
-        // BODY
-    	foreach ($evaluations as $key => $p) {
-    		$p = (array)$p;
-    		$p['service']= $this->parseService($p['service']);
-    		$p['es_gratuito']= $this->parseToExport($p['es_gratuito']);
-    		$p['condones']= $this->parseToExport($p['condones']);
-    		$p['prueba']= $this->parseToExport($p['prueba']);
-    		$p['vacunatorio']= $this->parseToExport($p['vacunatorio']);
-    		$p['ile']= $this->parseToExport($p['ile']);
-    		$p['ssr']= $this->parseToExport($p['ssr']);
-    		$p['infectologia']= $this->parseToExport($p['infectologia']);
-    		$p['es_rapido']= $this->parseToExport($p['es_rapido']);
-    		$p['info_ok']= $this->parseToExport($p['info_ok']);
-    		$p['privacidad_ok']= $this->parseToExport($p['privacidad_ok']);
-    		$p['aprobadoEval']= $this->parseToExport($p['aprobadoEval']);
-    		$p['comodo']= $this->parseToExport($p['comodo']);
-    		$p['informacion_vacunas']= $this->parseToExport($p['informacion_vacunas']);
-    		$p['direccion']= $p['calle']." ".$p['altura'];
-
-    		$csv->insertOne([
-    			$p['placeId'],
-    			$p['establecimiento'],
-    			$p['direccion'],
-    			$p['barrio_localidad'],
-    			$p['nombre_ciudad'],
-    			$p['nombre_partido'],
-    			$p['nombre_provincia'],
-    			$p['nombre_pais'],
-    			$p['condones'],
-    			$p['prueba'],
-    			$p['vacunatorio'],
-    			$p['ile'],
-    			$p['infectologia'],
-    			$p['ssr'],
-    			$p['es_rapido'],
-    			$p['id'],
-    			$p['que_busca'],
-    			$p['le_dieron'],
-    			$p['info_ok'],
-    			$p['privacidad_ok'],
-    			$p['es_gratuito'],
-    			$p['comodo'],
-    			$p['informacion_vacunas'],
-    			$p['edad'],
-    			$p['genero'],
-    			$p['voto'],
-    			"\"" . $p['comentario']  . "\"" ,
-    			$p['aprobadoEval'],
-    			$p['fechaEvaluacion'],
-    			$p['service'],
-    			$p['name'],
-    			$p['email'],
-    			$p['tel']
-
-    		]);
-    	}
-
-    	$csv->output($copyCSV);
-    }
-
-    public function show($a){
-    	self::exportarEvaluacionesByEstado($a);
-    }
-
-//=====================================================================================
-//en caso de que escriba (segunda opt)
-    public function exportarPanelSearch($search){
-    	$placesController = new PlacesRESTController;
-    	$places = $placesController->search($search);
-    	$csv = $this->insertArraObejectsDataIntoCsv_places($places);
-
-    	$csv->output('Establecimientos con ' . $search . '.csv');
-    }
-
-    public function exportarPanelEvalSearch($search){
-    	$placesController = new PlacesRESTController;
-    	$places = $placesController->search($search);
-
-    	$csv = Writer::createFromFileObject(new SplTempFileObject());
-		//header
-    	$csv->insertOne('id-establecimiento,nombre-establecimiento,direccion,barrio_localidad,partido,provincia,pais,condones,prueba,vacunatorio,ile,infectologia,ssr,es_rapido,Id Evaluación,¿Que buscó?,¿Se lo dieron?,Información clara,Privacidad,Edad,Género,Puntuación,Comentario,¿Aprobado?,Fecha');
+		$csv->insertOne('id-establecimiento,nombre-establecimiento,direccion,barrio_localidad,partido,provincia,pais,condones,prueba,vacunatorio,ile,infectologia,ssr,es_rapido,Id Evaluación,¿Que buscó?,¿Se lo dieron?,Información clara,Privacidad,Edad,Género,Puntuación,Comentario,¿Aprobado?,Fecha');
 
     	//body
-    	foreach ($places as $key => $value) {
+		foreach ($places as $key => $value) {
 
-    		$evaluations = DB::table('evaluation')
-    		->join('places','evaluation.idPlace','=','places.placeId')
-    		->join('pais','pais.id','=','places.idPais')
-    		->join('provincia','provincia.id','=','places.idProvincia')
-    		->join('partido','partido.id','=','places.idPartido')
-    		->where('evaluation.idPlace',$value->placeId)
-    		->select('places.placeId','places.establecimiento','places.calle','places.altura','places.barrio_localidad','places.condones','places.prueba','places.vacunatorio','places.ile','places.ssr','places.infectologia','places.es_rapido','evaluation.id','evaluation.que_busca','evaluation.le_dieron','evaluation.info_ok','evaluation.privacidad_ok','evaluation.edad','evaluation.genero','evaluation.voto','evaluation.comentario','evaluation.aprobado','pais.nombre_pais','provincia.nombre_provincia','partido.nombre_partido','evaluation.created_at')
-    		->get();
+			$evaluations = DB::table('evaluation')
+			->join('places','evaluation.idPlace','=','places.placeId')
+			->join('pais','pais.id','=','places.idPais')
+			->join('provincia','provincia.id','=','places.idProvincia')
+			->join('partido','partido.id','=','places.idPartido')
+			->where('evaluation.idPlace',$value->placeId)
+			->select('places.placeId','places.establecimiento','places.calle','places.altura','places.barrio_localidad','places.condones','places.prueba','places.vacunatorio','places.ile','places.ssr','places.infectologia','places.es_rapido','evaluation.id','evaluation.que_busca','evaluation.le_dieron','evaluation.info_ok','evaluation.privacidad_ok','evaluation.edad','evaluation.genero','evaluation.voto','evaluation.comentario','evaluation.aprobado','pais.nombre_pais','provincia.nombre_provincia','partido.nombre_partido','evaluation.created_at')
+			->get();
 
-    		foreach ($evaluations as $p) {
-    			$p = (array)$p;
-    			$p['condones']= $this->parseToExport($p['condones']);
-    			$p['prueba']= $this->parseToExport($p['prueba']);
-    			$p['vacunatorio']= $this->parseToExport($p['vacunatorio']);
-    			$p['ile']= $this->parseToExport($p['ile']);
-    			$p['ssr']= $this->parseToExport($p['ssr']);
-    			$p['infectologia']= $this->parseToExport($p['infectologia']);
-    			$p['es_rapido']= $this->parseToExport($p['es_rapido']);
-    			$p['info_ok']= $this->parseToExport($p['info_ok']);
-    			$p['privacidad_ok']= $this->parseToExport($p['privacidad_ok']);
-    			$p['aprobado']= $this->parseToExport($p['aprobado']);
-    			$p['direccion']= $p['calle']." ".$p['altura'];
+			foreach ($evaluations as $p) {
+				$p = (array)$p;
+				$p['condones']= $this->parseToExport($p['condones']);
+				$p['prueba']= $this->parseToExport($p['prueba']);
+				$p['mac']= $this->parseToExport($p['mac']);
+				$p['ile']= $this->parseToExport($p['ile']);
+				$p['ssr']= $this->parseToExport($p['ssr']);
+				$p['dc']= $this->parseToExport($p['dc']);
+				$p['es_rapido']= $this->parseToExport($p['es_rapido']);
+				$p['info_ok']= $this->parseToExport($p['info_ok']);
+				$p['privacidad_ok']= $this->parseToExport($p['privacidad_ok']);
+				$p['aprobado']= $this->parseToExport($p['aprobado']);
+				$p['direccion']= $p['calle']." ".$p['altura'];
 
-    			$csv->insertOne([
-    				$p['placeId'],
-    				$p['establecimiento'],
-    				$p['direccion'],
-    				$p['barrio_localidad'],
-    				$p['nombre_partido'],
-    				$p['nombre_provincia'],
-    				$p['nombre_pais'],
+				$csv->insertOne([
+					$p['placeId'],
+					$p['establecimiento'],
+					$p['direccion'],
+					$p['barrio_localidad'],
+					$p['nombre_partido'],
+					$p['nombre_provincia'],
+					$p['nombre_pais'],
 
-    				$p['condones'],
-    				$p['prueba'],
-    				$p['vacunatorio'],
-    				$p['ile'],
-    				$p['infectologia'],
-    				$p['ssr'],
-    				$p['es_rapido'],
-    				$p['id'],
-    				$p['que_busca'],
-    				$p['le_dieron'],
-    				$p['info_ok'],
-    				$p['privacidad_ok'],
-    				$p['edad'],
-    				$p['genero'],
-    				$p['voto'],
-    				"\"" . $p['comentario']  . "\"" ,
-    				$p['aprobado'],
-    				$p['created_at']
-    			]);
-    		}
-    	}
-    	$csv->output('Evaluaciones.csv');
-    }
+					$p['condones'],
+					$p['prueba'],
+					$p['mac'],
+					$p['ile'],
+					$p['dc'],
+					$p['ssr'],
+					$p['es_rapido'],
+					$p['id'],
+					$p['que_busca'],
+					$p['le_dieron'],
+					$p['info_ok'],
+					$p['privacidad_ok'],
+					$p['edad'],
+					$p['genero'],
+					$p['voto'],
+					"\"" . $p['comentario']  . "\"" ,
+					$p['aprobado'],
+					$p['created_at']
+				]);
+			}
+		}
+		$csv->output('Evaluaciones.csv');
+	}
 
-    public function activePlacesExport(Request $request){
+	public function activePlacesExport(Request $request){
 
-    	$request_params = Input::all();
-    	$idPais = $request_params['idPais'];
-    	$idProvincia = $request_params['idProvincia'];
-    	$idPartido = $request_params['idPartido'];
-    	$idCiudad = $request_params['idCiudad'];
-    	$placesController = new PlacesRESTController;
-    	$places = $placesController->getAprobedPlaces($idPais, $idProvincia, $idPartido, $idCiudad);
+		$request_params = Input::all();
+		$idPais = $request_params['idPais'];
+		$idProvincia = $request_params['idProvincia'];
+		$idPartido = $request_params['idPartido'];
+		$idCiudad = $request_params['idCiudad'];
+		$placesController = new PlacesRESTController;
+		$places = $placesController->getAprobedPlaces($idPais, $idProvincia, $idPartido, $idCiudad);
 
-    	if ((isset($places)) && (count($places) > 0)){
+		if ((isset($places)) && (count($places) > 0)){
 
-    		if($idPais == "null" && $idProvincia == "null" && $idPartido == "null" && $idCiudad == "null"){
+			if($idPais == "null" && $idProvincia == "null" && $idPartido == "null" && $idCiudad == "null"){
     			// Export all active places
-    			$copyCSV = "establecimientos_activos.csv";
-    		}
-    		else{
-    			if($idPais != "null" && $idProvincia == "null" && $idPartido == "null" && $idCiudad == "null"){
+				$copyCSV = "establecimientos_activos.csv";
+			}
+			else{
+				if($idPais != "null" && $idProvincia == "null" && $idPartido == "null" && $idCiudad == "null"){
     				// Export by country
-    				$copyCSV = "establecimientos_".$places[0]->nombre_pais.".csv";
-    			}
-    			else{
-    				if($idPais != "null" && $idProvincia != "null" && $idPartido == "null" && $idCiudad == "null"){
+					$copyCSV = "establecimientos_".$places[0]->nombre_pais.".csv";
+				}
+				else{
+					if($idPais != "null" && $idProvincia != "null" && $idPartido == "null" && $idCiudad == "null"){
     					// Export by province
-    					$copyCSV = "establecimientos_".$places[0]->nombre_provincia."_".$places[0]->nombre_pais.".csv";
-    				}
-    				else{
-    					if($idPais != "null" && $idProvincia != "null" && $idPartido != "null" && $idCiudad == "null"){
+						$copyCSV = "establecimientos_".$places[0]->nombre_provincia."_".$places[0]->nombre_pais.".csv";
+					}
+					else{
+						if($idPais != "null" && $idProvincia != "null" && $idPartido != "null" && $idCiudad == "null"){
     						// Export by party
-    						$copyCSV = "establecimientos_".$places[0]->nombre_partido."_".$places[0]->nombre_provincia."_".$places[0]->nombre_pais.".csv";
-    					}
-    					else{
+							$copyCSV = "establecimientos_".$places[0]->nombre_partido."_".$places[0]->nombre_provincia."_".$places[0]->nombre_pais.".csv";
+						}
+						else{
     						// Export by city
-    						$copyCSV = "establecimientos_".$places[0]->nombre_ciudad."_".$places[0]->nombre_partido."_".$places[0]->nombre_provincia."_".$places[0]->nombre_pais.".csv";
-    					}
-    				}
-    			}
-    		}
-    	}
+							$copyCSV = "establecimientos_".$places[0]->nombre_ciudad."_".$places[0]->nombre_partido."_".$places[0]->nombre_provincia."_".$places[0]->nombre_pais.".csv";
+						}
+					}
+				}
+			}
+		}
+		else $copyCSV = "nodata.csv";
 
-    	else $copyCSV = "nodata.csv";
+		$csv = $this->exportDataToCsv($places);
 
-    	$csv = $this->insertArraObejectsDataIntoCsv_places($places);
-
-    	$csv->output($copyCSV);
-    }
+		$csv->output($copyCSV);
+	}
 
 
-    public function activePlacesEvaluationsExport(Request $request){
+	public function activePlacesEvaluationsExport(Request $request){
 
-    	$request_params = Input::all();
-    	$idPais = $request_params['idPais'];
-    	$idProvincia = $request_params['idProvincia'];
-    	$idPartido = $request_params['idPartido'];
-    	$serviciosString = $request_params['selectedServiceList'];
-    	$servicios = explode(',', $serviciosString);
-    	$placesController = new PlacesRESTController;
-    	$places = $placesController->showApprovedFilterByService($idPais,$idProvincia,$idPartido, $servicios);
-    	if (count($places) > 0){
-    		$copyCSV = "evaluaciones_".$places[0]->nombre_partido."_".$places[0]->nombre_provincia."_".$places[0]->nombre_pais.".csv";
-    	}
-    	else {
-    		$copyCSV = "nodata.csv";
-    	}
-    	$csv = Writer::createFromFileObject(new SplTempFileObject());
+		$request_params = Input::all();
+		$idPais = $request_params['idPais'];
+		$idProvincia = $request_params['idProvincia'];
+		$idPartido = $request_params['idPartido'];
+		$serviciosString = $request_params['selectedServiceList'];
+		$servicios = explode(',', $serviciosString);
+		$placesController = new PlacesRESTController;
+		$places = $placesController->showApprovedFilterByService($idPais,$idProvincia,$idPartido, $servicios);
+		if (count($places) > 0){
+			$copyCSV = "evaluaciones_".$places[0]->nombre_partido."_".$places[0]->nombre_provincia."_".$places[0]->nombre_pais.".csv";
+		}
+		else {
+			$copyCSV = "nodata.csv";
+		}
+		$csv = Writer::createFromFileObject(new SplTempFileObject());
 			//header
-    	$csv->insertOne('id-establecimiento,nombre-establecimiento,direccion,barrio_localidad,partido,provincia,pais,condones,prueba,vacunatorio,ile,infectologia,ssr,es_rapido,Id Evaluación,¿Que buscó?,¿Se lo dieron?,Información clara,Privacidad, Gratuito, Cómodo, Información Vacunas Edad, Edad, Edad Especifica,Género,Puntuación,Comentario,¿Aprobado?,Fecha,Servicio');
+		$csv->insertOne('id-establecimiento,nombre-establecimiento,direccion,barrio_localidad,partido,provincia,pais,condones,prueba,vacunatorio,ile,infectologia,ssr,es_rapido,Id Evaluación,¿Que buscó?,¿Se lo dieron?,Información clara,Privacidad, Gratuito, Cómodo, Información Vacunas Edad, Edad, Edad Especifica,Género,Puntuación,Comentario,¿Aprobado?,Fecha,Servicio');
 			//body
-    	foreach ($places as $key => $value) {
+		foreach ($places as $key => $value) {
 
-    		$evaluations = DB::table('evaluation')
-    		->join('places','evaluation.idPlace','=','places.placeId')
-    		->join('pais','pais.id','=','places.idPais')
-    		->join('provincia','provincia.id','=','places.idProvincia')
-    		->join('partido','partido.id','=','places.idPartido')
-    		->where('evaluation.idPlace',$value->placeId)
-    		->select('places.placeId','places.establecimiento','places.calle','places.altura','places.barrio_localidad','places.condones','places.prueba','places.vacunatorio','places.ile','places.ssr','places.infectologia','places.es_rapido','evaluation.id','evaluation.que_busca','evaluation.le_dieron','evaluation.info_ok','evaluation.privacidad_ok','evaluation.es_gratuito','evaluation.comodo','evaluation.informacion_vacunas','evaluation.edad','evaluation.genero','evaluation.voto','evaluation.comentario','evaluation.aprobado','pais.nombre_pais','provincia.nombre_provincia','partido.nombre_partido','evaluation.created_at','evaluation.service')
-    		->get();
+			$evaluations = DB::table('evaluation')
+			->join('places','evaluation.idPlace','=','places.placeId')
+			->join('pais','pais.id','=','places.idPais')
+			->join('provincia','provincia.id','=','places.idProvincia')
+			->join('partido','partido.id','=','places.idPartido')
+			->where('evaluation.idPlace',$value->placeId)
+			->select('places.placeId','places.establecimiento','places.calle','places.altura','places.barrio_localidad','places.condones','places.prueba','places.vacunatorio','places.ile','places.ssr','places.infectologia','places.es_rapido','evaluation.id','evaluation.que_busca','evaluation.le_dieron','evaluation.info_ok','evaluation.privacidad_ok','evaluation.es_gratuito','evaluation.comodo','evaluation.informacion_vacunas','evaluation.edad','evaluation.genero','evaluation.voto','evaluation.comentario','evaluation.aprobado','pais.nombre_pais','provincia.nombre_provincia','partido.nombre_partido','evaluation.created_at','evaluation.service')
+			->get();
 
-    		foreach ($evaluations as $p) {
-    			$p = (array)$p;
-    			$p['edadEspecifica']= $this->parseEdadEspecifica($p['edad']);
-    			$p['condones']= $this->parseToExport($p['condones']);
-    			$p['prueba']= $this->parseToExport($p['prueba']);
-    			$p['vacunatorio']= $this->parseToExport($p['vacunatorio']);
-    			$p['ile']= $this->parseToExport($p['ile']);
-    			$p['ssr']= $this->parseToExport($p['ssr']);
-    			$p['infectologia']= $this->parseToExport($p['infectologia']);
-    			$p['es_rapido']= $this->parseToExport($p['es_rapido']);
-    			$p['info_ok']= $this->parseToExport($p['info_ok']);
-    			$p['privacidad_ok']= $this->parseToExport($p['privacidad_ok']);
-    			$p['aprobado']= $this->parseToExport($p['aprobado']);
-    			$p['direccion']= $p['calle']." ".$p['altura'];
-    			$p['es_gratuito']= $this->parseToExport($p['es_gratuito']);
-    			$p['service']= $this->parseService($p['service']);
-    			$p['comodo']= $this->parseToExport($p['comodo']);
-    			$p['informacion_vacunas']= $this->parseToExport($p['informacion_vacunas']);
+			foreach ($evaluations as $p) {
+				$p = (array)$p;
+				$p['edadEspecifica']= $this->parseEdadEspecifica($p['edad']);
+				$p['condones']= $this->parseToExport($p['condones']);
+				$p['prueba']= $this->parseToExport($p['prueba']);
+				$p['mac']= $this->parseToExport($p['mac']);
+				$p['ile']= $this->parseToExport($p['ile']);
+				$p['ssr']= $this->parseToExport($p['ssr']);
+				$p['dc']= $this->parseToExport($p['dc']);
+				$p['es_rapido']= $this->parseToExport($p['es_rapido']);
+				$p['info_ok']= $this->parseToExport($p['info_ok']);
+				$p['privacidad_ok']= $this->parseToExport($p['privacidad_ok']);
+				$p['aprobado']= $this->parseToExport($p['aprobado']);
+				$p['direccion']= $p['calle']." ".$p['altura'];
+				$p['es_gratuito']= $this->parseToExport($p['es_gratuito']);
+				$p['service']= $this->parseService($p['service']);
+				$p['comodo']= $this->parseToExport($p['comodo']);
+				$p['informacion_vacunas']= $this->parseToExport($p['informacion_vacunas']);
 
-    			$csv->insertOne([
-    				$p['placeId'],
-    				$p['direccion'],
-    				$p['establecimiento'],
-    				$p['barrio_localidad'],
-    				$p['nombre_partido'],
-    				$p['nombre_provincia'],
-    				$p['nombre_pais'],
+				$csv->insertOne([
+					$p['placeId'],
+					$p['direccion'],
+					$p['establecimiento'],
+					$p['barrio_localidad'],
+					$p['nombre_partido'],
+					$p['nombre_provincia'],
+					$p['nombre_pais'],
 
-    				$p['condones'],
-    				$p['prueba'],
-    				$p['vacunatorio'],
-    				$p['ile'],
-    				$p['infectologia'],
-    				$p['ssr'],
-    				$p['es_rapido'],
-    				$p['id'],
-    				$p['que_busca'],
-    				$p['le_dieron'],
-    				$p['info_ok'],
-    				$p['privacidad_ok'],
-    				$p['es_gratuito'],
-    				$p['comodo'],
-    				$p['informacion_vacunas'],
-    				$p['edadEspecifica'],
-    				$p['edad'],
-    				$p['genero'],
-    				$p['voto'],
-    				"\"" . $p['comentario']  . "\"" ,
-    				$p['aprobado'],
-    				$p['created_at'],
-    				$p['service']
-    			]);
-    		}
-    	}
-    	$csv->output($copyCSV);
-    }
+					$p['condones'],
+					$p['prueba'],
+					$p['mac'],
+					$p['ile'],
+					$p['dc'],
+					$p['ssr'],
+					$p['es_rapido'],
+					$p['id'],
+					$p['que_busca'],
+					$p['le_dieron'],
+					$p['info_ok'],
+					$p['privacidad_ok'],
+					$p['es_gratuito'],
+					$p['comodo'],
+					$p['informacion_vacunas'],
+					$p['edadEspecifica'],
+					$p['edad'],
+					$p['genero'],
+					$p['voto'],
+					"\"" . $p['comentario']  . "\"" ,
+					$p['aprobado'],
+					$p['created_at'],
+					$p['service']
+				]);
+			}
+		}
+		$csv->output($copyCSV);
+	}
 
 	// Export filtered evaluations
-    public function getFilteredEvaluations(Request $request){
+	public function getFilteredEvaluations(Request $request){
 
-    	$request_params = Input::all();
-    	$idPais = $request_params['idPais'];
-    	$idProvincia = $request_params['idProvincia'];
-    	$idPartido = $request_params['idPartido'];
-    	$idCiudad = $request_params['idCiudad'];
-    	$aprob = $request_params['aprob'];
+		$request_params = Input::all();
+		$idPais = $request_params['idPais'];
+		$idProvincia = $request_params['idProvincia'];
+		$idPartido = $request_params['idPartido'];
+		$idCiudad = $request_params['idCiudad'];
+		$aprob = $request_params['aprob'];
 
-    	if($aprob == '-1'){
-    		$aprob = 'null';
-    	}
+		if($aprob == '-1'){
+			$aprob = 'null';
+		}
 
-    	$evalController = new EvaluationRESTController;
+		$evalController = new EvaluationRESTController;
 
-    	if($idPais == 'null'){
+		if($idPais == 'null'){
     		/*if($aprob == '-1'){
     			$evals = $evalController->getAllFileteredEvaluations();
     		}
@@ -880,8 +655,8 @@ class ImportadorController extends Controller {
     		$csv->output($copyCSV);
     	}
 
-	//recibe placeId y selectedServiceList
-	//genera un csv, de las evaluaciones del lugar filtradas por los servicios que seleccionó (selectedServiceList)
+		//recibe placeId y selectedServiceList
+		//genera un csv, de las evaluaciones del lugar filtradas por los servicios que seleccionó (selectedServiceList)
     	public function evaluationsExportFilterByService(Request $request){
 
     		$request_params = Input::all();
@@ -898,9 +673,9 @@ class ImportadorController extends Controller {
     		}
     		$csv = Writer::createFromFileObject(new SplTempFileObject());
 
-		//header
-    		$csv->insertOne('id-establecimiento,nombre-establecimiento,direccion,barrio_localidad,ciudad,partido,provincia,pais,condones,prueba,vacunatorio,ile,infectologia,ssr,es_rapido,Id Evaluacion,¿Que busco?,Edad,Género,Puntuación,Comentario,¿Aprobado?,Fecha,Servicio,Nombre,Email,Telefono');
-		//body
+			//header
+    		$csv->insertOne('id-establecimiento,nombre-establecimiento,direccion,barrio_localidad,ciudad,partido,provincia,pais,condones,prueba,mac,ile,dc,ssr,es_rapido,Id Evaluacion,¿Que busco?,Edad,Género,Puntuación,Comentario,¿Aprobado?,Fecha,Servicio,Nombre,Email,Telefono');
+			//body
 
     		foreach ($evaluations as $p) {
     			$p = (array)$p;
@@ -909,8 +684,8 @@ class ImportadorController extends Controller {
     				$p['condones']= $this->parseToExport($p['condones']);
     				$p['prueba']= $this->parseToExport($p['prueba']);
     				$p['ssr']= $this->parseToExport($p['ssr']);
-    				$p['infectologia']= $this->parseToExport($p['infectologia']);
-    				$p['vacunatorio']= $this->parseToExport($p['vacunatorio']);
+    				$p['dc']= $this->parseToExport($p['dc']);
+    				$p['mac']= $this->parseToExport($p['mac']);
     				$p['ile']= $this->parseToExport($p['ile']);
     				$p['es_rapido']= $this->parseToExport($p['es_rapido']);
     				$p['aprobado']= $this->parseToExport($p['aprobado']);
@@ -927,9 +702,9 @@ class ImportadorController extends Controller {
     					$p['nombre_pais'],
     					$p['condones'],
     					$p['prueba'],
-    					$p['vacunatorio'],
+    					$p['mac'],
     					$p['ile'],
-    					$p['infectologia'],
+    					$p['dc'],
     					$p['ssr'],
     					$p['es_rapido'],
     					$p['id'],
@@ -979,10 +754,10 @@ class ImportadorController extends Controller {
     				$p = (array)$p;
     				$p['condones']= $this->parseToExport($p['condones']);
     				$p['prueba']= $this->parseToExport($p['prueba']);
-    				$p['vacunatorio']= $this->parseToExport($p['vacunatorio']);
+    				$p['mac']= $this->parseToExport($p['mac']);
     				$p['ile']= $this->parseToExport($p['ile']);
     				$p['ssr']= $this->parseToExport($p['ssr']);
-    				$p['infectologia']= $this->parseToExport($p['infectologia']);
+    				$p['dc']= $this->parseToExport($p['dc']);
     				$p['es_rapido']= $this->parseToExport($p['es_rapido']);
     				$p['info_ok']= $this->parseToExport($p['info_ok']);
     				$p['privacidad_ok']= $this->parseToExport($p['privacidad_ok']);
@@ -999,9 +774,9 @@ class ImportadorController extends Controller {
     					$p['nombre_pais'],
     					$p['condones'],
     					$p['prueba'],
-    					$p['vacunatorio'],
+    					$p['mac'],
     					$p['ile'],
-    					$p['infectologia'],
+    					$p['dc'],
     					$p['ssr'],
     					$p['es_rapido'],
     					$p['id'],
@@ -1027,11 +802,11 @@ class ImportadorController extends Controller {
 
     	public function exportarPanelFormed($pid=null,$cid=null,$bid=null){
     		$placesController = new PlacesRESTController;
-    		$places = $placesController->panelShowApprovedActive($pid,$cid,$bid);
+    		$places = $placesController->getAprobedPlaces($pid,$cid,$bid,null);
 
     		$copyCSV = "establecimientos_".$places[0]->nombre_partido."_".$places[0]->nombre_provincia."_".$places[0]->nombre_pais.".csv";
-    		$csv = $this->insertArraObejectsDataIntoCsv_places($places);
-		//descarga
+    		$csv = $this->exportDataToCsv($places);
+
     		$csv->output($copyCSV);
     	}
 
@@ -1042,8 +817,8 @@ class ImportadorController extends Controller {
     		$places = $placesController->showApprovedSearchActive($pid,$bid,$did,$cid);
 
     		$copyCSV = "establecimientos_".$places[0]->nombre_ciudad."_".$places[0]->nombre_partido."_".$places[0]->nombre_provincia."_".$places[0]->nombre_pais.".csv";
-    		$csv = $this->insertArraObejectsDataIntoCsv_places($places);
-		//descarga
+    		$csv = $this->exportDataToCsv($places);
+
     		$csv->output($copyCSV);
     	}
 
@@ -1105,6 +880,25 @@ class ImportadorController extends Controller {
 
 	}
 
+	public function parseCsvColumnsToDB($columns){
+		$columns[array_search('id', $columns)] = 'placeId';
+		foreach ($columns as $key => $value) {
+			$str = "";
+			if(strcmp($value,'ciudad') == 0)
+				$str = 'ciudad.nombre_ciudad';
+			else if(strcmp($value,'partido_comuna') == 0)
+				$str = 'partido.nombre_partido';
+			else if(strcmp($value,'provincia_region') == 0)
+				$str = 'provincia.nombre_provincia';
+			else if(strcmp($value,'pais') == 0)
+				$str = 'pais.nombre_pais';
+			else
+				$str = 'places.'.$value;
+			$columns[$key] = $str;
+		}
+		return $columns;
+	}
+
 	public function exportar(){
 
 		// contenedor de nombres
@@ -1132,13 +926,16 @@ class ImportadorController extends Controller {
 		//agrupo los files segun la cantidad de grupos que tenga.
 		for ($i=0; $i < $n; $i++) {
 			array_push($names, storage_path("file".$i.".csv") );
-			$placeColumns = array('placeId','establecimiento','tipo','calle','altura','piso_dpto','cruce','barrio_localidad','ciudad.nombre_ciudad','partido.nombre_partido','provincia.nombre_provincia','pais.nombre_pais','aprobado','observacion','formattedaddress','latitude','longitude','confidence','condones','prueba','mac','ile','dc','ssr','es_rapido','tel_distrib','mail_distrib','horario_distrib','responsable_distrib','web_distrib','ubicacion_distrib','comentarios_distrib','tel_testeo','mail_testeo','horario_testeo','responsable_testeo','web_testeo','ubicacion_testeo','observaciones_testeo','tel_mac','mail_mac','horario_mac','responsable_mac','web_mac','ubicacion_mac','comentarios_mac','tel_ile','mail_ile','horario_ile','responsable_ile','web_ile','ubicacion_ile','comentarios_ile','tel_dc','mail_dc','horario_dc','responsable_dc','web_dc','ubicacion_dc','comentarios_dc','tel_ssr','mail_ssr','horario_ssr','responsable_ssr','web_ssr','ubicacion_ssr','comentarios_ssr','servicetype_condones','servicetype_prueba','servicetype_mac','servicetype_ile','servicetype_dc','servicetype_ssr','friendly_condones','friendly_prueba','friendly_mac','friendly_ile','friendly_dc','friendly_ssr');
+
+			$placeColumns = $this->csvColumns_arrayFormat;
+			$placeColumns = $this->parseCsvColumnsToDB($placeColumns);
 
 			$places = DB::table('places')
 			->join('pais','pais.id','=','places.idPais')
 			->join('provincia','provincia.id','=','places.idProvincia')
 			->join('partido','partido.id','=','places.idPartido')
 			->join('ciudad','ciudad.id','=','places.idCiudad')
+			->orderBy('placeId', 'asc')
 			->skip($i*1000)
 			->take(1000)
 			->select($placeColumns)

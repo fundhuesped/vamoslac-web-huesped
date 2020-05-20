@@ -596,7 +596,7 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     $http.get('api/v1panelplaces/pendingfilterbyuser')
     .success(function(response) {
       for (var i = 0; i < response.length; i++) {
-        console.debug(response[i]);
+        // console.debug(response[i]);
         response[i]=filterAccents(response[i]);
 
       };
