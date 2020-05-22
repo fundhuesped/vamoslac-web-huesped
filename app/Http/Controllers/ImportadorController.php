@@ -2003,10 +2003,10 @@ class ImportadorController extends Controller {
 				$this->setSessionData('csvname', $tmpFile);
 				Storage::disk('local')->put($tmpFile, \File::get($request->file('file')));
 
-			//Resivar el modo del importador (caminos):
-			//1) Si es importador de datos nuevos sin servicio de geolocalización
-			//2) Si es importador de datos nuevos con servicio de geolocalización
-			//3) Si es actualizador de datos existentes
+				//Resivar el modo del importador (caminos):
+				//1) Si es importador de datos nuevos sin servicio de geolocalización
+				//2) Si es importador de datos nuevos con servicio de geolocalización
+				//3) Si es actualizador de datos existentes
 
 				$this->setSessionData('withGeo', false);
 

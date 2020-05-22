@@ -604,6 +604,11 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
       $scope.loadingPrev = false;
     });
 
+    $http.get('api/v1/places/approved')
+    .success(function(response) {
+      $rootScope.approvedPlacesLength = $scope.approvedPlacesLength = response;
+    });
+
     $http.get('api/v1/places/blocked')
     .success(function(response) {
       for (var i = 0; i < response.length; i++) {

@@ -1280,17 +1280,15 @@ class PlacesRESTController extends Controller
             return $e->getMessage();
         }
     }
+
     public function getAllApproved(Request $request)
     {
         try {
-            return DB::table('places')
-              ->where('aprobado', '=' , 1)
-              ->select('establecimiento')
-              ->get();
+            return count(Places::where('aprobado', '=' , 1)->get());
         } catch (Exception $e) {
             return $e->getMessage();
         }
-    }
+    }    
 
     public function getAllPartidos(Request $request)
     {
