@@ -89,6 +89,8 @@ dondev2App.controller('formController', function(NgMap, autocompleteService, vcR
     var flag = (
       (!$scope.aceptaTerminos) ||
       (!isValidLocation()) ||
+      (!$scope.place.uploader_name) ||
+      (!$scope.place.uploader_email && !$scope.place.uploader_tel) ||
       (!$scope.place.establecimiento || 0 === $scope.place.establecimiento.length));
     if (!flag) {
       return !isValidServices();

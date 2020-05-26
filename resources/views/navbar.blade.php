@@ -1,5 +1,5 @@
 <!-- NAV BAR DESKTOP/MOBILE-->
-<nav>
+<nav ng-controller="navController">
   <div class="nav-wrapper nav-index">
     <a href="/#/" class="brand-logo">
       <!-- WEBSITE LOGO -->

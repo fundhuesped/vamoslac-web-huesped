@@ -25,507 +25,473 @@
 
 @section('content')
 <div ng-app="dondev2App">
-  @include('navbar')
+	@include('navbar')
 
-  <!-- BACK -->
-  <ul  class="left wow fadeIn nav-wrapper" style="visibility: visible; animation-name: fadeIn; position: absolute; top: 0; left:0;">
-    <li><a style='color: white;' href="" onclick="window.history.back();"><i class="mdi-navigation-chevron-left right" style="font-size: 2rem;"></i></a></li>
-  </ul>
+	<!-- BACK -->
+	<ul  class="left wow fadeIn nav-wrapper" style="visibility: visible; animation-name: fadeIn; position: absolute; top: 0; left:0;">
+		<li><a style='color: white;' href="" onclick="window.history.back();"><i class="mdi-navigation-chevron-left right" style="font-size: 2rem;"></i></a></li>
+	</ul>
 
-  <!-- START FORM -->
-  <div class="home new-home" ng-controller="formController">
-    <!-- INPUT LIST -->
-    <div class="section search search-form row">
-      <h1 translate="suggest_place"></h1>
-      <p translate="form_intro_text"></p>
-      <form class="col s12 m6">
-        <!-- INPUT -->
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="establecimiento" type="text" name="establecimiento" class="validate" ng-model="place.establecimiento" required pattern="\S+.*"
-            ng-change="formChange()">
-            <label for="establecimiento" translate="form_establishment_name"></label>
-          </div>
-        </div>
-        <!-- INPUT -->
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="tipo" type="text" name="tipo" required
-            class="validate" ng-model="place.tipo" 
-            ng-change="formChange()">
-            <label for="tipo" translate="form_establishment_type"></label>
-          </div>
-        </div>
-        <!-- INPUT -->
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="calle" type="text" required
-            name="calle" class="validate"
-            ng-model="place.calle" ng-change="formChange()">
-            <label for="calle" translate="form_establishment_street">*</label>
-          </div>
-        </div>
-        <!-- INPUT -->
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="altura" type="text" required name="altura" class="validate" ng-model="place.altura" ng-change="formChange()">
-            <label for="altura" translate="form_establishment_street_height"></label>
-          </div>
-        </div>
-        <!-- INPUT -->
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="cruce" type="text" name="cruce" class="validate" ng-model="place.cruce" ng-change="formChange()">
-            <label for="cruce" translate="form_establishment_street_intersection"></label>
-          </div>
-        </div>
-        <!-- INPUT -->
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="piso_dpto" type="text"
-            name="piso_dpto" class="validate"
-            ng-model="place.piso_dpto" ng-change="formChange()">
-            <label for="piso_dpto" translate="form_establishment_floor"></label>
-          </div>
-        </div>
-        <!-- INPUT -->
-        <div class="row">
-          <div class="input-field col s12">
-            <!-- DROPDOWN PAIS -->
-            <select         required pattern="\S+.*" class=""
-            ng-change="showProvince()" ng-model="place.idPais"
-            ng-options="v.id as v.nombre_pais for v in countries" material-select watch>
-            <option value="" disabled selected translate="select_country">*</option>
-          </select>
-          <!-- DROPDOWN PROVINCIA -->
-          <select         required pattern="\S+.*" class=""
-          ng-change="showPartido()" ng-model="place.idProvincia"
-          ng-disabled ='!provinceOn'
-          ng-options="pcia.id as pcia.nombre_provincia for pcia in provinces" material-select watch>
-          <option value="" disabled selected translate="select_state">*</option>
-        </select>
-        <!-- DROPDOWN PARTIDO -->
-        <select         required pattern="\S+.*" class=""
-        ng-change="loadCity()"
-        ng-disabled ='!partidoOn'
-        ng-options="item.id as
-        item.nombre_partido for item in partidos track by item.id"
-        ng-model="place.idPartido"
-        material-select watch>
-        <option value="" disabled="" selected translate="select_department"></option>
-      </select>
-      <!-- DROPDOWN CIUDAD -->
-      <select         required pattern="\S+.*" class=""
-      ng-disabled="!showCity"
-      ng-options="c.id as c.nombre_ciudad for c in cities track by c.id"
-      ng-model="place.idCiudad" material-select watch>
-      <option value="" disabled selected translate="select_city"></option>
-    </select>
-  </div>
-</div>
-<!-- INPUT -->
-<div class="row">
-  <div class="input-field col s12">
-    <input id="barrio_localidad" type="text" name="barrio_localidad" class="validate" ng-model="place.barrio_localidad" ng-change="formChange()">
-    <label for="barrio_localidad" translate="neighborhood"></label>
-  </div>
-</div>
+	<!-- START FORM -->
+	<div class="home new-home" ng-controller="formController">
+		<!-- INPUT LIST -->
+		<div class="section search search-form row">
+			<h1 translate="suggest_place"></h1>
+			<p translate="form_intro_text"></p>
+			<form class="col s12 m6">
+				<label translate="establishment"></label>
+				<!-- INPUT -->
+				<div class="row">
+					<div class="input-field col s12">
+						<input id="establecimiento" type="text" name="establecimiento" class="validate" ng-model="place.establecimiento" required pattern="\S+.*"
+						ng-change="formChange()">
+						<label for="establecimiento" translate="form_establishment_name"></label>
+					</div>
+				</div>
+				<!-- INPUT -->
+				<div class="row">
+					<div class="input-field col s12">
+						<input id="tipo" type="text" name="tipo" required
+						class="validate" ng-model="place.tipo" 
+						ng-change="formChange()">
+						<label for="tipo" translate="form_establishment_type"></label>
+					</div>
+				</div>
 
-{{-- Api google maps --}}
-<div class="row">
-  <div class="input-field col s12">
-    <input id="autocomplete" placeholder="" type="text" autocomplete="no" ng-model="inputAutocomplete"/>
-    <label for="autocomplete" translate="panel_detail_general_suggest"></label>
-  </div>
-</div>
-<div class="row" ng-hide="!outputAutocomplete">
-  <div class="input-field col s9">
-    <input id="autocomplete_output" type="text" ng-model="outputAutocomplete" disabled style="color: red" />
-    <label for="autocomplete_output" translate="panel_warning_autocomplete" style="color: red"></label>
-  </div>
-  <div class="col s3">
-    <button class="waves-effect waves-light btn btn-large full" ng-click="cancelNewCity()">
-      <i class="mdi-navigation-cancel"></i>
-    </button>
-  </div>
-</div>
+				<label translate="address"></label>
+				<!-- INPUT -->
+				<div class="row">
+					<div class="input-field col s12">
+						<input id="calle" type="text" required
+						name="calle" class="validate"
+						ng-model="place.calle" ng-change="formChange()">
+						<label for="calle" translate="form_establishment_street">*</label>
+					</div>
+				</div>
+				<!-- INPUT -->
+				<div class="row">
+					<div class="input-field col s12">
+						<input id="altura" type="text" required name="altura" class="validate" ng-model="place.altura" ng-change="formChange()">
+						<label for="altura" translate="form_establishment_street_height"></label>
+					</div>
+				</div>
+				<!-- INPUT -->
+				<div class="row">
+					<div class="input-field col s12">
+						<input id="cruce" type="text" name="cruce" class="validate" ng-model="place.cruce" ng-change="formChange()">
+						<label for="cruce" translate="form_establishment_street_intersection"></label>
+					</div>
+				</div>
+				<!-- INPUT -->
+				<div class="row">
+					<div class="input-field col s12">
+						<input id="piso_dpto" type="text"
+						name="piso_dpto" class="validate"
+						ng-model="place.piso_dpto" ng-change="formChange()">
+						<label for="piso_dpto" translate="form_establishment_floor"></label>
+					</div>
+				</div>
 
-<!-- INPUT -->
-<div class="row">
-  <div class="input-field col s12">
-    <input id="responsable" type="text"
-    name="responsable" class="validate"
-    ng-model="place.responsable" ng-change="formChange()">
-    <label for="responsable" translate="responsable"></label>
-  </div>
-</div>
-<!-- INPUT -->
-<div class="row">
-  <div class="input-field col s12">
-    <input id="horario" type="text"
-    name="horario" class="validate"
-    ng-model="place.horario" ng-change="formChange()">
-    <label for="horario" translate="schedule"></label>
-  </div>
-</div>
-<!-- INPUT -->
-<div class="row">
-  <div class="input-field col s12">
-    <input id="mail" type="email"
-    name="mail" class="validate"
-    ng-model="place.mail"
-    ng-change="formChange()">
-    <label for="mail" translate="email"></label>
-  </div>
-</div>
-<!-- INPUT -->
-<div class="row">
-  <div class="input-field col s12">
-    <input id="tel" type="text"
-    name="tel" class="validate"
-    ng-model="place.telefono" ng-change="formChange()">
-    <label for="tel" translate="tel"></label>
-  </div>
-</div>
-<!-- INPUT -->
-<div class="row">
-  <div class="input-field col s12">
-    <input id="Web" type="text"
-    name="Web" class="validate"
-    ng-model="place.web" ng-change="formChange()">
-    <label for="Web">Web</label>
-  </div>
-</div>
+				<label translate="location"></label>
+				<!-- INPUT -->
+				<div class="row">
+					<div class="input-field col s12">
+						<!-- DROPDOWN PAIS -->
+						<select         required pattern="\S+.*" class=""
+						ng-change="showProvince()" ng-model="place.idPais"
+						ng-options="v.id as v.nombre_pais for v in countries" material-select watch>
+						<option value="" disabled selected translate="select_country">*</option>
+						</select>
+						<!-- DROPDOWN PROVINCIA -->
+						<select         required pattern="\S+.*" class=""
+						ng-change="showPartido()" ng-model="place.idProvincia"
+						ng-disabled ='!provinceOn'
+						ng-options="pcia.id as pcia.nombre_provincia for pcia in provinces" material-select watch>
+						<option value="" disabled selected translate="select_state">*</option>
+						</select>
+						<!-- DROPDOWN PARTIDO -->
+						<select         required pattern="\S+.*" class=""
+						ng-change="loadCity()"
+						ng-disabled ='!partidoOn'
+						ng-options="item.id as
+						item.nombre_partido for item in partidos track by item.id"
+						ng-model="place.idPartido"
+						material-select watch>
+						<option value="" disabled="" selected translate="select_department"></option>
+						</select>
+						<!-- DROPDOWN CIUDAD -->
+						<select         required pattern="\S+.*" class=""
+						ng-disabled="!showCity"
+						ng-options="c.id as c.nombre_ciudad for c in cities track by c.id"
+						ng-model="place.idCiudad" material-select watch>
+						<option value="" disabled selected translate="select_city"></option>
+						</select>
+					</div>
+				</div>
+			<!-- INPUT -->
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="barrio_localidad" type="text" name="barrio_localidad" class="validate" ng-model="place.barrio_localidad" ng-change="formChange()">
+					<label for="barrio_localidad" translate="neighborhood"></label>
+				</div>
+			</div>
 
-<div class="row">
-  <label>[[ 'select_establishment_services' | translate ]]*</label>
-</div>
+			{{-- Api google maps --}}
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="autocomplete" placeholder="" type="text" autocomplete="no" ng-model="inputAutocomplete"/>
+					<label for="autocomplete" translate="panel_detail_general_suggest"></label>
+				</div>
+			</div>
+			<div class="row" ng-hide="!outputAutocomplete">
+				<div class="input-field col s9">
+					<input id="autocomplete_output" type="text" ng-model="outputAutocomplete" disabled style="color: red" />
+					<label for="autocomplete_output" translate="panel_warning_autocomplete" style="color: red"></label>
+				</div>
+				<div class="col s3">
+					<button class="waves-effect waves-light btn btn-large full" ng-click="cancelNewCity()">
+						<i class="mdi-navigation-cancel"></i>
+					</button>
+				</div>
+			</div>
 
-<!-- CONDOMS CARD -->
-<div class="card-panel">
-  <input  type="checkbox"
-  name="place.condones"
-  id="filled-in-box-condones"
-  ng-checked="isChecked(place.condones)"
-  ng-model="place.condones" ng-change="formChange()"/>
-  <label for="filled-in-box-condones" translate="form_select_condones"></label>
+			<label translate="form_establishment_information_input"></label>
+			<!-- INPUT -->
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="responsable" type="text"
+					name="responsable" class="validate"
+					ng-model="place.responsable" ng-change="formChange()">
+					<label for="responsable" translate="responsable"></label>
+				</div>
+			</div>
+			<!-- INPUT -->
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="horario" type="text"
+					name="horario" class="validate"
+					ng-model="place.horario" ng-change="formChange()">
+					<label for="horario" translate="schedule"></label>
+				</div>
+			</div>
+			<!-- INPUT -->
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="mail" type="email"
+					name="mail" class="validate"
+					ng-model="place.mail"
+					ng-change="formChange()">
+					<label for="mail" translate="email"></label>
+				</div>
+			</div>
+			<!-- INPUT -->
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="tel" type="text"
+					name="tel" class="validate"
+					ng-model="place.telefono" ng-change="formChange()">
+					<label for="tel" translate="tel"></label>
+				</div>
+			</div>
+			<!-- INPUT -->
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="Web" type="text"
+					name="Web" class="validate"
+					ng-model="place.web" ng-change="formChange()">
+					<label for="Web">Web</label>
+				</div>
+			</div>
 
-  <div class="form-group" ng-show="place.condones">
-    <div class="col s12">
-      <label translate="form_select_service_type_title"></label>
-    </div>
-    <p>
-      <input type="radio" id="st_condones0" name="servicetype_condones" value="no_disponible" ng-model="place.servicetype_condones" ng-change="formChange()">
-      <label for="st_condones0" translate="form_service_type_option_not_av"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_condones1" name="servicetype_condones" value="arancel" ng-model="place.servicetype_condones" ng-change="formChange()">
-      <label for="st_condones1" translate="form_service_type_option_arancel"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_condones2" name="servicetype_condones" value="gratuito" ng-model="place.servicetype_condones" ng-change="formChange()">
-      <label for="st_condones2" translate="form_service_type_option_gratuito"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_condones3" name="servicetype_condones" value="cobertura" ng-model="place.servicetype_condones" ng-change="formChange()">
-      <label for="st_condones3" translate="form_service_type_option_consultar"></label>
-    </p>
-    <p>
-      <input  type="checkbox"
-      name="friendly_condones"
-      id="friendly_condones"
-      ng-model="place.friendly_condones" />
-      <label for="friendly_condones" translate="form_service_friendly_option"></label>
-    </p>
-  </div>
-</div>
+			<div class="row">
+				<label>[[ 'select_establishment_services' | translate ]]*</label>
+			</div>
 
-<!-- VIH TEST CARD -->
-<div class="card-panel">
-  <input  type="checkbox"
-  name="place.prueba"
-  id="filled-in-box-prueba"
-  ng-checked="isChecked(place.prueba)"
-  ng-model="place.prueba" ng-change="formChange()"/>
-  <label for="filled-in-box-prueba" translate="form_prueba_option"></label>
+			<!-- CONDOMS CARD -->
+			<div class="card-panel">
+				<input  type="checkbox"
+				name="place.condones"
+				id="filled-in-box-condones"
+				ng-checked="isChecked(place.condones)"
+				ng-model="place.condones" ng-change="formChange()"/>
+				<label for="filled-in-box-condones" translate="form_select_condones"></label>
 
-  <div class="form-group" ng-show="place.prueba">
-    <div class="col s12">
-      <label translate="form_select_service_type_title"></label>
-    </div>
-    <p>
-      <input type="radio" id="st_prueba0" name="servicetype_prueba" value="no_disponible" ng-model="place.servicetype_prueba" ng-change="formChange()">
-      <label for="st_prueba0" translate="form_service_type_option_not_av"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_prueba1" name="servicetype_prueba" value="arancel" ng-model="place.servicetype_prueba" ng-change="formChange()">
-      <label for="st_prueba1" translate="form_service_type_option_arancel"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_prueba2" name="servicetype_prueba" value="gratuito" ng-model="place.servicetype_prueba" ng-change="formChange()">
-      <label for="st_prueba2" translate="form_service_type_option_gratuito"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_prueba3" name="servicetype_prueba" value="cobertura" ng-model="place.servicetype_prueba" ng-change="formChange()">
-      <label for="st_prueba3" translate="form_service_type_option_consultar"></label>
-    </p>
-    <p>
-      <input  type="checkbox"
-      name="friendly_prueba"
-      id="friendly_prueba"
-      ng-model="place.friendly_prueba" />
-      <label for="friendly_prueba" translate="form_service_friendly_option"></label>
-    </p>
-  </div>
-</div>
+				<div class="form-group" ng-show="place.condones">
+					<div class="col s12">
+						<label translate="form_select_service_type_title"></label>
+					</div>
+					<div class="col s12">
+						<input id="servicetype_condones" type="text" required
+						name="servicetype_condones" class="validate"
+						ng-model="place.servicetype_condones" ng-change="formChange()">
+					</div>
+					<p>
+						<input  type="checkbox"
+						name="friendly_condones"
+						id="friendly_condones"
+						ng-model="place.friendly_condones" />
+						<label for="friendly_condones" translate="form_service_friendly_option"></label>
+					</p>
+				</div>
+			</div>
 
-<!-- CANCER DETECTION CARD -->
-<div class="card-panel">
-  <input  type="checkbox"
-  name="place.sd"
-  id="filled-in-box-dc"
-  ng-checked="isChecked(place.dc)"
-  ng-model="place.dc"  ng-change="formChange()"/>
-  <label for="filled-in-box-dc" translate="form_dc_option"></label>
-  <div class="form-group" ng-show="place.dc">
-    <div class="col s12">
-      <label translate="form_select_service_type_title"></label>
-    </div>
-    <p>
-      <input type="radio" id="st_dc0" name="servicetype_dc" value="no_disponible" ng-model="place.servicetype_dc" ng-change="formChange()">
-      <label for="st_dc0" translate="form_service_type_option_not_av"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_dc1" name="servicetype_dc" value="arancel" ng-model="place.servicetype_dc" ng-change="formChange()">
-      <label for="st_dc1" translate="form_service_type_option_arancel"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_dc2" name="servicetype_dc" value="gratuito" ng-model="place.servicetype_dc" ng-change="formChange()">
-      <label for="st_dc2" translate="form_service_type_option_gratuito"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_dc3" name="servicetype_dc" value="cobertura" ng-model="place.servicetype_dc" ng-change="formChange()">
-      <label for="st_dc3" translate="form_service_type_option_consultar"></label>
-    </p>
-    <p>
-      <input  type="checkbox"
-      name="friendly_dc"
-      id="friendly_dc"
-      ng-model="place.friendly_dc" />
-      <label for="friendly_dc" translate="form_service_friendly_option"></label>
-    </p>
-  </div>
-</div>
+			<!-- VIH TEST CARD -->
+			<div class="card-panel">
+				<input  type="checkbox"
+				name="place.prueba"
+				id="filled-in-box-prueba"
+				ng-checked="isChecked(place.prueba)"
+				ng-model="place.prueba" ng-change="formChange()"/>
+				<label for="filled-in-box-prueba" translate="form_prueba_option"></label>
 
-<!-- SSR CARD -->
-<div class="card-panel">
-  <input  type="checkbox"
-  name="place.ssr"
-  id="filled-in-box-ssr"
-  ng-checked="isChecked(place.ssr)"
-  ng-model="place.ssr" ng-change="formChange()"/>
-  <label for="filled-in-box-ssr" translate="form_ssr_option"></label>
-  <div class="form-group" ng-show="place.ssr">
-    <div class="col s12">
-      <label translate="form_select_service_type_title"></label>
-    </div>
-    <p>
-      <input type="radio" id="st_ssr0" name="servicetype_ssr" value="no_disponible" ng-model="place.servicetype_ssr" ng-change="formChange()">
-      <label for="st_ssr0" translate="form_service_type_option_not_av"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_ssr1" name="servicetype_ssr" value="arancel" ng-model="place.servicetype_ssr" ng-change="formChange()">
-      <label for="st_ssr1" translate="form_service_type_option_arancel"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_ssr2" name="servicetype_ssr" value="gratuito" ng-model="place.servicetype_ssr" ng-change="formChange()">
-      <label for="st_ssr2" translate="form_service_type_option_gratuito"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_ssr3" name="servicetype_ssr" value="cobertura" ng-model="place.servicetype_ssr" ng-change="formChange()">
-      <label for="st_ssr3" translate="form_service_type_option_consultar"></label>
-    </p>
-    <p>
-      <input  type="checkbox"
-      name="friendly_ssr"
-      id="friendly_ssr"
-      ng-model="place.friendly_ssr" />
-      <label for="friendly_ssr" translate="form_service_friendly_option"></label>
-    </p>
-  </div>
-</div>
+				<div class="form-group" ng-show="place.prueba">
+					<div class="col s12">
+						<label translate="form_select_service_type_title"></label>
+					</div>
+					<div class="col s12">
+						<input id="servicetype_prueba" type="text" required
+						name="servicetype_prueba" class="validate"
+						ng-model="place.servicetype_prueba" ng-change="formChange()">
+					</div>
+					<p>
+						<input  type="checkbox"
+						name="friendly_prueba"
+						id="friendly_prueba"
+						ng-model="place.friendly_prueba" />
+						<label for="friendly_prueba" translate="form_service_friendly_option"></label>
+					</p>
+				</div>
+			</div>
 
-<!-- MAC CARD -->
-<div class="card-panel">
-  <input  type="checkbox"
-  name="place.mac"
-  id="filled-in-box-mac"
-  ng-checked="isChecked(place.mac)"
-  ng-model="place.mac" ng-change="formChange()"/>
-  <label for="filled-in-box-mac" translate="form_mac_option"></label>
+			<!-- CANCER DETECTION CARD -->
+			<div class="card-panel">
+				<input  type="checkbox"
+				name="place.sd"
+				id="filled-in-box-dc"
+				ng-checked="isChecked(place.dc)"
+				ng-model="place.dc"  ng-change="formChange()"/>
+				<label for="filled-in-box-dc" translate="form_dc_option"></label>
+				<div class="form-group" ng-show="place.dc">
+					<div class="col s12">
+						<label translate="form_select_service_type_title"></label>
+					</div>
+					<div class="col s12">
+						<input id="servicetype_dc" type="text" required
+						name="servicetype_dc" class="validate"
+						ng-model="place.servicetype_dc" ng-change="formChange()">
+					</div>
+					<p>
+						<input  type="checkbox"
+						name="friendly_dc"
+						id="friendly_dc"
+						ng-model="place.friendly_dc" />
+						<label for="friendly_dc" translate="form_service_friendly_option"></label>
+					</p>
+				</div>
+			</div>
 
-  <div class="form-group" ng-show="place.mac">
-    <div class="col s12">
-      <label translate="form_select_service_type_title"></label>
-    </div>
-    <p>
-      <input type="radio" id="st_mac0" name="servicetype_mac" value="no_disponible" ng-model="place.servicetype_mac" ng-change="formChange()">
-      <label for="st_mac0" translate="form_service_type_option_not_av"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_mac1" name="servicetype_mac" value="arancel" ng-model="place.servicetype_mac" ng-change="formChange()">
-      <label for="st_mac1" translate="form_service_type_option_arancel"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_mac2" name="servicetype_mac" value="gratuito" ng-model="place.servicetype_mac" ng-change="formChange()">
-      <label for="st_mac2" translate="form_service_type_option_gratuito"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_mac3" name="servicetype_mac" value="cobertura" ng-model="place.servicetype_mac" ng-change="formChange()">
-      <label for="st_mac3" translate="form_service_type_option_consultar"></label>
-    </p>
-    <p>
-      <input  type="checkbox"
-      name="friendly_mac"
-      id="friendly_mac"
-      ng-model="place.friendly_mac" />
-      <label for="friendly_mac" translate="form_service_friendly_option"></label>
-    </p>
-  </div>
-</div>
+			<!-- SSR CARD -->
+			<div class="card-panel">
+				<input  type="checkbox"
+				name="place.ssr"
+				id="filled-in-box-ssr"
+				ng-checked="isChecked(place.ssr)"
+				ng-model="place.ssr" ng-change="formChange()"/>
+				<label for="filled-in-box-ssr" translate="form_ssr_option"></label>
+				<div class="form-group" ng-show="place.ssr">
+					<div class="col s12">
+						<label translate="form_select_service_type_title"></label>
+					</div>
+					<div class="col s12">
+						<input id="servicetype_ssr" type="text" required
+						name="servicetype_ssr" class="validate"
+						ng-model="place.servicetype_ssr" ng-change="formChange()">
+					</div>
+					<p>
+						<input  type="checkbox"
+						name="friendly_ssr"
+						id="friendly_ssr"
+						ng-model="place.friendly_ssr" />
+						<label for="friendly_ssr" translate="form_service_friendly_option"></label>
+					</p>
+				</div>
+			</div>
 
-<!-- ILE CARD -->
-<div class="card-panel">
-  <input  type="checkbox"
-  name="place.ile"
-  id="filled-in-box-ile"
-  ng-checked="isChecked(place.ile)"
-  ng-model="place.ile" ng-change="formChange()"/>
-  <label for="filled-in-box-ile" translate="form_ile_option"></label>
+			<!-- MAC CARD -->
+			<div class="card-panel">
+				<input  type="checkbox"
+				name="place.mac"
+				id="filled-in-box-mac"
+				ng-checked="isChecked(place.mac)"
+				ng-model="place.mac" ng-change="formChange()"/>
+				<label for="filled-in-box-mac" translate="form_mac_option"></label>
 
-  <div class="form-group" ng-show="place.ile">
-    <div class="col s12">
-      <label translate="form_select_service_type_title"></label>
-    </div>
-    <p>
-      <input type="radio" id="st_ile0" name="servicetype_ile" value="no_disponible" ng-model="place.servicetype_ile" ng-change="formChange()">
-      <label for="st_ile0" translate="form_service_type_option_not_av"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_ile1" name="servicetype_ile" value="arancel" ng-model="place.servicetype_ile" ng-change="formChange()">
-      <label for="st_ile1" translate="form_service_type_option_arancel"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_ile2" name="servicetype_ile" value="gratuito" ng-model="place.servicetype_ile" ng-change="formChange()">
-      <label for="st_ile2" translate="form_service_type_option_gratuito"></label>
-    </p>
-    <p>
-      <input type="radio" id="st_ile3" name="servicetype_ile" value="cobertura" ng-model="place.servicetype_ile" ng-change="formChange()">
-      <label for="st_ile3" translate="form_service_type_option_consultar"></label>
-    </p>
-    <p>
-      <input  type="checkbox"
-      name="friendly_ile"
-      id="friendly_ile"
-      ng-model="place.friendly_ile" />
-      <label for="friendly_ile" translate="form_service_friendly_option"></label>
-    </p>
-  </div>
-</div>
+				<div class="form-group" ng-show="place.mac">
+					<div class="col s12">
+						<label translate="form_select_service_type_title"></label>
+					</div>
+					<div class="col s12">
+						<input id="servicetype_mac" type="text" required
+						name="servicetype_mac" class="validate"
+						ng-model="place.servicetype_mac" ng-change="formChange()">
+					</div>
+					<p>
+						<input  type="checkbox"
+						name="friendly_mac"
+						id="friendly_mac"
+						ng-model="place.friendly_mac" />
+						<label for="friendly_mac" translate="form_service_friendly_option"></label>
+					</p>
+				</div>
+			</div>
 
-<div class="row">
-  <div class="input-field col s12">
-    <textarea id="observacion" type="text"
-    name="observacion"
-    class="validate materialize-textarea" ng-model="place.observacion" ng-change="formChange()"></textarea>
-    <label for="observacion" translate="form_observation_input"></label>
-  </div>
-</div>
-</form>
-<!-- END LEFT SIDE FORM -->
+			<!-- ILE CARD -->
+			<div class="card-panel">
+				<input  type="checkbox"
+				name="place.ile"
+				id="filled-in-box-ile"
+				ng-checked="isChecked(place.ile)"
+				ng-model="place.ile" ng-change="formChange()"/>
+				<label for="filled-in-box-ile" translate="form_ile_option"></label>
 
+				<div class="form-group" ng-show="place.ile">
+					<div class="col s12">
+						<label translate="form_select_service_type_title"></label>
+					</div>
+					<div class="col s12">
+						<input id="servicetype_ile" type="text" required
+						name="servicetype_ile" class="validate"
+						ng-model="place.servicetype_ile" ng-change="formChange()">
+					</div>
+					<p>
+						<input  type="checkbox"
+						name="friendly_ile"
+						id="friendly_ile"
+						ng-model="place.friendly_ile" />
+						<label for="friendly_ile" translate="form_service_friendly_option"></label>
+					</p>
+				</div>
+			</div>
 
-<!-- MAP EDITOR COMPONENT -->
-<div class="col s12 m6">
-  <div class="row">
-    <!-- LOOK UP LOCATION BUTTON -->
-    <div class="valign-demo  valign-wrapper">
-      <div class="valign full-width actions">
-        <button class="waves-effect waves-light btn btn-large full btn-pin-geo"
-        ng-href=""
-        ng-click="lookupLocation()">
-      </button>
-    </div>
-  </div>
-  <label translate="form_gps_find"></label>
+			<div class="row">
+				<div class="input-field col s12">
+					<textarea id="observacion" type="text"
+					name="observacion"
+					class="validate materialize-textarea" ng-model="place.observacion" ng-change="formChange()"></textarea>
+					<label for="observacion" translate="form_observation_input"></label>
+				</div>
+			</div>
 
-  <!-- INPUT LATITUDE LONGITUDE -->
-  <input id="latitude" readonly type="text" name="latitude"
-  class="validate" ng-model="place.latitude" ng-change="onLatLonInputChange()">
-  <input id="longitude" readonly  type="text" name="longitude" class="validate" ng-model="place.longitude" ng-change="onLatLonInputChange()">
+			<div class="row">
+				<label translate="form_updater_input"></label>
+			</div>
 
-  <!-- PROGRESS BAR -->
-  <div ng-cloak ng-show="waitingLocation">
-    <div class="progress">
-      <div class="indeterminate"></div>
-    </div>
-  </div>
+			<!-- INPUT -->
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="name" type="text" required pattern="\S+.*" name="name" class="validate" ng-model="place.uploader_name" ng-change="formChange()">
+					<label for="name" translate="form_name_input"></label>
+				</div>
+			</div>
 
-  <!-- POSITION EDITOR [MAP] -->
-  <ng-map id="mapEditor"
-  lazy-init="true" zoom="14">
-  <marker ng-repeat="pos in positions"
-  position="[[pos.latitude]],[[pos.longitude]]"
-  on-dragend="onDragEnd()"
-  draggable="true">
-</marker>
-</ng-map>
-</div>
-</div>
-<!-- TERMS AND CONDITIONS CHECK -->
-<div class="row">
-  <div class="input-field col s12">
-    <p>
-      <input type="checkbox" name="acepta_terminos" required
-      class="filled-in" id="terminosCheck"
-      ng-change="formChange()"
-      ng-model="aceptaTerminos"/>
-      <label for="terminosCheck">
-        <a href="terms" target="_blank" translate="terms_and_conditions1"></a> <span translate="terms_and_conditions2"></span></label>
-      </p>
-    </div>
-  </div>
-</div>
-<!-- FORM BUTTON -->
-<div class="row">
-  <div class="valign-demo  valign-wrapper">
-    <div class="valign full-width actions">
-      <button class="waves-effect waves-light btn btn-large full"
-      ng-href="" ng-disabled="invalid" ng-click="clicky()">
-      <div class="preloader-wrapper small active" ng-cloak ng-show="spinerflag">
-        <div class="spinner-layer spinner-red-only">
-          <div class="circle-clipper left">
-            <div class="circle"></div>
-          </div><div class="gap-patch">
-            <div class="circle"></div>
-          </div><div class="circle-clipper right">
-            <div class="circle"></div>
-          </div>
-        </div>
-      </div>
-      <div class="" ng-cloak ng-show="!spinerflag" translate="send">
-      </div>
-    </button>
-  </div>
-</div>
-</div>
-</div>
+			<!-- INPUT -->
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="email" required aria-required="true" type="email" name="email" class="validate" ng-model="place.uploader_email" ng-change="formChange()">
+					<label for="email" translate="form_email_input"></label>
+				</div>
+			</div>
+			<!-- INPUT -->
+			<div class="row">
+				<div class="input-field col s12">
+					<input id="uploader-tel" type="text" name="uploader-tel" class="validate" required pattern="\S+.*" ng-model="place.uploader_tel" ng-change="formChange()">
+					<label for="uploader-tel" translate="form_tel_input"></span></label>
+				</div>
+			</div>
+		</form>
+		<!-- END LEFT SIDE FORM -->
+
+		<!-- MAP EDITOR COMPONENT -->
+		<div class="col s12 m6">
+			<div class="row">
+				<!-- LOOK UP LOCATION BUTTON -->
+				<div class="valign-demo  valign-wrapper">
+					<div class="valign full-width actions">
+						<button class="waves-effect waves-light btn btn-large full btn-pin-geo"
+						ng-href=""
+						ng-click="lookupLocation()">
+					</button>
+				</div>
+			</div>
+			<label translate="form_gps_find"></label>
+
+			<!-- INPUT LATITUDE LONGITUDE -->
+			<input id="latitude" readonly type="text" name="latitude"
+			class="validate" ng-model="place.latitude" ng-change="onLatLonInputChange()">
+			<input id="longitude" readonly  type="text" name="longitude" class="validate" ng-model="place.longitude" ng-change="onLatLonInputChange()">
+
+			<!-- PROGRESS BAR -->
+			<div ng-cloak ng-show="waitingLocation">
+				<div class="progress">
+					<div class="indeterminate"></div>
+				</div>
+			</div>
+
+			<!-- POSITION EDITOR [MAP] -->
+			<ng-map id="mapEditor"
+			lazy-init="true" zoom="14">
+			<marker ng-repeat="pos in positions"
+			position="[[pos.latitude]],[[pos.longitude]]"
+			on-dragend="onDragEnd()"
+			draggable="true">
+		</marker>
+		</ng-map>
+		</div>
+		</div>
+		<!-- TERMS AND CONDITIONS CHECK -->
+		<div class="row">
+			<div class="input-field col s12">
+				<p>
+					<input type="checkbox" name="acepta_terminos" required
+					class="filled-in" id="terminosCheck"
+					ng-change="formChange()"
+					ng-model="aceptaTerminos"/>
+					<label for="terminosCheck">
+						<a href="terms" target="_blank" translate="terms_and_conditions1"></a> <span translate="terms_and_conditions2"></span></label>
+					</p>
+				</div>
+			</div>
+		</div>
+		<!-- FORM BUTTON -->
+		<div class="row">
+			<div class="valign-demo  valign-wrapper">
+				<div class="valign full-width actions">
+					<button class="waves-effect waves-light btn btn-large full"
+						ng-href="" ng-disabled="invalid" ng-click="clicky()">
+						<div class="preloader-wrapper small active" ng-cloak ng-show="spinerflag">
+							<div class="spinner-layer spinner-red-only">
+								<div class="circle-clipper left">
+									<div class="circle"></div>
+								</div><div class="gap-patch">
+									<div class="circle"></div>  
+								</div><div class="circle-clipper right">
+									<div class="circle"></div>
+								</div>
+							</div>
+						</div>
+						<div class="" ng-cloak ng-show="!spinerflag" translate="send">
+						</div>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
-<!-- FOOTER -->
-<footer class="landing-service-footer">
-  <p translate="footer_text"></p>
-</footer>
+	<!-- FOOTER -->
+	<footer class="landing-service-footer">
+		<p translate="footer_text"></p>
+	</footer>
 @stop
 
 @section('js')
@@ -541,14 +507,15 @@
 {!!Html::script('scripts/translations/br.js')!!}
 
 {!!Html::script('scripts/form/app.js')!!}
+{!!Html::script('scripts/panel/controllers/nav/nav-controller.js')!!}
 {!!Html::script('scripts/services/autocomplete.js')!!}
 {!!Html::script('scripts/home/services/places.js')!!}
 
 {!!Html::script('scripts/form/controllers/form/controller.js')!!}
 
 <script type="text/javascript">
-  $('#autocomplete').focus(function() {
-    $(this).attr('autocomplete', 'no');
-  });
+	$('#autocomplete').focus(function() {
+		$(this).attr('autocomplete', 'no');
+	});
 </script>
 @stop

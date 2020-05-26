@@ -12,22 +12,11 @@
 		<div ng-hide="!place.ile">
 			<p>
 				<label translate="form_select_service_type_title"></label>
-			</p>
-			<p>
-				<input type="radio" id="st_ile0" name="servicetype_ile" value="no_disponible" ng-model="place.servicetype_ile" ng-change="formChange()">
-				<label for="st_ile0" translate="form_service_type_option_not_av"></label>
-			</p>
-			<p>
-				<input type="radio" id="st_ile1" name="servicetype_ile" value="arancel" ng-model="place.servicetype_ile" ng-change="formChange()">
-				<label for="st_ile1" translate="form_service_type_option_arancel"></label>
-			</p>
-			<p>
-				<input type="radio" id="st_ile2" name="servicetype_ile" value="gratuito" ng-model="place.servicetype_ile" ng-change="formChange()">
-				<label for="st_ile2" translate="form_service_type_option_gratuito"></label>
-			</p>
-			<p>
-				<input type="radio" id="st_ile3" name="servicetype_ile" value="cobertura" ng-model="place.servicetype_ile" ng-change="formChange()">
-				<label for="st_ile3" translate="form_service_type_option_consultar"></label>
+				<div class="col s12">
+					<input id="servicetype_ile" type="text" required
+					name="servicetype_ile" class="validate"
+					ng-model="place.servicetype_ile" ng-change="formChange()">
+				</div>
 			</p>
 		</div>
 

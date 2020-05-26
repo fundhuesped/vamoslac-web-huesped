@@ -20,22 +20,11 @@
     <div ng-hide="!place.prueba">
       <p>
         <label translate="form_select_service_type_title"></label>
-      </p>
-      <p>
-        <input type="radio" id="st_prueba0" name="servicetype_prueba" value="no_disponible" ng-model="place.servicetype_prueba" ng-change="formChange()">
-        <label for="st_prueba0" translate="form_service_type_option_not_av"></label>
-      </p>
-      <p>
-        <input type="radio" id="st_prueba1" name="servicetype_prueba" value="arancel" ng-model="place.servicetype_prueba" ng-change="formChange()">
-        <label for="st_prueba1" translate="form_service_type_option_arancel"></label>
-      </p>
-      <p>
-        <input type="radio" id="st_prueba2" name="servicetype_prueba" value="gratuito" ng-model="place.servicetype_prueba" ng-change="formChange()">
-        <label for="st_prueba2" translate="form_service_type_option_gratuito"></label>
-      </p>
-      <p>
-        <input type="radio" id="st_prueba3" name="servicetype_prueba" value="cobertura" ng-model="place.servicetype_prueba" ng-change="formChange()">
-        <label for="st_prueba3" translate="form_service_type_option_consultar"></label>
+        <div class="col s12">
+          <input id="servicetype_prueba" type="text" required
+          name="servicetype_prueba" class="validate"
+          ng-model="place.servicetype_prueba" ng-change="formChange()">
+        </div>
       </p>
     </div>
 

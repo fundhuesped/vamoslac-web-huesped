@@ -723,23 +723,4 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     $rootScope.countries = countries;
   });
 
-  $rootScope.changeLanguage = function() {
-    localStorage.setItem("lang", $rootScope.selectedLanguage);
-    localStorage.setItem("selectedByUser", true);
-    $translate.use($rootScope.selectedLanguage);
-    $http.get('changelang/' + $rootScope.selectedLanguage)
-    .success(function(response) {
-      if (response.statusText == 'OK'){
-
-      }
-      else{
-        Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-      }
-    })
-    .error(function(response) {
-      Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-    });
-    return;
-  }
-
 });

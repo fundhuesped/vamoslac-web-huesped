@@ -140,6 +140,10 @@ class NewPlacesRESTController extends Controller{
 
       $place->aprobado = 0;
 
+      $place->uploader_name = $this->getParam($params,'uploader_name');
+      $place->uploader_email = $this->getParam($params,'uploader_email');
+      $place->uploader_tel = $this->getParam($params,'uploader_tel');
+
       $place->idPais = $this->getParam($params,'idPais');
       $place->idProvincia = $this->getParam($params,'idProvincia');
       $place->idPartido = $this->getParam($params,'idPartido');

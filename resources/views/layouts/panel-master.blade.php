@@ -14,15 +14,15 @@
 </head>
 <body ng-app="dondev2App">
   <main>
-    <nav>
+    <nav ng-controller="navController">
       <div class="nav-wrapper">
         <ul class="right hide-on-med-and-down">
-          <li><a  href=" {{ URL::to('/panel') }}"><i class="mdi-action-home"></i></a></li>
+          <li><a href=" {{ URL::to('/panel') }}"><i class="mdi-action-home"></i></a></li>
           <li><a href=" {{ URL::to('/panel/importer') }}"><i class="mdi-communication-import-export"></i></a>  </li>
           <li><a href=" {{ URL::to('/panel/city-list') }}"><i class="mdi-maps-place left"></i></a></li>
           <li><a href=" {{ URL::to('/panel/admin-list') }}"><i class="mdi-action-accessibility"></i></a></li>
           <li>
-            <select  name="language1" id="language1" ng-model="selectedLanguage" ng-change="changeLanguage()"  material-select watch>
+            <select name="language1" id="language1" ng-model="selectedLanguage" ng-change="changeLanguage()"  material-select watch>
               <option value="" disabled><span>LANG</span></option>
               <option value="en" name="en" ng-selected="[[selectedLanguage]]">EN</option>
               <option value="es" name="es" ng-selected="[[selectedLanguage]]">ES</option>
@@ -55,6 +55,7 @@
   {!!Html::script('scripts/translations/br.js')!!}
   {!!Html::script('scripts/translations/en.js')!!}
   {!!Html::script('scripts/panel/app.js')!!}
+  {!!Html::script('scripts/panel/controllers/nav/nav-controller.js')!!}
   {!!Html::script('scripts/home/services/places.js')!!}
   {!!Html::script('scripts/home/services/copy.js')!!}
   {!!Html::script('scripts/services/geolibs.js')!!}

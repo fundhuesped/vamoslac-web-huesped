@@ -8,11 +8,7 @@
 </div>
 <div class="collapsible-body">
   <div class="col s12 m12" ng-cloak ng-show="currentMarker.servicetype_condones != ''">
-    <span translate="form_select_service_type_title"></span>&nbsp;
-    <span ng-hide="[[currentMarker.servicetype_condones != 'no_disponible']]" translate="form_service_type_option_not_av"></span>
-    <span ng-hide="[[currentMarker.servicetype_condones != 'arancel']]" translate="form_service_type_option_arancel"></span>
-    <span ng-hide="[[currentMarker.servicetype_condones != 'gratuito']]" translate="form_service_type_option_gratuito"></span>
-    <span ng-hide="[[currentMarker.servicetype_condones != 'consultar']]" translate="form_service_type_option_consultar"></span>
+    <span translate="form_select_service_type_title"> </span>&nbsp;[[currentMarker.servicetype_condones]]
   </div>
 
   <div class="col s12 m12" ng-cloak ng-show="currentMarker.comentarios_distrib">
