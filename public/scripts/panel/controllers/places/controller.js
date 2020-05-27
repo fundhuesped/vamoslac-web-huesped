@@ -503,25 +503,4 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     return service == icon;
   };
 
-  $rootScope.changeLanguage = function() {
-
-    localStorage.setItem("lang", $rootScope.selectedLanguage);
-    localStorage.setItem("selectedByUser", true);
-    $translate.use($rootScope.selectedLanguage);
-    $http.get('../../changelang/' + $rootScope.selectedLanguage)
-    .then(
-      function(response) {
-        if (response.statusText == 'OK') {
-
-        } else {
-          Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-        }
-      },
-      function(response) {
-        Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-      });
-
-    return;
-  }
-
 });

@@ -4,8 +4,11 @@ dondev2App.controller('navController', function($scope, $rootScope, $http, $tran
 
 	function initLang(){
 		var lang = localStorage.getItem("lang");
-		if(lang === undefined || lang === null || lang == "")
+		if(lang === undefined || lang === null || lang == ""){
 			lang = "es";
+			localStorage.setItem("selectedByUser", false);
+			localStorage.setItem("lang", lang);
+		}
 		$rootScope.selectedLanguage = $scope.selectedLanguage = lang;
 	}
 
@@ -18,7 +21,7 @@ dondev2App.controller('navController', function($scope, $rootScope, $http, $tran
 		$translate.use(lang);
 		$http.get('changelang/' + lang)
 		.success(function(response) {
-			if (response.statusText.toLowerCase() != 'ok'){
+			if (response.status.toLowerCase() != 'ok'){
 				Materialize.toast('Intenta nuevamente mas tarde.', 5000);
 			}
 		})

@@ -15,14 +15,13 @@
         <li><a class="" href="form"><i class="mdi-content-add-circle-outline tooltip"><div class="tooltiptext tooltip-navbar" translate="suggest_new_place"></div></i></a></li>
         <li><a class="" href="listado-paises"><i class="mdi-action-language tooltip"><div class="tooltiptext tooltip-navbar" translate="places_lists_mundito"></div></i></a></li>
         <li>
-          <select  name="language1" id="language1" ng-model="selectedLanguage" ng-change="changeLanguage()"  material-select watch>
+          <select name="language1" id="language1" ng-model="selectedLanguage" ng-change="changeLanguage()" watch>
             <option value="" disabled><span>LANG</span></option>
-            <option value="en" name="en" ng-selected="[[selectedLanguage]]">EN</option>
-            <option value="es" name="es" ng-selected="[[selectedLanguage]]">ES</option>
+            <option value="en" name="en" ng-selected="selectedLanguage == 'en'">EN</option>
+            <option value="es" name="es" ng-selected="selectedLanguage == 'es'">ES</option>
           </select>
         </li>
       </ul>
-
       <!-- POP NAVIGATION -->
       <ul ng-cloak ng-show="navigating"  class="left wow fadeIn nav-wrapper">
         <li><a href="" onclick="window.history.back();"><i class="mdi-navigation-chevron-left right"></i></a></li>

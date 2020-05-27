@@ -1,4 +1,4 @@
-dondev2App.controller('navController', function($scope, $rootScope, $http, $translate) {
+angular.module('dondeDataVizApp').controller('navController', function($scope, $rootScope, $http, $translate) {
 
 	initLang();
 

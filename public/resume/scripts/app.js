@@ -88,4 +88,4 @@ angular
 
   }]).run(function(amMoment) {
     amMoment.changeLocale('es');
-  })
+  });

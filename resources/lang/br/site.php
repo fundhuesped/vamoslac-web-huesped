@@ -104,7 +104,7 @@ return [
     "about_li_thank_to_6" => "Alianza de organizaciones integrada por Amnistía Internacional Argentina, Grupo FUSA y Católicas por el Derecho a Decidir con apoyo de IPPF.",
     "about_li_thank_to_7" => "Colectivas de Socorristas en Red, Red de profesionales de la salud por el derecho a decidir, Colectivo de Salud Feminista - Comohacerseunaborto.com.",
     "next" => "Siguiente",
-    "page_title" => "Vamos | IPPF",
+    "page_title" => "Vamos - Encontre os serviços de saúde sexual e reprodutiva mais próximos - IPPF / WHR e Fundación Huésped",
     "form_intro_text" => "Em seguida, preencha o formulário com o novo estabelecimento. Os campos com * são obrigatórios.",
     "form_establishment_name" => "Nome da propriedade *",
     "form_establishment_type" => "Tipo de Establecimiento",
