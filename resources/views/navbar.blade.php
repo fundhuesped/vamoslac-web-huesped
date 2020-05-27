@@ -23,52 +23,53 @@
         </li>
       </ul>
 
-     <!-- POP NAVIGATION -->
-     <ul ng-cloak ng-show="navigating"  class="left wow fadeIn nav-wrapper">
-       <li><a href="" onclick="window.history.back();"><i class="mdi-navigation-chevron-left right"></i></a></li>
-     </ul>
+      <!-- POP NAVIGATION -->
+      <ul ng-cloak ng-show="navigating"  class="left wow fadeIn nav-wrapper">
+        <li><a href="" onclick="window.history.back();"><i class="mdi-navigation-chevron-left right"></i></a></li>
+      </ul>
 
-     <!-- MOBILE NAVBAR -->
-     <ul class="side-nav" id="mobile-demo">
-       <!-- LANG -->
-       <li>
+      <!-- MOBILE NAVBAR -->
+      <ul class="side-nav" id="mobile-demo">
+        <!-- LANG -->
+        <li>
           <a href="javascript:void(0);">
             <i class="fa fa-language fa-2x" aria-hidden="true"></i>
             <div style="position: absolute;top: 0; left:30%; width: 25%;">
-             <select name="language2" id="language2" ng-model="selectedLanguage" ng-change="changeLanguage()" material-select watch>
-               <option value="en" ng-selected="[[selectedLanguage]]">EN</option>
-               <option value="es" ng-selected="[[selectedLanguage]]" selected>ES</option>
-             </select>
+              <select name="language2" id="language2" ng-model="selectedLanguage" ng-change="changeLanguage()" material-select watch>
+                <option value="en" ng-selected="[[selectedLanguage]]">EN</option>
+                <option value="es" ng-selected="[[selectedLanguage]]" selected>ES</option>
+              </select>
             </div>
-         </a>
-       </li>
-       <!-- ABOUT -->
-       <li>
-         <a href="#/acerca">
-           <i class="mdi-action-info left"></i><span translate="about"></span>
-         </a>
-       </li>
-       <!-- GEOLOCALIZATION SHOW EVERY PLACE -->
-       <li>
-         <a href="#/localizar/all/listado">
-           <i class="mdi-maps-place left"></i>
-           <span translate="closer"></span>
-         </a>
-       </li>
-       <!-- FORM SUGGEST -->
-       <li>
-         <a href="form">
-           <i class="mdi-content-add-circle-outline left"></i><span translate="seggest"></span>
-         </a>
-      </li>
-      <!-- COUNTRY LIST -->
-      <li>
-        <a href="listado-paises">
-          <i class="mdi-action-language left"></i>
-          <span translate="list"></span>
-        </a>
-      </li>
-    </ul>
-  </div>
+          </a>
+        </li>
+        <!-- ABOUT -->
+        <li>
+          <a href="#/acerca">
+            <i class="mdi-action-info left"></i><span translate="about"></span>
+          </a>
+        </li>
+        <!-- GEOLOCALIZATION SHOW EVERY PLACE -->
+        <li>
+          <a href="#/localizar/all/listado">
+            <i class="mdi-maps-place left"></i>
+            <span translate="closer"></span>
+          </a>
+        </li>
+        <!-- FORM SUGGEST -->
+        <li>
+          <a href="form">
+            <i class="mdi-content-add-circle-outline left"></i><span translate="seggest"></span>
+          </a>
+        </li>
+        <!-- COUNTRY LIST -->
+        <li>
+          <a href="listado-paises">
+            <i class="mdi-action-language left"></i>
+            <span translate="list"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </a>
 </nav>
 <!-- END NAV BAR DESKTOP/MOBILE -->
