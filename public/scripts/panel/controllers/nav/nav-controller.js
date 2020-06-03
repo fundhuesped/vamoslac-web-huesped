@@ -19,7 +19,7 @@ dondev2App.controller('navController', function($scope, $rootScope, $http, $tran
 		localStorage.setItem("lang", lang);
 		localStorage.setItem("selectedByUser", true);
 		$translate.use(lang);
-		$http.get('changelang/' + lang)
+		$http.get('/changelang/' + lang)
 		.success(function(response) {
 			if (response.status.toLowerCase() != 'ok'){
 				Materialize.toast('Intenta nuevamente mas tarde.', 5000);

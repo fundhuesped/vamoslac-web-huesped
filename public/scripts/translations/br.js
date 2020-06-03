@@ -480,4 +480,10 @@ var translations_br = {
   "countryText_uruguay" : "Informe-se sobre a saúde sexual e reprodutiva acessando o website de IS, a Associação membro da IPPF / RHO no Uruguai: www.iniciativas.org.uy",
   "countryText_venezuela" : "Informe-se sobre a saúde sexual e reprodutiva acessando o website de PLAFAM, a Associação membro da IPPF / RHO na Venezuela: www.plafam.org.ve",
   "social_share_text" : "Eu encontrei usando #VAMOS [[estabelecimento]] em [[nombre_partido]] ",
+  "go_to_panel": "Ir para o painel",
+  "go_to_importer": "Ir para o Importador",
+  "manage_localities": "Gerenciar locais",
+  "manage_users": "Gerenciar usuários",
+  "change_language": "Mudar idioma",
+  "close_session": "Fechar Sessão",
 }

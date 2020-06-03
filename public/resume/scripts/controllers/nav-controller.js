@@ -19,7 +19,7 @@ angular.module('dondeDataVizApp').controller('navController', function($scope, $
 		localStorage.setItem("lang", lang);
 		localStorage.setItem("selectedByUser", true);
 		$translate.use(lang);
-		$http.get('changelang/' + lang)
+		$http.get('/changelang/' + lang)
 		.success(function(response) {
 			if (response.status.toLowerCase() != 'ok'){
 				Materialize.toast('Intenta nuevamente mas tarde.', 5000);

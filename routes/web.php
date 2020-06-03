@@ -26,6 +26,7 @@ Route::get('/contador', function () {
     return File::get(public_path() . '/public/contador/index.html');
 });
 
+$this->get('admin/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 Route::get('api/v2/countries/ranking', '\App\Http\Controllers\PlacesRESTController@getCountryRanking');
 Route::get('api/v2/getiletag/{idPais}', '\App\Http\Controllers\ServiceController@getIleTag'); //devuelve el tag para el json i18n correspondiente al idPais

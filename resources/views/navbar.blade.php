@@ -35,8 +35,8 @@
             <i class="fa fa-language fa-2x" aria-hidden="true"></i>
             <div style="position: absolute;top: 0; left:30%; width: 25%;">
               <select name="language2" id="language2" ng-model="selectedLanguage" ng-change="changeLanguage()" material-select watch>
-                <option value="en" ng-selected="[[selectedLanguage]]">EN</option>
-                <option value="es" ng-selected="[[selectedLanguage]]" selected>ES</option>
+                <option value="en" name="en" ng-selected="selectedLanguage == 'en'">EN</option>
+                <option value="es" name="es" ng-selected="selectedLanguage == 'es'">ES</option>
               </select>
             </div>
           </a>

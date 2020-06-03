@@ -644,4 +644,10 @@ var translations_en =
    "places_lists_mundito" : "Places by country" ,
    "talk_to_someone" : "Chat with us",
    "have_any_doubts" : "Have any doubts? Chat with us",
+   "go_to_panel": "Go to Panel",
+   "go_to_importer": "Go to Importer",
+   "manage_localities": "Manage Localities",
+   "manage_users": "Manage Users",
+   "change_language": "Change Language",
+   "close_session": "Close Session",
 }
