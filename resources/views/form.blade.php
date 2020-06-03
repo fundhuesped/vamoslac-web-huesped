@@ -507,15 +507,19 @@
 {!!Html::script('scripts/translations/br.js')!!}
 
 {!!Html::script('scripts/form/app.js')!!}
-{!!Html::script('scripts/panel/controllers/nav/nav-controller.js')!!}
+{!!Html::script('scripts/home/controllers/nav/nav-controller.js')!!}
+{!!Html::script('scripts/form/controllers/form/controller.js')!!}
+
 {!!Html::script('scripts/services/autocomplete.js')!!}
 {!!Html::script('scripts/home/services/places.js')!!}
-
-{!!Html::script('scripts/form/controllers/form/controller.js')!!}
 
 <script type="text/javascript">
 	$('#autocomplete').focus(function() {
 		$(this).attr('autocomplete', 'no');
 	});
+	$(document).ready(function() {
+		$('select').material_select();
+	});
+	$(".button-collapse").sideNav();
 </script>
 @stop

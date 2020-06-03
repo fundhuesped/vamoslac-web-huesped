@@ -5,7 +5,7 @@
       <!-- WEBSITE LOGO -->
       <img class="logoTop" src="images/logo_blanco.svg">
       <!-- MOBILE BURGER BUTTON -->
-      <a href="#" data-activates="mobile-demo" class="button-collapse">
+      <a data-activates="mobile-demo" class="button-collapse">
         <i class="mdi-navigation-menu"></i>
       </a>
       <!-- DESKTOP NAVBAR -->
@@ -23,7 +23,7 @@
         </li>
       </ul>
       <!-- POP NAVIGATION -->
-      <ul ng-cloak ng-show="navigating"  class="left wow fadeIn nav-wrapper">
+      <ul ng-cloak ng-show="navigating" class="left wow fadeIn nav-wrapper">
         <li><a href="" onclick="window.history.back();"><i class="mdi-navigation-chevron-left right"></i></a></li>
       </ul>
 

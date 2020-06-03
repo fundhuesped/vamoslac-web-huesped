@@ -4,6 +4,7 @@ dondev2App.controller('formController', function(NgMap, autocompleteService, vcR
   $scope.invalid = true;
   $scope.place = {};
   $scope.spinerflag = false;
+  $rootScope.navigating = true;
 
   $scope.onDragEnd = function(e) {
 
