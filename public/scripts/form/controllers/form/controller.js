@@ -6,6 +6,9 @@ dondev2App.controller('formController', function(NgMap, autocompleteService, vcR
   $scope.spinerflag = false;
   $rootScope.navigating = true;
 
+  $lang = $rootScope.selectedLanguage;
+  $translate.use($lang);
+
   $scope.onDragEnd = function(e) {
 
     $scope.place.latitude = e.latLng.lat();
