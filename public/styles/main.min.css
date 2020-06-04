@@ -1966,3 +1966,9 @@ table.orderded th {
     cursor: pointer;
     text-decoration: underline;
 }
+
+/* Materialize tiene un bug con los select-wrappers */
+.select-wrapper.ng-dirty.ng-valid > input{
+  border-bottom: 1px solid #4CAF50 !important;
+  box-shadow: 0 1px 0 0 #4CAF50 !important;
+}

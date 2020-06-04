@@ -97,20 +97,20 @@
 				<div class="row">
 					<div class="input-field col s12">
 						<!-- DROPDOWN PAIS -->
-						<select         required pattern="\S+.*" class=""
+						<select id="select_pais" required pattern="\S+.*" class="validate"
 						ng-change="showProvince()" ng-model="place.idPais"
 						ng-options="v.id as v.nombre_pais for v in countries" material-select watch>
 						<option value="" disabled selected translate="select_country">*</option>
 						</select>
 						<!-- DROPDOWN PROVINCIA -->
-						<select         required pattern="\S+.*" class=""
+						<select id="select_provincia" required pattern="\S+.*" class=""
 						ng-change="showPartido()" ng-model="place.idProvincia"
 						ng-disabled ='!provinceOn'
 						ng-options="pcia.id as pcia.nombre_provincia for pcia in provinces" material-select watch>
 						<option value="" disabled selected translate="select_state">*</option>
 						</select>
 						<!-- DROPDOWN PARTIDO -->
-						<select         required pattern="\S+.*" class=""
+						<select id="select_partido" required pattern="\S+.*" class=""
 						ng-change="loadCity()"
 						ng-disabled ='!partidoOn'
 						ng-options="item.id as
@@ -120,7 +120,7 @@
 						<option value="" disabled="" selected translate="select_department"></option>
 						</select>
 						<!-- DROPDOWN CIUDAD -->
-						<select         required pattern="\S+.*" class=""
+						<select id="select_ciudad" required pattern="\S+.*" class=""
 						ng-disabled="!showCity"
 						ng-options="c.id as c.nombre_ciudad for c in cities track by c.id"
 						ng-model="place.idCiudad" material-select watch>
@@ -512,6 +512,7 @@
 
 {!!Html::script('scripts/services/autocomplete.js')!!}
 {!!Html::script('scripts/home/services/places.js')!!}
+{!!Html::script('scripts/services/fixer.js')!!}
 
 <script type="text/javascript">
 	$('#autocomplete').focus(function() {
@@ -521,5 +522,17 @@
 		$('select').material_select();
 	});
 	$(".button-collapse").sideNav();
+	$('#select_pais').on('change',function(e){
+		addSelectedToSelectWrapper(this.id);
+	});
+	$('#select_provincia').on('change',function(e){
+		addSelectedToSelectWrapper(this.id);
+	});
+	$('#select_partido').on('change',function(e){
+		addSelectedToSelectWrapper(this.id);
+	});
+	$('#select_ciudad').on('change',function(e){
+		addSelectedToSelectWrapper(this.id);
+	});
 </script>
 @stop
