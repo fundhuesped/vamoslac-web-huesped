@@ -14,7 +14,7 @@
         <a href=" {{ URL::to('/panel/admin-list') }}"><i class="mdi-action-accessibility"></i></a>
       </li>
       <li>
-        <select name="language1" id="language1" ng-model="selectedLanguage" ng-change="changeLanguage()" material-select watch>
+        <select name="language1" id="language1" ng-model="selectedLanguage" ng-change="changeLanguage()">
           <option value="" disabled><span>LANG</span></option>
             <option value="en" name="en" ng-selected="selectedLanguage == 'en'">EN</option>
             <option value="es" name="es" ng-selected="selectedLanguage == 'es'">ES</option>

@@ -19,32 +19,6 @@ dondev2App.controller('formController', function(NgMap, autocompleteService, vcR
     }
   }
 
-  try {
-
-    if (typeof localStorage.lang !== "undefined") {
-
-      $http.get('changelang/' + localStorage.lang)
-      .success(
-        function(response) {
-
-          $translate.use(localStorage.getItem("lang"));
-        },
-        function(response) {
-          Materialize.toast('Intenta nuevamente mas tarde.', 5000);
-        });
-    } else {
-      var userLang = navigator.language || navigator.userLanguage; // es-AR
-      var userLang = userLang.split('-')[0]; // es
-      localStorage.setItem("lang", userLang);
-      $translate.use(userLang);
-    }
-
-  } catch (err) {
-    if (typeof(err) !== "undefined") {
-      localStorage.setItem("lang", "es");
-    }
-  }
-
   var onLocationFound = function(position) {
 
     $scope.$apply(function() {
@@ -101,13 +75,13 @@ dondev2App.controller('formController', function(NgMap, autocompleteService, vcR
   function isValidServices(){
     if(( $scope.place.condones || $scope.place.ile || $scope.place.prueba ||
       $scope.place.mac      || $scope.place.ssr || $scope.place.dc      )
-      &&
-      ( !($scope.place.condones && !isValidAttr($scope.place.servicetype_condones)) &&
-        !($scope.place.ile      && !isValidAttr($scope.place.servicetype_ile))      &&   
-        !($scope.place.prueba   && !isValidAttr($scope.place.servicetype_prueba))   &&
-        !($scope.place.mac      && !isValidAttr($scope.place.servicetype_mac))      &&
-        !($scope.place.ssr      && !isValidAttr($scope.place.servicetype_ssr))      &&
-        !($scope.place.dc       && !isValidAttr($scope.place.servicetype_dc))        )
+      // &&
+      // ( !($scope.place.condones && !isValidAttr($scope.place.servicetype_condones)) &&
+      //   !($scope.place.ile      && !isValidAttr($scope.place.servicetype_ile))      &&   
+      //   !($scope.place.prueba   && !isValidAttr($scope.place.servicetype_prueba))   &&
+      //   !($scope.place.mac      && !isValidAttr($scope.place.servicetype_mac))      &&
+      //   !($scope.place.ssr      && !isValidAttr($scope.place.servicetype_ssr))      &&
+      //   !($scope.place.dc       && !isValidAttr($scope.place.servicetype_dc))        )
       )
       return true;
     else

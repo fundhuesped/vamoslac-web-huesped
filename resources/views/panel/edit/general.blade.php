@@ -45,7 +45,7 @@
     <label translate="location"></label>
     <div class="row">
         <div class="input-field col s12">
-            <select ng-change="loadProvinces()" ng-options="v.id as v.nombre_pais for v in countries" ng-model="place.idPais" material-select watch>
+            <select id="select_pais" ng-change="loadProvinces()" ng-options="v.id as v.nombre_pais for v in countries" ng-model="place.idPais" material-select watch>
                 <option value="" disabled selected translate="select_country"></option>
             </select>
             <label for="country" translate="country"></label>
@@ -53,7 +53,7 @@
     </div>
     <div class="row">
         <div class="input-field col s12">
-            <select ng-change="loadDistricts()" ng-options="v.id as v.nombre_provincia for v in provinces" ng-model="place.idProvincia" material-select watch>
+            <select id="select_provincia" ng-change="loadDistricts()" ng-options="v.id as v.nombre_provincia for v in provinces" ng-model="place.idProvincia" material-select watch>
                 <option value="" disabled selected translate="select_state"></option>
             </select>
             <label for="state" translate="state"></label>
@@ -61,7 +61,7 @@
     </div>
     <div class="row">
         <div class="input-field col s12">
-            <select ng-change="loadCities()" ng-options="v.id as v.nombre_partido for v in districts" ng-model="place.idPartido" material-select watch>
+            <select id="select_partido" ng-change="loadCities()" ng-options="v.id as v.nombre_partido for v in districts" ng-model="place.idPartido" material-select watch>
                 <option value="" disabled selected translate="select_department"></option>
             </select>
             <label for="district" translate="district"></label>
@@ -69,7 +69,7 @@
     </div>
     <div class="row">
         <div class="input-field col s12">
-            <select ng-options="v.id as v.nombre_ciudad for v in cities" ng-model="place.idCiudad" material-select watch>
+            <select id="select_ciudad" ng-options="v.id as v.nombre_ciudad for v in cities" ng-model="place.idCiudad" material-select watch>
                 <option value="" disabled selected translate="select_city"></option>
             </select>
             <label for="city" translate="city"></label>
@@ -91,11 +91,12 @@
     </div>
     <div class="row" ng-hide="!outputAutocomplete">
         <div class="input-field col s9">
-            <input id="autocomplete_output" type="text" ng-model="outputAutocomplete" disabled style="color: red" />
-            <label for="autocomplete_output" translate="panel_warning_autocomplete" style="color: red"></label>
+            <input id="autocomplete_output" type="text" ng-model="outputAutocomplete" disabled class="new-autocomplete" />
+            <label for="autocomplete_output" translate="panel_warning_autocomplete" class="new-autocomplete"></label>
         </div>
         <div class="col s3">
-            <button class="waves-effect waves-light btn btn-large full" ng-click="cancelNewCity()">
+            <button class="waves-effect waves-light btn btn-large full tooltipped" ng-click="cancelNewCity()"
+            data-position="bottom" data-tooltip="[['cancel' | translate]]">
                 <i class="mdi-navigation-cancel"></i>
             </button>
         </div>
@@ -105,7 +106,7 @@
         <div class="input-field col s12">
             <textarea id="observacion" type="text" name="observacion"
             class="validate materialize-textarea" ng-model="place.observacion" ng-change="formChange()"></textarea>
-            <label for="observacion" translate="observations"></label>
+            <label for="observacion" translate="form_observation_input"></label>
         </div>
     </div>
 

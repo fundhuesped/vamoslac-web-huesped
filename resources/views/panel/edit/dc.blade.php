@@ -13,7 +13,7 @@
       <p>
         <label translate="form_select_service_type_title"></label>
         <div class="col s12">
-          <input id="servicetype_dc" type="text" required
+          <input id="servicetype_dc" type="text"
           name="servicetype_dc" class="validate"
           ng-model="place.servicetype_dc" ng-change="formChange()">
         </div>

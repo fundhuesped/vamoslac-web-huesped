@@ -112,7 +112,7 @@ var translations_es =
    "form_name_input": "Tu nombre*",
    "form_email_input": "Tu e-mail*",
    "form_tel_input": "Tu teléfono*",
-   "observations": "",
+   "observations": "Observaciones acerca del establecimiento",
    "form_gps_find": "Si actualmente te encuentras en el establecimiento haz click aquí para localizar el lugar con tu GPS",
    "location": "Ubicación",
    "terms_and_conditions1": "Acepto los Términos y Condiciones",

@@ -1972,3 +1972,17 @@ table.orderded th {
   border-bottom: 1px solid #4CAF50 !important;
   box-shadow: 0 1px 0 0 #4CAF50 !important;
 }
+.select-wrapper.ng-dirty.ng-invalid > input {
+  border-bottom: 1px solid #F44336 !important;
+  box-shadow: 0 1px 0 0 #F44336 !important;
+}
+
+input.new-autocomplete{
+  color: black !important;
+  border-bottom: 1px solid #4CAF50 !important;
+  box-shadow: 0 1px 0 0 #4CAF50 !important;
+}
+
+label.new-autocomplete{
+  color: #9e9e9e !important;
+}

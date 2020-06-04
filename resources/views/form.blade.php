@@ -145,12 +145,13 @@
 			</div>
 			<div class="row" ng-hide="!outputAutocomplete">
 				<div class="input-field col s9">
-					<input id="autocomplete_output" type="text" ng-model="outputAutocomplete" disabled style="color: red" />
-					<label for="autocomplete_output" translate="panel_warning_autocomplete" style="color: red"></label>
+					<input id="autocomplete_output" type="text" ng-model="outputAutocomplete" disabled class="new-autocomplete" />
+					<label for="autocomplete_output" translate="panel_warning_autocomplete" class="new-autocomplete"></label>
 				</div>
 				<div class="col s3">
-					<button class="waves-effect waves-light btn btn-large full" ng-click="cancelNewCity()">
-						<i class="mdi-navigation-cancel"></i>
+					<button class="waves-effect waves-light btn btn-large full tooltipped" ng-click="cancelNewCity()"
+					data-position="bottom" data-tooltip="[['cancel' | translate]]">
+						<i class="mdi-navigation-cancel" ></i>
 					</button>
 				</div>
 			</div>
@@ -221,7 +222,7 @@
 						<label translate="form_select_service_type_title"></label>
 					</div>
 					<div class="col s12">
-						<input id="servicetype_condones" type="text" required
+						<input id="servicetype_condones" type="text"
 						name="servicetype_condones" class="validate"
 						ng-model="place.servicetype_condones" ng-change="formChange()">
 					</div>
@@ -249,7 +250,7 @@
 						<label translate="form_select_service_type_title"></label>
 					</div>
 					<div class="col s12">
-						<input id="servicetype_prueba" type="text" required
+						<input id="servicetype_prueba" type="text"
 						name="servicetype_prueba" class="validate"
 						ng-model="place.servicetype_prueba" ng-change="formChange()">
 					</div>
@@ -276,7 +277,7 @@
 						<label translate="form_select_service_type_title"></label>
 					</div>
 					<div class="col s12">
-						<input id="servicetype_dc" type="text" required
+						<input id="servicetype_dc" type="text"
 						name="servicetype_dc" class="validate"
 						ng-model="place.servicetype_dc" ng-change="formChange()">
 					</div>
@@ -303,7 +304,7 @@
 						<label translate="form_select_service_type_title"></label>
 					</div>
 					<div class="col s12">
-						<input id="servicetype_ssr" type="text" required
+						<input id="servicetype_ssr" type="text"
 						name="servicetype_ssr" class="validate"
 						ng-model="place.servicetype_ssr" ng-change="formChange()">
 					</div>
@@ -331,7 +332,7 @@
 						<label translate="form_select_service_type_title"></label>
 					</div>
 					<div class="col s12">
-						<input id="servicetype_mac" type="text" required
+						<input id="servicetype_mac" type="text"
 						name="servicetype_mac" class="validate"
 						ng-model="place.servicetype_mac" ng-change="formChange()">
 					</div>
@@ -359,7 +360,7 @@
 						<label translate="form_select_service_type_title"></label>
 					</div>
 					<div class="col s12">
-						<input id="servicetype_ile" type="text" required
+						<input id="servicetype_ile" type="text"
 						name="servicetype_ile" class="validate"
 						ng-model="place.servicetype_ile" ng-change="formChange()">
 					</div>
@@ -522,6 +523,7 @@
 		$('select').material_select();
 	});
 	$(".button-collapse").sideNav();
+
 	$('#select_pais').on('change',function(e){
 		addSelectedToSelectWrapper(this.id);
 	});

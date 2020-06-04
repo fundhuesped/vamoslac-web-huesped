@@ -174,7 +174,7 @@ var translations_br = {
   "form_name_input": "Teu nome*",
   "form_email_input": "Seu e-mail*",
   "form_tel_input": "Teu telefone*",
-  "observations": "Observaciones",
+  "observations": "Observações sobre o estabelecimento",
   "form_gps_find": "Se você está atualmente no estabelecimento feixe clique aqui para localizar a sua localização GPS",
   "location": "localização",
   "terms_and_conditions1": "Concordo com os Termos e Condições",

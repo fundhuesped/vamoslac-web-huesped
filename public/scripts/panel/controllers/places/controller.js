@@ -232,13 +232,13 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     return (
       ( $scope.place.condones || $scope.place.ile || $scope.place.prueba ||
         $scope.place.mac      || $scope.place.ssr || $scope.place.dc     )
-      &&
-      ( !($scope.place.condones && !isValidAttr($scope.place.servicetype_condones)) &&
-        !($scope.place.ile      && !isValidAttr($scope.place.servicetype_ile))      &&   
-        !($scope.place.prueba   && !isValidAttr($scope.place.servicetype_prueba))   &&
-        !($scope.place.mac      && !isValidAttr($scope.place.servicetype_mac))      &&
-        !($scope.place.ssr      && !isValidAttr($scope.place.servicetype_ssr))      &&
-        !($scope.place.dc       && !isValidAttr($scope.place.servicetype_dc))        )
+      // &&
+      // ( !($scope.place.condones && !isValidAttr($scope.place.servicetype_condones)) &&
+      //   !($scope.place.ile      && !isValidAttr($scope.place.servicetype_ile))      &&   
+      //   !($scope.place.prueba   && !isValidAttr($scope.place.servicetype_prueba))   &&
+      //   !($scope.place.mac      && !isValidAttr($scope.place.servicetype_mac))      &&
+      //   !($scope.place.ssr      && !isValidAttr($scope.place.servicetype_ssr))      &&
+      //   !($scope.place.dc       && !isValidAttr($scope.place.servicetype_dc))        )
       );
   }
 

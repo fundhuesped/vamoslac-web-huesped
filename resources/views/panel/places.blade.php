@@ -76,4 +76,23 @@
 
 @section('js')
 {!!Html::script('scripts/panel/controllers/places/controller.js')!!}
+{!!Html::script('scripts/services/fixer.js')!!}
+
+<script type="text/javascript">
+    $('#autocomplete').focus(function() {
+        $(this).attr('autocomplete', 'no');
+    });
+    $('#select_pais').on('change',function(e){
+        addSelectedToSelectWrapper(this.id);
+    });
+    $('#select_provincia').on('change',function(e){
+        addSelectedToSelectWrapper(this.id);
+    });
+    $('#select_partido').on('change',function(e){
+        addSelectedToSelectWrapper(this.id);
+    });
+    $('#select_ciudad').on('change',function(e){
+        addSelectedToSelectWrapper(this.id);
+    });
+</script>
 @stop
