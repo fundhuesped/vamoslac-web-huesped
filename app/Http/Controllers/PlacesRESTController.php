@@ -587,13 +587,14 @@ class PlacesRESTController extends Controller
 
     public static function showApprovedFilterByTag($tagId)
     {
-        $places = DB::table('places')
+      $places = DB::table('places')
+      ->join('pais', 'places.idPais', '=', 'pais.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
-      ->join('pais', 'places.idPais', '=', 'pais.id')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->where('places.logId', $tagId)
       ->get();
-        return $places;
+      return $places;
     }
 
     // Parse Ids from view to array
@@ -890,13 +891,13 @@ class PlacesRESTController extends Controller
 
     public static function getCountryRanking()
     {
-
             return
               DB::table('places')
                      ->select(
-                      DB::raw('count(*) as lugares, nombre_pais , id'))
+                      DB::raw('count(*) as cantidad, nombre_pais , id'))
                      ->join('pais', 'places.idPais', '=', 'pais.id')
-                     ->orderBy('lugares', 'desc')
+                     ->where('aprobado',1)
+                     ->orderBy('cantidad', 'desc')
                      ->groupBy('idPais')
                      ->get();
 
@@ -1265,7 +1266,7 @@ class PlacesRESTController extends Controller
     {
         try {
             return DB::table('places')
-            ->paginate(100);
+            ->paginate(1000);
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -1274,8 +1275,13 @@ class PlacesRESTController extends Controller
     {
         try {
             return DB::table('places')
-            ->where('aprobado', '=' , 1)
-            ->paginate(100);
+              ->join('pais', 'pais.id', '=', 'places.idPais')
+              ->join('provincia', 'provincia.id', '=', 'places.idProvincia')
+              ->join('partido', 'partido.id', '=', 'places.idPartido')
+              ->join('ciudad', 'ciudad.id', '=', 'places.idCiudad')
+              ->select('places.*','ciudad.nombre_ciudad', 'partido.nombre_partido', 'provincia.nombre_provincia', 'pais.nombre_pais')
+              ->where('aprobado', '=' , 1)
+              ->paginate(1000);
         } catch (Exception $e) {
             return $e->getMessage();
         }
