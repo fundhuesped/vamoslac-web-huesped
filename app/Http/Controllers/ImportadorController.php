@@ -2412,10 +2412,10 @@ class ImportadorController extends Controller {
 	}
 
 	public function getServerMode(Request $request){
-		if(getenv("APP_ENV") == false)
+		if(ENV("APP_ENV") === false)
 			$mode = 'production';
 		else
-			$mode = getenv("APP_ENV");
+			$mode = ENV("APP_ENV");
 		return(['mode' => $mode]);
 	}
 
