@@ -9,6 +9,7 @@ dondev2App.controller('locateListController',
     $scope.loading = true;
     $scope.events = "-rateReal";
     $scope.legal = true;
+    $rootScope.navigating = true;
 
     //parseo a obj para obtener el servicio si no piden todo
     if (typeof $scope.service === "undefined" || $scope.service === null || $scope.service == "" || $scope.service == "friendly") {

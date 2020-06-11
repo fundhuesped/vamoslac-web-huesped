@@ -75,7 +75,7 @@ Route::get('/share/{id}', '\App\Http\Controllers\MainRouteController@shareDetail
 
 Route::group(['middleware' => \App\Http\Middleware\CheckLang::class], function () {
 
-    Route::get('/listado-paises', '\App\Http\Controllers\PaisRESTController@showCountries');
+    Route::get('/listado-paises', '\App\Http\Controllers\MainRouteController@listado');
     Route::get('/listado-detalle', '\App\Http\Controllers\PaisRESTController@showCountriesDetail');
     Route::get('pais/{pais}/provincia', '\App\Http\Controllers\ProvincesRESTController@showProvinces');
     Route::get('pais/{pais}/provincia/{provincia}/partido', '\App\Http\Controllers\PartidoRESTController@showCounty');

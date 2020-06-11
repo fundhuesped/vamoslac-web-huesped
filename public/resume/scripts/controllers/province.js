@@ -1,17 +1,11 @@
 'use strict';
-
-/**
- * @ngdoc function
- * @name houstonDiversityMap:controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the houstonDiversityMap
- */
 angular.module('dondeDataVizApp').controller('provinceCtrl',
-  function(moment, NgMap, $interval, $routeParams, $scope, $timeout, $document, $http, $translate, $cookies) {
+  function(moment, NgMap, $interval, $routeParams, $scope, $rootScope, $timeout, $document, $http, $translate, $location) {
+
+    $rootScope.navigating = true;
 
     // Change language of this module
-    var lang = $cookies.get('lang');
+    var lang = $rootScope.selectedLanguage;
     if (lang) {
       $translate.use(lang);
     }
@@ -23,8 +17,15 @@ angular.module('dondeDataVizApp').controller('provinceCtrl',
 
     $scope.partidos = [];
     $http.get('provincia/' + $scope.idProvince + '/partido')
-      .success(function(partidos) {
-        $scope.partidos = partidos;
-      });
+    .success(function(partidos) {
+      $scope.partidos = partidos;
+    });
+
+    $scope.loadPartido = function(id,name){
+      $location.path(
+        '/pais/'+$scope.idCountry+'-'+$scope.nameCountry+
+        '/provincia/'+$scope.idProvince+'-'+$scope.nameProvince+
+        '/partido/'+id+'-'+name+'/ciudad');
+    };
 
   });

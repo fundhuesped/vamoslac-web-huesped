@@ -62,6 +62,7 @@ class CiudadRESTController extends Controller{
     ->where('nombre_pais',$pais)
     ->where('nombre_provincia',$provincia)
     ->where('nombre_partido',$partido)
+    ->where('ciudad.habilitado',1)
     ->orderBy('nombre_ciudad')
     ->get();
 
@@ -72,6 +73,7 @@ class CiudadRESTController extends Controller{
     $ciudades = DB::table('ciudad')
     ->join('partido', 'partido.id', '=', 'ciudad.idPartido')
     ->where('ciudad.idPartido',$id)
+    ->where('ciudad.habilitado',1)
     ->orderBy('nombre_ciudad')
     ->get();
 

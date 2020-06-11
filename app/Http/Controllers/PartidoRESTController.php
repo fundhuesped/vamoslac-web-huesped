@@ -126,15 +126,16 @@ class PartidoRESTController extends Controller
     public function showCounty($pais,$provincia)
     {
         $partidos = DB::table('partido')
-         ->select('partido.nombre_partido', 'partido.id', 'provincia.nombre_provincia','pais.nombre_pais','partido.habilitado', DB::raw("count(ciudad.id) as countCities"))  
-          ->join('provincia', 'provincia.id', '=', 'partido.idProvincia')
-          ->join('pais', 'pais.id', '=', 'partido.idPais')
-          ->join('ciudad', 'ciudad.idPartido', '=', 'partido.id')
-          ->where('nombre_pais',$pais)
-          ->where('nombre_provincia',$provincia)      
-          ->groupBy('partido.id')
-          ->orderBy('countCities')
-          ->get();
+        ->select('partido.nombre_partido', 'partido.id', 'provincia.nombre_provincia','pais.nombre_pais','partido.habilitado', DB::raw("count(ciudad.id) as countCities"))  
+        ->join('provincia', 'provincia.id', '=', 'partido.idProvincia')
+        ->join('pais', 'pais.id', '=', 'partido.idPais')
+        ->join('ciudad', 'ciudad.idPartido', '=', 'partido.id')
+        ->where('nombre_pais',$pais)
+        ->where('nombre_provincia',$provincia)
+        ->where('partido.habilitado',1)
+        ->groupBy('partido.id')
+        ->orderBy('countCities')
+        ->get();
           
         return view('seo.cities',compact('partidos','provincia','pais'));
     }
@@ -142,12 +143,13 @@ class PartidoRESTController extends Controller
     public function showPartidosByIdProvincia($id)
     {
         $partidos = DB::table('partido')
-         ->select('partido.nombre_partido', 'partido.id', 'provincia.nombre_provincia')
-          ->join('provincia', 'provincia.id', '=', 'partido.idProvincia')
-          ->where('idProvincia',$id)    
-          ->orderBy('nombre_partido')
-          ->get();
-          
+        ->select('partido.nombre_partido', 'partido.id', 'provincia.nombre_provincia')
+        ->join('provincia', 'provincia.id', '=', 'partido.idProvincia')
+        ->where('idProvincia',$id)
+        ->where('partido.habilitado',1)
+        ->orderBy('nombre_partido')
+        ->get();
+
         return $partidos;
     }    
 

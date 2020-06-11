@@ -1,8 +1,13 @@
 dondev2App.controller('cityMapController2',
   function(placesFactory, NgMap, copyService, $scope, $rootScope, $routeParams, $location, $http,$translate) {
+    
+    $rootScope.navigating = true;
 
-    $rootScope.selectedLanguage = localStorage.lang;
-    $translate.use($rootScope.selectedLanguage);
+    // Change language of this module
+    var lang = $rootScope.selectedLanguage;
+    if (lang) {
+      $translate.use(lang);
+    }
 
     var id = $routeParams.id;
     var urlShow = "api/v1/panel/places/" + id;

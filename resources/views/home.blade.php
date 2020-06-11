@@ -7,7 +7,6 @@ $lang = \Session::get('lang');
 \App::setlocale($lang);
 ?>
 
-
 <meta name="author" content="IPPF">
 <meta name="google-site-verification" content="7Myd-74iCkDjnz5HEK2-iF7gNuDUL8TMmkg6DiwxsZc" />
 <link rel="canonical" href="https://vamoslac.org/"/>
@@ -33,68 +32,71 @@ $lang = \Session::get('lang');
 
 @section('content')
 <div ng-app="dondev2App" style="height:100vh">
-@include('navbar')
+  @include('navbar')
 
-<!-- MAP -->
-<div class="row">
-  <div class="view" ng-view autoscroll="true">
-  </div>
-  <div class="map" ng-controller="mapController">
-    <div ng-cloak>
-      <ng-map id="mainMap"
-        default-style="true">
-        {{-- Esto lo comentamos porque ahora se hace por angular más optimizado, just in case lo dejamos
-        <marker
-          icon="images/place-off.png"
-          on-click="showCurrent(p)"
-          ng-repeat="p in places"
-          position="[[p.latitude]],[[p.longitude]]">
-        </marker>
-        <marker
-          icon="images/place-on.png"
-          ng-repeat="p in centerMarkers"
-          position="[[p.latitude]],[[p.longitude]]">
-        </marker> --}}
-      </ng-map>
+  <!-- MAP -->
+  <div class="row">
+    <div class="view" ng-view autoscroll="true">
+    </div>
+    <div class="map" ng-controller="mapController">
+      <div ng-cloak>
+        <ng-map id="mainMap" default-style="true">
+          {{-- Esto lo comentamos porque ahora se hace por angular más optimizado, just in case lo dejamos
+          <marker
+            icon="images/place-off.png"
+            on-click="showCurrent(p)"
+            ng-repeat="p in places"
+            position="[[p.latitude]],[[p.longitude]]">
+          </marker>
+          <marker
+            icon="images/place-on.png"
+            ng-repeat="p in centerMarkers"
+            position="[[p.latitude]],[[p.longitude]]">
+          </marker> --}}
+        </ng-map>
+      </div>
     </div>
   </div>
+  <!-- END MAP -->
+
+  @include('acerca')
 </div>
-<!-- END MAP -->
-
-@include('acerca')
-
 @stop
 
 @section('js')
-  {!!Html::script('bower_components/materialize/dist/js/materialize.min.js')!!}
-  {!!Html::script('bower_components/ngmap/build/scripts/ng-map.min.js')!!}
-  {!!Html::script('bower_components/angularjs-socialshare/dist/angular-socialshare.min.js')!!}
-  {!!Html::script('bower_components/angular-recaptcha/release/angular-recaptcha.js')!!}
-  {!!Html::script('bower_components/ng-text-truncate/ng-text-truncate.js')!!}
-  {!!Html::script('bower_components/angular-translate/angular-translate.js')!!}
-  {!!Html::script('scripts/translations/es.js')!!}
-  {!!Html::script('scripts/translations/br.js')!!}
-  {!!Html::script('scripts/translations/en.js')!!}
-  {!!Html::script('scripts/home/app.js')!!}
-  {!!Html::script('scripts/home/controllers/nav/nav-controller.js')!!}
-  {!!Html::script('scripts/home/controllers/home/controller.js')!!}
-  {!!Html::script('scripts/home/controllers/acerca/controller.js')!!}
-  {!!Html::script('scripts/home/controllers/city-list/controller.js')!!}
-  {!!Html::script('scripts/home/controllers/city-map/controller.js')!!}
-  {!!Html::script('scripts/home/controllers/city-map/controller2.js')!!}
-  {!!Html::script('scripts/home/controllers/locate-list/controller.js')!!}
-  {!!Html::script('scripts/home/controllers/locate-map/controller.js')!!}
-  {!!Html::script('scripts/home/controllers/map/controller.js')!!}
-  {!!Html::script('scripts/home/controllers/location/controller.js')!!}
-  {!!Html::script('scripts/home/controllers/suggest-location/controller.js')!!}
-  {!!Html::script('scripts/home/controllers/party-list/controller.js')!!}
-  {!!Html::script('scripts/home/controllers/evaluation/controller.js')!!}
-  {!!Html::script('scripts/home/controllers/name-list/controller.js')!!}
-  {!!Html::script('scripts/home/services/places.js')!!}
-  {!!Html::script('scripts/home/services/copy.js')!!}
+{!!Html::script('bower_components/materialize/dist/js/materialize.min.js')!!}
+{!!Html::script('bower_components/ngmap/build/scripts/ng-map.min.js')!!}
+{!!Html::script('bower_components/angularjs-socialshare/dist/angular-socialshare.min.js')!!}
+{!!Html::script('bower_components/angular-recaptcha/release/angular-recaptcha.js')!!}
+{!!Html::script('bower_components/ng-text-truncate/ng-text-truncate.js')!!}
+{!!Html::script('bower_components/angular-translate/angular-translate.js')!!}
+
+{!!Html::script('scripts/translations/es.js')!!}
+{!!Html::script('scripts/translations/br.js')!!}
+{!!Html::script('scripts/translations/en.js')!!}
+
+{!!Html::script('scripts/home/app.js')!!}
+{!!Html::script('scripts/home/controllers/nav/nav-controller.js')!!}
+{!!Html::script('scripts/home/controllers/tyc/tyc-controller.js')!!}
+
+{!!Html::script('scripts/home/controllers/home/controller.js')!!}
+{!!Html::script('scripts/home/controllers/acerca/controller.js')!!}
+{!!Html::script('scripts/home/controllers/city-list/controller.js')!!}
+{!!Html::script('scripts/home/controllers/city-map/controller.js')!!}
+{!!Html::script('scripts/home/controllers/city-map/controller2.js')!!}
+{!!Html::script('scripts/home/controllers/locate-list/controller.js')!!}
+{!!Html::script('scripts/home/controllers/locate-map/controller.js')!!}
+{!!Html::script('scripts/home/controllers/map/controller.js')!!}
+{!!Html::script('scripts/home/controllers/location/controller.js')!!}
+{!!Html::script('scripts/home/controllers/suggest-location/controller.js')!!}
+{!!Html::script('scripts/home/controllers/party-list/controller.js')!!}
+{!!Html::script('scripts/home/controllers/evaluation/controller.js')!!}
+{!!Html::script('scripts/home/controllers/name-list/controller.js')!!}
+{!!Html::script('scripts/home/services/places.js')!!}
+{!!Html::script('scripts/home/services/copy.js')!!}
 
 <script>
-$(document).ready(function() {
+  $(document).ready(function() {
     $('select').material_select();
   });
 </script>

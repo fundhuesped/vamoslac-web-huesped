@@ -1,5 +1,5 @@
-<div class=''>
-<ul class="collection">
+<div class='boxlanding'>
+  <ul class="collection">
     <!-- Header Tabble -->
     <li class="collection-item collection-seo">
       <div class="row valign">
@@ -19,12 +19,12 @@
       <div class="container">
         <table class="highlight left">
           <tbody>
-            <tr ng-repeat='p in partidos'>
-              <td ><a class="item-seo" href="#/pais/[[idCountry]]-[[nameCountry]]/provincia/[[idProvince]]-[[nameProvince]]/partido/[[p.id]]-[[p.nombre_partido]]/ciudad">[[p.nombre_partido]]</a></td>
+            <tr ng-repeat='p in partidos' ng-click="loadPartido(p.id,p.nombre_partido)">
+              <td ><a class="item-seo">[[p.nombre_partido]]</a></td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
   </ul>
-  </div>
+</div>

@@ -12,6 +12,10 @@ angular.module('dondeDataVizApp').controller('navController', function($scope, $
 		$rootScope.selectedLanguage = $scope.selectedLanguage = lang;
 	}
 
+	$rootScope.$watch('navigating', function(){
+		$scope.navigating = $rootScope.navigating;
+	});
+
 	$scope.changeLanguage = function() {
 		var lang = $scope.selectedLanguage;
 		$rootScope.selectedLanguage = lang;

@@ -1,17 +1,11 @@
 'use strict';
-
-/**
- * @ngdoc function
- * @name houstonDiversityMap:controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the houstonDiversityMap
- */
 angular.module('dondeDataVizApp').controller('serviceCtrl',
-  function(moment, NgMap, $interval, $routeParams, $scope, $timeout, $document, $http, $translate, $cookies) {
+  function(moment, NgMap, $interval, $routeParams, $scope, $rootScope, $timeout, $document, $http, $translate, $cookies) {
+
+    $rootScope.navigating = true;
 
     // Change language of this module
-    var lang = $cookies.get('lang');
+    var lang = $rootScope.selectedLanguage;
     if (lang) {
       $translate.use(lang);
     }
@@ -74,7 +68,5 @@ angular.module('dondeDataVizApp').controller('serviceCtrl',
     $scope.idParty = $routeParams.partido.split('-')[0];
     $scope.nameCity = $routeParams.ciudad.split('-')[1];
     $scope.idCity = $routeParams.ciudad.split('-')[0];
-
-
 
   });

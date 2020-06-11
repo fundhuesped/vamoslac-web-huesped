@@ -1,23 +1,14 @@
 'use strict';
-
-/**
- * @ngdoc function
- * @name houstonDiversityMap:controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the houstonDiversityMap
- */
 angular.module('dondeDataVizApp').controller('placeCtrl',
-  function(moment, NgMap, $interval, $routeParams, $scope, $timeout, $document, $http, $translate, $cookies) {
+  function(moment, NgMap, $interval, $routeParams, $scope, $rootScope, $timeout, $document, $http, $translate, $location) {
 
-    // // Change language of this module
-    // $scope.lang = $cookies.get('lang');
-    // if ($scope.lang) {
-    //   $translate.use($scope.lang);
-    // }else {
-    //      $translate.use('en');
-    // }
-    $scope.lang = $translate.preferredLanguage();
+    $rootScope.navigating = true;
+
+    // Change language of this module
+    var lang = $rootScope.selectedLanguage;
+    if (lang) {
+      $translate.use(lang);
+    }
     
     $scope.nameCountry = $routeParams.pais;
     $scope.nameProvince = $routeParams.provincia;
@@ -29,6 +20,10 @@ angular.module('dondeDataVizApp').controller('placeCtrl',
     $translate($routeParams.code + "_name").then(function(t){
       $scope.serviceName =   t;
     })
+
+    $scope.sharePlace = function(idPlace){
+      window.location ='/share/' + idPlace;
+    };
 
     $scope.places = [];
     $http.get('pais/' + $scope.nameCountry + '/provincia/' + $scope.nameProvince + '/partido/' + $scope.nameParty + '/ciudad/' + $scope.nameCity + '/servicio/' + $scope.serviceCode)

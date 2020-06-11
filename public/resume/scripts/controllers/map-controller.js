@@ -1,8 +1,8 @@
-dondev2App.controller('mapController',
+angular.module('dondeDataVizApp').controller('mapController',
   function(NgMap, $scope,$rootScope, $timeout, $routeParams, $location, $http){
 
     //Constants
-    var overviewZoom = 5;
+    var overviewZoom = 3;
     var placeZoom = 16;
     var initLocation = {latitude: -27.433133, longitude: -63.046042};
 
@@ -88,6 +88,10 @@ dondev2App.controller('mapController',
         $rootScope.moveMapTo = {latitude: p.latitude, longitude: p.longitude};
         changeZoom("place");
       }
+      // If it's undefined, we make huge view again
+      else if (p === undefined){
+        changeZoom("overview");
+      }
     });
 
     function clone(obj){
@@ -158,7 +162,7 @@ dondev2App.controller('mapController',
         'ID': item.placeId
       });
       // add 'click' listener
-      markers[markers.length - 1]['marker'].addListener('click', showCurrent.bind(this, item));
+      markers[markers.length - 1]['marker'].addListener('click', $rootScope.showDetail.bind(this, item));
       // add to map
       markers[markers.length - 1]['marker'].setMap(window.map);
       // add bounds for auto-zoom
@@ -174,29 +178,29 @@ dondev2App.controller('mapController',
     });
 
     // Bind 'click' function on map
-    function showCurrent (place){
-      $rootScope.navBar = place.establecimiento;
+    // function showCurrent (place){
+    //   $rootScope.navBar = place.establecimiento;
 
-      // Load comments
-      var urlComments = "api/v2/evaluacion/comentarios/" + place.placeId;
-      place.comments = [];
-      $http.get(urlComments)
-      .then(function(response) {
-        place.comments = response.data;
-        place.comments.forEach(function(comment) {
-          comment.que_busca = comment.que_busca.split(',');
-        });
-      });
+    //   // Load comments
+    //   var urlComments = "api/v2/evaluacion/comentarios/" + place.placeId;
+    //   place.comments = [];
+    //   $http.get(urlComments)
+    //   .then(function(response) {
+    //     place.comments = response.data;
+    //     place.comments.forEach(function(comment) {
+    //       comment.que_busca = comment.que_busca.split(',');
+    //     });
+    //   });
 
-      // Actualizar el marker seleccionado. Actualiza el mapa automaticamente
-      $rootScope.currentMarker = place;
-      $rootScope.centerMarkers.push($rootScope.currentMarker);
+    //   // Actualizar el marker seleccionado. Actualiza el mapa automaticamente
+    //   $rootScope.currentMarker = place;
+    //   $rootScope.centerMarkers.push($rootScope.currentMarker);
 
-      var path = $location.path();
-      if (path.indexOf('listado') > -1){
-        var newPath = path.replace('listado','mapa');
-        $location.path(newPath);
-      }
-    }
+    //   var path = $location.path();
+    //   if (path.indexOf('listado') > -1){
+    //     var newPath = path.replace('listado','mapa');
+    //     $location.path(newPath);
+    //   }
+    // }
 
   });

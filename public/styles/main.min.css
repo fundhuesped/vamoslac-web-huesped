@@ -1986,3 +1986,7 @@ input.new-autocomplete{
 label.new-autocomplete{
   color: #9e9e9e !important;
 }
+
+[ng-click] {
+  cursor: pointer;
+}

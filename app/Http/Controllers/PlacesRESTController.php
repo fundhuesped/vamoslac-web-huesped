@@ -896,7 +896,8 @@ class PlacesRESTController extends Controller
                      ->select(
                       DB::raw('count(*) as cantidad, nombre_pais , id'))
                      ->join('pais', 'places.idPais', '=', 'pais.id')
-                     ->where('aprobado',1)
+                     ->where('places.aprobado',1)
+                     ->where('pais.habilitado',1)
                      ->orderBy('cantidad', 'desc')
                      ->groupBy('idPais')
                      ->get();
