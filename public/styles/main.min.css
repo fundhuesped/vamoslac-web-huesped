@@ -1987,6 +1987,21 @@ label.new-autocomplete{
   color: #9e9e9e !important;
 }
 
+/*Lugares por pais click mobile friendly*/
 [ng-click] {
   cursor: pointer;
+}
+
+
+/* Updater info en ed. manual de establecimientos*/
+.bold-type {
+    font-weight:  bold;
+    color: #e6334c;
+}
+.uploader-information p {
+    margin-top:  0;
+    margin-bottom: 0.2rem!important;
+}
+.no-info{
+    color: #595959;
 }

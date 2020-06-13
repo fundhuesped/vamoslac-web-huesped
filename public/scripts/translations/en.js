@@ -113,6 +113,8 @@ var translations_en =
    "form_email_input": "Your e-mail*",
    "form_tel_input": "Your phone*",
    "observations": "Observations about the establishment",
+   "no_uploader_information" : "No uploader information was found",
+   "uploader_info" : "Uploader information",
    "form_gps_find": "If you are currently at the establishment click here to locate the los GPS location.",
    "location": "Location",
    "terms_and_conditions1": "I accept to Terms and Conditions",

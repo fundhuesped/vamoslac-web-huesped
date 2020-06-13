@@ -111,6 +111,27 @@
     </div>
 
     <br>
+
+    <div class="row uploader-information">
+        <div class="col s12">
+            <h5 class="form-section-title" translate="uploader_info"></h5>
+        </div>
+        <div class="col s12" ng-if="!place.uploader_name && !place.uploader_email && !place.uploader_tel">
+            <h6><span class="bold-type no-info" translate="no_uploader_information"></span></h6>
+        </div>
+        <div ng-if="place.uploader_name || place.uploader_email || place.uploader_tel">
+            <div class="col s12">
+                <p><span class="bold-type">[[ "name" | translate ]]:</span>[[place.uploader_name]]</p>
+            </div>
+            <div class="col s12">
+                <p><span class="bold-type">[[ "email" | translate ]]:</span>[[place.uploader_email]]</p>
+            </div>
+            <div class="col s12">
+                <p><span class="bold-type">[[ "tel" | translate ]]:</span>[[place.uploader_tel]]</p>
+            </div>
+        </div>
+    </div>
+
 {{--     <div class="row">
         <div class="valign-demo  valign-wrapper">
             <div class="valign full-width actions">
