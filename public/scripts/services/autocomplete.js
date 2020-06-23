@@ -34,6 +34,9 @@ dondev2App.factory('autocompleteService', function() {
       if(n == 3){
         autocompleteForm.unshift(autocompleteForm[0]); 
       }
+      else if(n < 3){
+        return [];
+      }
       return autocompleteForm;
     }
   }
