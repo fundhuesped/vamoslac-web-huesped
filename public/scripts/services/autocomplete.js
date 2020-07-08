@@ -30,7 +30,7 @@ dondev2App.factory('autocompleteService', function() {
           autocompleteForm[i] = val;
         }
       }
-      // Algunas ciudades vienen sin partidos :\ acá va un fix: copiamos el primer resultado
+      // Algunas ciudades vienen sin partidos :\ acá va un fix: copiamos el primer resultado (ciudad = partido)
       if(n == 3){
         autocompleteForm.unshift(autocompleteForm[0]); 
       }

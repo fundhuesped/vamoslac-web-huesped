@@ -1,7 +1,8 @@
 dondev2App.controller('locateListController',
-  function(placesFactory, NgMap, $scope, $rootScope, $routeParams, $location, $http) {
+  function(placesFactory, copyService, NgMap, $scope, $rootScope, $routeParams, $location, $http) {
+    
     $rootScope.main = false;
-    $scope.service = $routeParams.servicio;
+    $scope.service = copyService.getFor($routeParams.servicio);
     $rootScope.navBar = $scope.service;
     $scope.places = [];
     $scope.main = true;
@@ -10,13 +11,6 @@ dondev2App.controller('locateListController',
     $scope.events = "-rateReal";
     $scope.legal = true;
     $rootScope.navigating = true;
-
-    //parseo a obj para obtener el servicio si no piden todo
-    if (typeof $scope.service === "undefined" || $scope.service === null || $scope.service == "" || $scope.service == "friendly") {
-      $scope.service = "friendly";
-    } else {
-      $scope.service = ($scope.service != "all") ? angular.fromJson($scope.service) : $scope.service;
-    }
 
     //seteo a todos en false x las dudas
     $scope.checkbox = false;

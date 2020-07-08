@@ -66,7 +66,7 @@
 					</div>
 				</a>
 			</div>
-			<div class="col s6 m6 l6 grid-home tooltip" ng-repeat="single in collapsibleElements" class="collection-item avatar">
+			<div class="col s6 m6 l6 grid-home tooltip" ng-repeat="single in collapsibleElements" class="collection-item avatar" ng-show="single.show_on_home">
 				<a class="services-home" id="[[single.code]]" href="#/como-buscas/[[single.code]]">
 					<div class="center promo">
 						<img class="home-icon-responsive" src="images/[[single.icon]]">
