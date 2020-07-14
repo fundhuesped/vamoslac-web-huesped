@@ -33,6 +33,10 @@ dondev2App.controller('cityMapController',
         window.history.back();
     }
 
+    $scope.isValidAttr = function(attr){
+      return attr !== '' && attr !== ' ' && attr !== undefined && attr !== null;
+    }
+
     function correctWebLinks(place){
       var columns = ['web_distrib','web_dc','web_ile','web_infectologia','web_mac','web_testeo','web_ssr','web_vac'];
       var patt = new RegExp("^(http:\/\/|https:\/\/).+$");

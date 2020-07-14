@@ -35,6 +35,10 @@ dondev2App.controller('cityMapController2',
       return place;
     }
 
+    $scope.isValidAttr = function(attr){
+      return attr !== '' && attr !== ' ' && attr !== undefined && attr !== null;
+    }
+
     $http({
       method: "GET",
       url: urlShow
