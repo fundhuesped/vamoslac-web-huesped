@@ -39,6 +39,7 @@ dondev2App.controller('partyListController',
 
     $scope.service = copyService.getFor($routeParams.servicio);
     $rootScope.navBar = $scope.service;
+    $rootScope.serviceCode = $scope.service.code;
 
     var search = {
 
