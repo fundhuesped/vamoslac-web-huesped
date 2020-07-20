@@ -131,6 +131,8 @@ class EvaluationRESTController extends Controller {
 	public function showEvaluations($id){
 
 		$data = Evaluation::join('places', 'places.placeId', '=', 'evaluation.idPlace')
+		->where('evaluation.aprobado',1)
+		->where('evaluation.idPlace',$id)
 		->select('places.placeId','places.establecimiento', 'evaluation.comentario',
 			'evaluation.que_busca', 'evaluation.service', 'evaluation.voto', 'evaluation.updated_at',
 			'evaluation.reply_admin', 'evaluation.reply_date', 'evaluation.reply_content')
