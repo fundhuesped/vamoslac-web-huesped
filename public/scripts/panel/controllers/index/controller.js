@@ -245,7 +245,7 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     else idCiudad = $rootScope.selectedCityEval.id;
 
     var f = document.createElement("form");
-    f.setAttribute('method',"post");
+    f.setAttribute('method',"get");
     f.setAttribute('action',"panel/importer/filteredEvaluations");
     f.style.display = 'none';
 
@@ -269,6 +269,11 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     i4.setAttribute('name',"idCiudad");
     i4.setAttribute('value',idCiudad);
 
+    var aprob = document.createElement("input");
+    aprob.setAttribute('type',"hidden");
+    aprob.setAttribute('name',"aprob");
+    aprob.setAttribute('value',-1);
+
     var lang = document.createElement("input");
     lang.setAttribute('type',"hidden");
     lang.setAttribute('name',"lang");
@@ -283,6 +288,7 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     f.appendChild(i2);
     f.appendChild(i3);
     f.appendChild(i4);
+    f.appendChild(aprob);
     f.appendChild(lang);
     f.appendChild(s);
 
@@ -419,20 +425,29 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
   $rootScope.getNowEval = function(){
 
-    if($rootScope.selectedCityEval){
-
-      $rootScope.loadingPost = true;
-
-      $http.get('api/v2/evaluation/getall/' +   $rootScope.selectedCountryEval.id  + '/' +  $rootScope.selectedProvinceEval.id + '/' + $rootScope.selectedPartyEval.id + '/' +   $rootScope.selectedCityEval.id)
-      .success(function(response) {
-        $rootScope.evaluations = response;
-        $rootScope.totalEvals = response.length;
-        $rootScope.loadingPost = false;
-      })
+    var getNowEvalUrl = 'api/v2/evaluation/getallBy';
+    if($scope.selectedCountryEval){
+      getNowEvalUrl += '/' +   $scope.selectedCountryEval.id ;
     }
-    else{
-      Materialize.toast("Debe seleccionar una ciudad" ,3000);
+    if($scope.selectedProvinceEval){
+      getNowEvalUrl += '/' +   $scope.selectedProvinceEval.id ;   
     }
+    if($scope.selectedPartyEval){
+      getNowEvalUrl += '/' +   $scope.selectedPartyEval.id  ;  
+    }
+    if($scope.selectedCityEval){
+      getNowEvalUrl += '/' +   $scope.selectedCityEval.id  ;  
+    }
+
+    $http.get(getNowEvalUrl)
+    .success(function(response) {
+      $rootScope.evaluations = response;
+      $rootScope.totalEvals = response.length;
+      $rootScope.loadingPost = false;
+    })
+    .error(function(response) {
+      console.log(response);
+    })
   }
 
   $rootScope.openModal = false;

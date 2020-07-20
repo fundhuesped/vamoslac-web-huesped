@@ -96,9 +96,8 @@ Route::group(['middleware' => \App\Http\Middleware\CheckLang::class], function (
     Route::get('api/v2/provincia/getall', '\App\Http\Controllers\PlacesRESTController@getAllProvincias');
     Route::get('api/v2/partido/getall', '\App\Http\Controllers\PlacesRESTController@getAllPartidos');
     Route::get('api/v2/evaluation/getall', '\App\Http\Controllers\EvaluationRESTController@getAllEvaluations');
-    Route::get('api/v2/evaluation/getall/{paisId}/{pciaId}/{partyId}/{cityId}', '\App\Http\Controllers\EvaluationRESTController@getAllByCity');
+    Route::get('api/v2/evaluation/getallBy/{paisId?}/{pciaId?}/{partyId?}/{cityId?}', '\App\Http\Controllers\EvaluationRESTController@getAllByCity');
     Route::get('api/v2/evaluation/{id}', '\App\Http\Controllers\EvaluationRESTController@removeEvaluation');
-
 });
 
 
@@ -183,14 +182,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('panel/importer/activePlacesEvaluationsExport', '\App\Http\Controllers\ImportadorController@activePlacesEvaluationsExport');//exportar evluacion lugares activos con filtro por servicios servicio
 
-    Route::post('panel/importer/filteredEvaluations', '\App\Http\Controllers\ImportadorController@getFilteredEvaluations');//exportar evluacion lugares activos con filtro por servicios servicio
+    Route::get('panel/importer/filteredEvaluations', '\App\Http\Controllers\ImportadorController@getFilteredEvaluations');//exportar evluacion lugares activos con filtro por servicios servicio
 
     Route::get('panel/importer/front-export-eval/{search}', '\App\Http\Controllers\ImportadorController@exportarPanelEvalSearch');//para la busqueda de places
     Route::post('panel/importer/activePlacesExport', '\App\Http\Controllers\ImportadorController@activePlacesExport');//exportar lugares activos
     Route::post('panel/importer/evaluationsExportFilterByService', '\App\Http\Controllers\ImportadorController@evaluationsExportFilterByService');//exportar evluacion lugares activos con filtro por servicios servicio
     Route::get('panel/importer/eval-export/{id}', '\App\Http\Controllers\ImportadorController@exportarEvaluaciones');//para las evaluaciones
 
-    Route::get('panel/importer/eval-service-export/{id}', '\App\Http\Controllers\ImportadorController@exportarEvaluacionesPorServicios');//para las evaluaciones
+    Route::get('panel/importer/eval-service-export/{id}', '\App\Http\Controllers\ImportadorController@exportarEvaluacionesPorServicio');//para las evaluaciones
 
     //todas las evaluaciones
     Route::get('panel/importer/full-eval-export/{lang}', '\App\Http\Controllers\ImportadorController@exportarEvaluacionesFull');//todas las evaluaciones de todos los lugares
