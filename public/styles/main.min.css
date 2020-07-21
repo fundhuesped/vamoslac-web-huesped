@@ -1785,6 +1785,14 @@ li.collection-item.center {
     margin-top: 0.2rem;
 }
 
+.modal-content h4{
+  font-size: 2rem !important;
+}
+
+.modal-content h5{
+  font-size: 1.5rem !important;
+}
+
 span.evaluation-date.ng-binding {
     font-size: 0.75em;
     font-weight: bold;

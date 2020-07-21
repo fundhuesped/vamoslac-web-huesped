@@ -1,15 +1,3 @@
-
-<style>
-
-.modal-content h4{
-	font-size: 2rem !important;
-}
-
-.modal-content h5{
-	font-size: 1.5rem !important;
-}
-
-</style>
 <!-- Modal Structure -->
 <div id="modal" class="modal modal-fixed-footer">
 	<div class="modal-content">
