@@ -47,12 +47,12 @@
       <tr ng-cloak ng-hide="loadingPost" ng-repeat="evaluation in evaluationList | filter:searchText | filter:serviceFilter">
 
         <td class="services2">
-          <img ng-show="evaluation.service == 'condones' " alt="Este lugar distribuye condones" src="../../images/condones.svg">
-          <img ng-show="evaluation.service == 'prueba' " alt="Este lugar puede hacer prueba de HIV" src="../../images/vih.svg" >
-          <img ng-show="evaluation.service == 'mac' " alt="Este lugar cuenta con Servicios de Salud Sexual y Reproductiva" src="../../images/mac.svg" >
-          <img ng-show="evaluation.service == 'ile' " alt="Este lugar cuenta con centro de Interrupcion Legal del Embarazo" src="../../images/ile.svg" >
-          <img ng-show="evaluation.service == 'ssr' " alt="Este lugar cuenta con Servicios de Salud Sexual y Reproductiva" src="../../images/salud.svg" >
-          <img ng-show="evaluation.service == 'dc' " alt="Este lugar cuenta con centro de Detección de Cancer" src="../../images/deteccion.svg" >
+          <img ng-show="evaluation.service == 'condones' " alt="Este lugar distribuye condones" src="/images/condones.svg">
+          <img ng-show="evaluation.service == 'prueba' " alt="Este lugar puede hacer prueba de HIV" src="/images/vih.svg" >
+          <img ng-show="evaluation.service == 'mac' " alt="Este lugar cuenta con Servicios de Salud Sexual y Reproductiva" src="/images/mac.svg" >
+          <img ng-show="evaluation.service == 'ile' " alt="Este lugar cuenta con centro de Interrupcion Legal del Embarazo" src="/images/ile.svg" >
+          <img ng-show="evaluation.service == 'ssr' " alt="Este lugar cuenta con Servicios de Salud Sexual y Reproductiva" src="/images/salud.svg" >
+          <img ng-show="evaluation.service == 'dc' " alt="Este lugar cuenta con centro de Detección de Cancer" src="/images/deteccion.svg" >
         </td>
 
         <td class="evaluation-panel-searched-body">
