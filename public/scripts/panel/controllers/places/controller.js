@@ -426,14 +426,17 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
   };
 
-  // TODO: reemplazar por contenido dinamico
-  //$scope.selectedServiceList = ["prueba","condones","vacunatorios","ssr","cd","ile"];
   $scope.checkboxService = [];
-  //  $scope.services = [{"name":"Prueba VIH","shortname":"prueba"},{"name":"Condones","shortname":"condones"},{"name":"Vacunatorios","shortname":"vacunatorios"},{"name":"Centros de Infectología","shortname":"cdi"},{"name":"Servicios de Salud Sexual y Repoductiva","shortname":"sssr"},{"name":"Interrupción Legal del Embarazo","shortname":"ile"}];
-  $scope.services = copyService.getAll();
-  $scope.selectedServiceList = $scope.services.map(function(services) {
-    return services.code;
-  })
+  setUpServices();
+
+  function setUpServices(){
+    $scope.services = copyService.getAll();
+    $scope.selectedServiceList = [];
+    for (var i = 0; i < $scope.services.length; i++) {
+      if($scope.services[i].show_on_home)
+        $scope.selectedServiceList.push($scope.services[i].code)
+    }
+  }
 
   $scope.toggle = function(shortname, list) {
     var idx = $scope.selectedServiceList.indexOf(shortname);

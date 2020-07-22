@@ -9,25 +9,20 @@
 
 <div class="card-panel">
   <div class="card-panel">
-   <span class="card-title" translate="panel_detail_evaluation_filterservicelabel"></span>
-   <br>
-   <div class="row">
-     <div class="col s12 right-align">
-       <b translate="panel_evaluations_exportbutton"></b>
-       <span target="_self" ng-click="exportEvaluationsFilterByService([[id]])" class="waves-effect waves-light btn-floating red">
-         <i class="mdi-file-file-download left"></i>
-       </span>
-           <!--
-           <a target="_self" href="../../panel/importer/eval-export/[[id]]" ng-click="" class="waves-effect waves-light btn-floating red">
-             <i class="mdi-file-file-download left"></i>
-           </a>
-         -->
-       </div>
-     </div>
-     <div class="row">
-      <div ng-repeat="service in services">
+    <span class="card-title" translate="panel_detail_evaluation_filterservicelabel"></span>
+    <br>
+    <div class="row">
+      <div class="col s12 right-align">
+        <b translate="panel_evaluations_exportbutton"></b>
+        <span target="_self" ng-click="exportEvaluationsFilterByService([[id]])" class="waves-effect waves-light btn-floating red">
+          <i class="mdi-file-file-download left"></i>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div ng-repeat="service in services" ng-show="service.show_on_home">
         <div class="col s2">
-          <input type="checkbox" id="[[service.code]]" ng-checked="exists(service.code, selected)" ng-click="toggle(service.code, selected)"/>
+          <input type="checkbox" id="[[service.code]]" ng-checked="exists(service.code, selectedServiceList)" ng-click="toggle(service.code, selectedServiceList)"/>
           <label for="[[service.code]]">[[service.label]]</label>
         </div>
       </div>
@@ -44,8 +39,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-cloak ng-hide="loadingPost" ng-repeat="evaluation in evaluationList | filter:searchText | filter:serviceFilter">
-
+      <tr ng-cloak ng-hide="loadingPost" ng-repeat="evaluation in evaluationList | filter:searchText | filter:serviceFilter" ng-show="exists(evaluation.service, selectedServiceList)">
         <td class="services2">
           <img ng-show="evaluation.service == 'condones' " alt="Este lugar distribuye condones" src="/images/condones.svg">
           <img ng-show="evaluation.service == 'prueba' " alt="Este lugar puede hacer prueba de HIV" src="/images/vih.svg" >
