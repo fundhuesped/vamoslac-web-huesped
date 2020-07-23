@@ -3,7 +3,7 @@
   <div class="nav-wrapper nav-index">
     <a href="/#/" class="brand-logo">
       <!-- WEBSITE LOGO -->
-      <img class="logoTop" src="images/logo_blanco.svg">
+      <img class="logoTop" src="/images/logo_blanco.svg">
       <!-- MOBILE BURGER BUTTON -->
       <a data-activates="mobile-demo" class="button-collapse">
         <i class="mdi-navigation-menu"></i>

@@ -26,6 +26,9 @@ Route::get('/contador', function () {
     return File::get(public_path() . '/public/contador/index.html');
 });
 
+// Authentication Routes...
+$this->get('login', '\App\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
+$this->post('login', '\App\Http\Controllers\Auth\LoginController@login');
 $this->get('admin/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 Route::get('api/v2/countries/ranking', '\App\Http\Controllers\PlacesRESTController@getCountryRanking');
@@ -110,9 +113,8 @@ Route::group(['middleware' => \App\Http\Middleware\CheckLang::class], function (
 Route::group(['middleware' => ['auth','CheckAdmin']], function () {
     Route::post('/api/v2/usercountries/{userId}', '\App\Http\Controllers\AdminRESTController@saveUserCountries');
     Route::get('/api/v2/usercountries/{idUser}', '\App\Http\Controllers\AdminRESTController@userCountries');
-		// Registration routes...
-		Route::get('auth/register', '\App\Http\Controllers\Auth\AuthController@getRegister');
-		Route::post('auth/register', '\App\Http\Controllers\Auth\AuthController@postRegister');
+    Route::get('register', 'Auth\RegisterController@showRegistrationForm');
+    Route::post('register', 'Auth\RegisterController@register');
 });
 
 
@@ -143,6 +145,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('panel/admin-list', '\App\Http\Controllers\MainRouteController@adminList');
     Route::get('panel/city-list', '\App\Http\Controllers\MainRouteController@cityList');
     Route::get('panel/logged', '\App\Http\Controllers\AdminRESTController@logged');
+
+    Route::post('panel/change-password', '\App\Http\Controllers\AdminRESTController@changePassword');
+    Route::post('panel/delete-user', '\App\Http\Controllers\AdminRESTController@deleteUser');
 
 //------------------------------------------------------------------------------
     //IMPORTADOR
