@@ -33,11 +33,7 @@ class RegisterController extends Controller
      */
     protected function redirectPath()
     {
-      if (0==0) {
         return '/panel';
-      } else {
-        return '/home';
-      }
     }
 
     /**
