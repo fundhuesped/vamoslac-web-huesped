@@ -1,22 +1,24 @@
 <div class="home full new-home">
   <div class="container list">
     <!-- SEARCH USER INFO -->
-    <p class="header">
+    <h6 class="new-title">
       <span ng-cloak ng-show="service">
-        <a style="cursor: default;" translate="searching_service" translate-values="{service: '[[ service.title | translate ]]' }"></a>
+        <span translate="searching_service" translate-values="{service: '[[ service.title | translate ]]' }"></span>
       </span>
       <span ng-cloak ng-show="country">
-        <a style="cursor: default;" >[[country]], [[province]], [[city]] </a>
+        <span translate="on"></span>
+        <span>[[partido]], [[province]], [[country]]  </span>
       </span>
-    </p>
+    </h6>
 
     <!-- SPINNER -->
     <div ng-cloak ng-show="loading">
-      <h1 translate="loading_cities"> </h1>
+      <h6 translate="loading_label"></h6>
       <div class="progress">
         <div class="indeterminate"></div>
       </div>
     </div>
+
     <!-- RESULTS INFO BLOCK -->
     <div ng-cloak ng-hide="loading">
       <div ng-cloak ng-show='legal'>
@@ -58,8 +60,11 @@
       <div ng-cloak ng-show='legal'>
         <div class="container" ng-cloak ng-show="cantidad  === 0">
           <div class="card-panel hoverable">
-            <h4 translate="suggest_place"></h4>
-            <p translate="client_colaboration"><i class="mdi-action-info-outline tiny"></i></p>
+            <h5 translate="suggest_place"></h5>
+            <p>
+              <i class="mdi-action-info-outline tiny"></i>
+              <span translate="client_colaboration"></span>
+            </p>
             <div class="col s12 m3 hide-on-med-and-down"></div>
             <a ng-href="form" class="waves-effect waves-light btn wow " data-wow-delay="0s" translate="add">
               <i class="mdi-content-add right"></i>
@@ -154,8 +159,8 @@
     <div ng-cloak ng-show='legal'>
       <div class="container">
         <div class="card-panel hoverable">
-          <h4 translate="busqueda_geo_titulo"></h4>
-          <p><i class="mdi-action-info-outline tiny "></i> <span translate="busqueda_geo_desc"></span></p>
+          <h6 translate="busqueda_geo_titulo"></h6>
+          <p><i class="mdi-action-info-outline tiny "></i><span translate="busqueda_geo_desc"></span></p>
           <div class="col s12 m3 hide-on-med-and-down"></div>
           <a ng-href="#/localizar/[[service.code]]/listado" class="waves-effect waves-light btn" data-wow-delay="0s" translate="search">
             <i class="mdi-navigation-chevron-right right"></i>

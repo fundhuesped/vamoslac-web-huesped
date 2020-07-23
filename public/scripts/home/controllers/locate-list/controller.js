@@ -34,6 +34,10 @@ dondev2App.controller('locateListController',
 
     });
 
+    $scope.onlyFriendly = false;
+    $scope.toggleFriendly = function(){
+      $scope.onlyFriendly = !$scope.onlyFriendly;
+    }
 
     $scope.addComment = function() {
       $scope.voteLimit++;

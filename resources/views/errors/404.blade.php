@@ -22,28 +22,45 @@
 @stop
 
 @section('content')
-<div >
-  <div class="home no-page valign-demo valign-wrapper">
-      <div class="row valign full-width">
+@include('navbar')
+<div class="home no-page valign-demo valign-wrapper">
+    <div class="row valign full-width">
         <div class="col s12">
-
-        <h1> Oops... no encontramos lo que buscas. </h1>
-      </div>
-      <div class="col s4">
-        </p>
-      </div>
-
-      </div>
+            <br>
+            <h3 translate="404_info"></h3>
+            <br/>
+            <br/>
+            <a href='https://www.huesped.org.ar/' target="_blank" alt="logo">
+                <img src="/images/logo_huesped.png" width="35%" alt="404 Error" />
+            </a>
+            <div class="row mt-3">
+                <div class="col offset-s5 s2">
+                    <a onclick="window.history.go(-1); return false;" class="waves-effect waves-light btn btn-small orange">
+                        <i class="mdi-hardware-keyboard-backspace left"></i>
+                        <span translate="back_label_button">Volver</span>
+                    </a>
+                </div>
+            </div>
+            @if (config('app.debug') == true)
+            <div class="row valign full-width">
+                <div class="row">
+                    <div class="col s12 error-container">
+                        <p> <b>Detalles tecnicos</b></p>
+                        <p>{{ $exception->getCode() }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 error-container">
+                        <h6>{{ $exception->getMessage() }}</h6>
+                        <p> <small> {{$exception}}</small></p>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
-      </div>
     </div>
-
-  </div>
 </div>
-
 @stop
 
-
 @section('js')
-
 @stop

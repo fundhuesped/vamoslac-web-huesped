@@ -442,6 +442,8 @@ var translations_es =
    "nearby_gps_popup_title": "GPS",
    "nearby_gps_popup_content": "Para acceder a los establecimientos más cercanos, tienes que activar tu GPS",
    "back_label_button": "Volver",
+   "404_info": "Oops... no encontramos lo que buscas",
+   "500_info": "Ha ocurrido un problema interno en el servidor",
    "loader_first_fetch_title": "Bienvenid@",
    "loader_first_fetch_content": "Estamos descargando todos los establecimientos y ciudades para que puedas continuar usando la aplicación aún sin conexión a internet",
    "loader_first_fetch_download_progress": "Descargando {{current}} establecimientos de {{total}}",

@@ -494,4 +494,7 @@ var translations_br = {
   "manage_users": "Gerenciar usuários",
   "change_language": "Mudar idioma",
   "close_session": "Fechar Sessão",
+  "back_label_button": "Volver",
+  "404_info": "Oops... não conseguimos encontrar o que você está procurando",
+  "500_info": "We have detected an internal error on the server",
 }
