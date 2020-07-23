@@ -25,56 +25,44 @@
 
 @section('content')
 <div ng-app="dondev2App">
+	<nav>
+		<div class="nav-wrapper">
+			<a href="{{ url('/#/') }}" class="brand-logo">
+				<img class="logoTop" src="images/logo_blanco.svg">
+			</a>
+			<a href="#" data-activates="mobile-demo" class="button-collapse">
+				<i class="mdi-navigation-menu"></i>
+			</a>
+		</div>
+	</nav>
 
-  <nav>
-
-    <div class="nav-wrapper">
-
-      <a href="{{ url('/#/') }}" class="brand-logo">
-        <img class="logoTop" src="images/logo_blanco.svg">
-      </a>
-
-      <a href="#" data-activates="mobile-demo" class="button-collapse">
-        <i class="mdi-navigation-menu"></i></a>
-
-    </div>
-
-  </nav>
-
-    <div class="home new-home" ng-controller="formController">
-
-     <!-- Terms & Conditions -->
-
-     <div class="row">
-
+	<div class="home new-home" ng-controller="formController">
+		<div class="row">
 			<div class="col s6 m6 center-align">
-
 				<a href='https://www.ippfwhr.org/' target="_blank">
 					<img src="images/logo_ippf.png" width="50%" />
 				</a>
-
 			</div>
 
 			<div class="col s6 m6 center-align  ">
-
 				<a href='https://www.huesped.org.ar/' target="_blank">
 					<img src="images/logo_huesped.png" width="40%" />
 				</a>
-
 			</div>
 
+			<br/>
 			<br />
-			<br />
-			<br />
+			<br/>
 
-			@if (session('lang') == 'es')
-			@include("t&c.spanish")
-			@else
-			@include("t&c.english")
-			@endif
+			<div class="col s12 offset-m2 m8 terms">
+				@if (session('lang') == 'es')
+				@include("t&c.spanish")
+				@else
+				@include("t&c.english")
+				@endif
+			</div>
 		</div>
 	</div>
-
 </div>
 
 @stop

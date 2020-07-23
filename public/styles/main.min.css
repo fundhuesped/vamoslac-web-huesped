@@ -678,6 +678,9 @@ select {
   }
 }
 
+.terms{
+  text-align: justify;
+}
 
 .Aligner-home-content {
   text-align: justify;

@@ -1,4 +1,4 @@
-<h4>Gracias por utilizar VAMOS.</h4>
+<h4 class="text-center">Gracias por utilizar VAMOS.</h4>
 
 <br/>
 
