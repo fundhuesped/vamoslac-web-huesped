@@ -340,6 +340,7 @@ class PlacesRESTController extends Controller
     public static function getScalarServices($pid, $cid, $bid, $service)
     {
         return DB::table('places')
+        ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -395,6 +396,7 @@ class PlacesRESTController extends Controller
         $keys = explode(" ", $q);
 
         return DB::table('places')
+        ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -416,6 +418,7 @@ class PlacesRESTController extends Controller
             $keys = explode(" ", $q);
 
             $places = DB::table('places')
+            ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
         ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
         ->join('partido', 'places.idPartido', '=', 'partido.id')
         ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -434,6 +437,7 @@ class PlacesRESTController extends Controller
             $keys = explode(" ", $q);
 
             $places = DB::table('places')
+            ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
         ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
         ->join('partido', 'places.idPartido', '=', 'partido.id')
         ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -458,6 +462,7 @@ class PlacesRESTController extends Controller
         $keys = explode(" ", $q);
 
         return DB::table('places')
+        ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -479,6 +484,7 @@ class PlacesRESTController extends Controller
     public static function showApproved($pid, $cid, $bid)
     {
         return DB::table('places')
+        ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
@@ -510,7 +516,9 @@ class PlacesRESTController extends Controller
     {
         return DB::table('places')
       ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
+      ->join('partido', 'places.idPartido', '=', 'partido.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+      ->join('pais', 'places.idPais', '=', 'pais.id')
       ->where('places.idPais', $pid)
       ->where('places.idProvincia', $cid)
       ->where('places.aprobado', '=', 1)
@@ -524,6 +532,7 @@ class PlacesRESTController extends Controller
       ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->join('pais', 'places.idPais', '=', 'pais.id')
       ->where('places.idPais', $pid)
       ->where('places.idProvincia', $cid)
       ->where('places.idPartido', $did)
@@ -779,8 +788,10 @@ class PlacesRESTController extends Controller
                          ->count();
             $counters['partido'] = DB::table('partido')
                          ->count();
-            $counters['evaluations'] = DB::table('evaluation')
-                         ->count();
+            $counters['evaluaciones'] = DB::table('evaluation')
+                         ->count()-1;
+            $counters['imports'] = DB::table('places_log')
+                          ->count();
           // $counters['placesEvaluation'] = DB::table('evaluation')->count();
           $counters['placesEvaluation'] = DB::table('evaluation')->distinct()->count(["idPlace"]);
         } else {
@@ -1007,8 +1018,9 @@ class PlacesRESTController extends Controller
     public static function showDreprecated()
     {
         return DB::table('places')
-      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+      ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
       ->join('partido', 'places.idPartido', '=', 'partido.id')
+      ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
       ->join('pais', 'places.idPais', '=', 'pais.id')
       ->where('places.aprobado', '=', -1)
       ->select()
@@ -1062,16 +1074,18 @@ class PlacesRESTController extends Controller
 
         if ($roll == 'administrador') {
             $resu = DB::table('places')
-          ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+          ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
           ->join('partido', 'places.idPartido', '=', 'partido.id')
+          ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
           ->join('pais', 'places.idPais', '=', 'pais.id')
           ->where('places.aprobado', '=', 0)
           ->select()
           ->get();
         } else {
             $resu = DB::table('places')
-          ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
+          ->join('ciudad', 'places.idCiudad', '=', 'ciudad.id')
           ->join('partido', 'places.idPartido', '=', 'partido.id')
+          ->join('provincia', 'places.idProvincia', '=', 'provincia.id')
           ->join('pais', 'places.idPais', '=', 'pais.id')
           ->join('user_country', 'user_country.id_country', '=', 'places.idPais')
           ->where('user_country.id_user', '=', $userId)

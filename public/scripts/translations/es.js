@@ -146,6 +146,11 @@ var translations_es =
    "panel_actives_badgeo_check": "Mostrar con posible mala geolocalización",
    "panel_actives_no_results_1": "No hay resultados para",
    "panel_actives_no_results_2": "en [[location]]",
+   "panel_establishment":"Establecimiento",
+   "panel_city":"Ciudad",
+   "panel_district":"Departamento",
+   "panel_state":"Provincia",
+   "panel_country":"País",
    "establishment": "Establecimiento",
    "city": "Ciudad*",
    "district": "Departamento*",
@@ -548,6 +553,7 @@ var translations_es =
    "about_li_thank_to_7": "",
    "next": "Siguiente",
    "previous": "Anterior",
+   "page_results":"Página [[value]]",
    "busqueda_geo_titulo": "Usar tu ubicación actual",
    "busqueda_geo_desc": "Necesitas dispositivo con geolocalización",
    "busqueda_geo_button": "Buscar",
@@ -676,5 +682,7 @@ var translations_es =
    "edit": "Editar",
    "reply": "Responder",
    "unselect": "Desmarcar",
-   "max_characters": "Máximo de 500 caracteres"
+   "max_characters": "Máximo de 500 caracteres",
+   "panel_table_filter": "Escribí aquí una consulta para filtrar los resultados",
+   "total_results": "Filtrado: [[values]] resultados obtenidos",
  }

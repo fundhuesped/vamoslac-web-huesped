@@ -293,7 +293,7 @@ class ImportadorController extends Controller {
 		$placesController = new PlacesRESTController;
 		$places = $placesController->search($search);
 		$csv_name = 'Establecimientos con ' . $search . '.csv';
-
+		
 		$csv = $this->exportDataToCsv($places);
 		$csv->output($csv_name);
 	}

@@ -12,16 +12,16 @@
 
         <li class="tab col s3"><a class="active" href="#dashboard"><i class="small mdi-content-inbox"></i><span translate="summary"></span></a></li>
 
-        <li class="tab col s3"><a class="" href="#aprobar"><i class="small mdi-content-inbox"></i><span translate="panel_tab_pending" translate-values="{pendings_lenght: '[[penplaces.length]]'}"></span></a></li>
+        <li class="tab col s3"><a href="#pending"><i class="small mdi-content-inbox"></i><span translate="panel_tab_pending" translate-values="{pendings_lenght: '[[counters.pendientes]]'}"></span></a></li>
 
-        <li class="tab col s3"><a href="#activos"> <i class="small mdi-action-done-all"></i><span translate="panel_tab_actives" translate-values="{actives_lenght: '[[approvedPlacesLength]]'}"></span></a></li>
+        <li class="tab col s3"><a href="#activos"> <i class="small mdi-action-done-all"></i><span translate="panel_tab_actives" translate-values="{actives_lenght: '[[counters.aprobados]]'}"></span></a></li>
 
-        <li class="tab col s3"><a href="#rejected"> <i class="small mdi-action-delete  "></i><span translate="panel_tab_rejecteds" translate-values="{rejecteds_lenght: '[[rejectedplaces.length]]'}"></span></a></li>
+        <li class="tab col s3"><a href="#rejected"> <i class="small mdi-action-delete  "></i><span translate="panel_tab_rejecteds" translate-values="{rejecteds_lenght: '[[counters.rechazados]]'}"></span></a></li>
 
-        <li class="tab col s3"><a href="#tagsImportaciones"> <i class="small mdi-communication-import-export"></i><span translate="panel_tab_imports" translate-values="{imports_lenght: '[[tagsImportaciones.length]]'}"></span></a></li>
+        <li class="tab col s3"><a href="#imports"> <i class="small mdi-communication-import-export"></i><span translate="panel_tab_imports" translate-values="{imports_lenght: '[[counters.imports]]'}"></span></a></li>
 
         <!-- New view for evaluations -->
-        <li class="tab col s3"><a href="#eval"> <i class="small mdi-communication-comment"></i><span translate="evaluations" translate-values="{evaluations_length: '[[totalEvals]]'}"></span></a></li>
+        <li class="tab col s3"><a href="#eval"> <i class="small mdi-communication-comment"></i><span translate="evaluations" translate-values="{evaluations_length: '[[counters.evaluaciones]]'}"></span></a></li>
 
       </ul>
 
@@ -58,5 +58,7 @@
   @section('js')
   {!!Html::script('scripts/panel/controllers/index/controller.js')!!}
   {!!Html::script('scripts/panel/controllers/importer/controller.js')!!}
-  {!!Html::script('scripts/panel/controllers/index/importaciones/controller.js')!!}
+  {!!Html::script('scripts/panel/controllers/index/table-controller.js')!!}
+
+  {!!Html::script('scripts/services/paginationTable.js')!!}
   @stop

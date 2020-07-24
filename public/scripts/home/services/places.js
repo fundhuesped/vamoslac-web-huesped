@@ -103,6 +103,46 @@ dondev2App.factory('placesFactory', function($http, $filter) {
 					cb(establecimientos);
 					//console.log(establecimientos);
 			});
+		},
+		getDataTable: function(type,cb){
+			switch(type){
+				case 'penplaces':
+				return this.getPendingPlaces(cb);
+				break;
+				case 'rejectedplaces':
+				return this.getBlockedPlaces(cb);
+				break;
+				case 'tagsImportaciones':
+				return this.getImportTags(cb);
+				break;
+				case 'evaluations':
+				return this.getTotalEvals(cb);
+				break;
+			}
+		},
+		getPendingPlaces: function(cb){
+			$http.get('api/v1panelplaces/pendingfilterbyuser')
+			.success(function(response) {
+				cb(response);
+			});
+		},
+		getBlockedPlaces: function(cb){
+			$http.get('api/v1/places/blocked')
+			.success(function(response) {
+				cb(response);
+			});
+		},
+		getImportTags: function(cb){
+			$http.get('api/v1/places/tagsimportaciones')
+			.success(function(response) {
+				cb(response);
+			});
+		},
+		getTotalEvals: function(cb){
+			$http.get('api/v2/evaluation/getall')
+			.success(function(response) {
+				cb(response);
+			});
 		}
 	}
 

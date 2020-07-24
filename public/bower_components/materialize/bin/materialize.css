@@ -8983,14 +8983,14 @@ textarea.materialize-textarea + label:after {
 }
 
 .input-field input[type=search] {
-  display: block;
+  display: initial;
   line-height: inherit;
   padding-left: 4rem;
   width: calc(100% - 4rem);
 }
 
 .input-field input[type=search]:focus {
-  background-color: #fff;
+  /*background-color: #fff;*/
   border: 0;
   box-shadow: none;
   color: #444;

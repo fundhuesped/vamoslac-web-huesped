@@ -6,6 +6,10 @@
   font-style: normal;
 }
 
+.tabs{
+  overflow-x: hidden;
+}
+
 /* Error pages */
 .error-container {
   background-color: #dddddd;
@@ -1927,6 +1931,10 @@ input.ng-invalid-autocomplete-required {
     border-color: red;
 }
 
+table.orderded th {
+    cursor: pointer;
+    text-decoration: underline;
+}
 
 .input-field {
     position: relative;
@@ -1978,7 +1986,7 @@ input:not([type]).invalid+label:after, input:not([type]):focus.invalid+label:aft
   margin-left: 3rem;
 }
 
-table.orderded th {
+table.bordered th {
     cursor: pointer;
     text-decoration: underline;
 }

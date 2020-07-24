@@ -16,13 +16,6 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
 .controller('panelIndexController', function(NgMap,copyService, placesFactory,$filter, $scope, $timeout, $rootScope, $http, $interpolate, $location, $route, $translate) {
 
-  $http.get('api/v1/places/approved')
-  .success(function(response) {
-
-    $scope.places = response;
-
-  });
-
   $http.get('api/v2/evaluation/getall')
   .success(function(response) {
 
@@ -218,31 +211,31 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
   $rootScope.exportEvaluationsEval = function(){
 
-    $rootScope.loadingPost = true;
+    $scope.loadingPost = true;
     var idPais;
     var idProvincia;
     var idPartido;
     var idCiudad;
 
-    if (typeof $rootScope.selectedCountryEval == "undefined") {
+    if (typeof $scope.selectedCountryEval == "undefined") {
       idPais = null;
     }
-    else idPais = $rootScope.selectedCountryEval.id;
+    else idPais = $scope.selectedCountryEval.id;
 
-    if (typeof $rootScope.selectedProvinceEval == "undefined") {
+    if (typeof $scope.selectedProvinceEval == "undefined") {
       idProvincia = null;
     }
-    else idProvincia = $rootScope.selectedProvinceEval.id;
+    else idProvincia = $scope.selectedProvinceEval.id;
 
-    if (typeof $rootScope.selectedPartyEval === 'undefined'){
+    if (typeof $scope.selectedPartyEval === 'undefined'){
       idPartido = null;
     }
-    else idPartido = $rootScope.selectedPartyEval.id;
+    else idPartido = $scope.selectedPartyEval.id;
 
-    if (typeof $rootScope.selectedCityEval === 'undefined'){
+    if (typeof $scope.selectedCityEval === 'undefined'){
       idCiudad = null;
     }
-    else idCiudad = $rootScope.selectedCityEval.id;
+    else idCiudad = $scope.selectedCityEval.id;
 
     var f = document.createElement("form");
     f.setAttribute('method',"get");
@@ -277,7 +270,7 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     var lang = document.createElement("input");
     lang.setAttribute('type',"hidden");
     lang.setAttribute('name',"lang");
-    lang.setAttribute('value',$rootScope.selectedLanguage);
+    lang.setAttribute('value',$scope.selectedLanguage);
 
     var s = document.createElement("input")
     s.setAttribute('type',"submit");
@@ -294,7 +287,7 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
     document.getElementsByTagName('body')[0].appendChild(f);
     f.submit();
-    $rootScope.loadingPost = false;
+    $scope.loadingPost = false;
     document.getElementsByTagName('body')[0].removeChild(f);
   };
 
@@ -323,33 +316,33 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
   $rootScope.activePlacesExport = function(){
 
-    $rootScope.loadingPost = true;
+    $scope.loadingPost = true;
     var idPais;
     var idProvincia;
     var idPartido;
     var idCiudad;
 
-    if (typeof $rootScope.selectedCountry == "undefined") {
+    if (typeof $scope.selectedCountry == "undefined") {
       idPais = null;
 
     }
-    else idPais = $rootScope.selectedCountry.id;
-    if (typeof $rootScope.selectedProvince == "undefined") {
+    else idPais = $scope.selectedCountry.id;
+    if (typeof $scope.selectedProvince == "undefined") {
       idProvincia = null;
 
     }
-    else idProvincia = $rootScope.selectedProvince.id;
-    if (typeof $rootScope.selectedParty == 'undefined'){
+    else idProvincia = $scope.selectedProvince.id;
+    if (typeof $scope.selectedParty == 'undefined'){
       idPartido = null;
 
     }
-    else idPartido = $rootScope.selectedParty.id;
+    else idPartido = $scope.selectedParty.id;
 
-    if (typeof $rootScope.selectedCity == 'undefined'){
+    if (typeof $scope.selectedCity == 'undefined'){
       idCiudad = null;
 
     }
-    else idCiudad = $rootScope.selectedCity.id;
+    else idCiudad = $scope.selectedCity.id;
 
 
     var data =  $.param({
@@ -397,24 +390,25 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
 
     document.getElementsByTagName('body')[0].appendChild(f);
     f.submit();
-    $rootScope.loadingPost = false;
+    $scope.loadingPost = false;
     document.getElementsByTagName('body')[0].removeChild(f);
   };
 
-  $rootScope.getNow = function(){
+  $scope.getNow = function(){
 
-    if($rootScope.selectedProvince){
-      $rootScope.loadingPost = true;
-      var uri = 'api/v1/places/approved/' +   $rootScope.selectedCountry.id  + '/' +  $rootScope.selectedProvince.id;
-      if($rootScope.selectedParty)
-        uri += '/' + $rootScope.selectedParty.id;
-      if($rootScope.selectedCity)
-        uri += '/' + $rootScope.selectedCity.id;
+    if($scope.selectedProvince){
+      $scope.loadingPost = true;
+      var uri = 'api/v1/places/approved/' +   $scope.selectedCountry.id  + '/' +  $scope.selectedProvince.id;
+      if($scope.selectedParty)
+        uri += '/' + $scope.selectedParty.id;
+      if($scope.selectedCity)
+        uri += '/' + $scope.selectedCity.id;
 
       $http.get(uri).success(function(response) {
         $rootScope.optionMaster1 = true;
         $rootScope.optionMaster2 = false;
         processPlaces(response);
+        $scope.loadingPost = false;
       });
 
     }
@@ -492,15 +486,16 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
     $rootScope.optionMaster1 = false;
     $rootScope.optionMaster2 = true;
 
-    if ($rootScope.searchQuery.length <=3){
+    if ($scope.searchQuery.length <=3){
       Materialize.toast("Por favor, ingresa mas de 3 letras para buscar" ,4000);
       return;
     }
 
-    $rootScope.loadingPost = true;
-    $http.get('api/v1/panel/places/searchfilterbyuser/' +  $rootScope.searchQuery)
+    $scope.loadingPost = true;
+    $http.get('api/v1/panel/places/searchfilterbyuser/' +  $scope.searchQuery)
     .success(function(response) {
       processPlaces(response);
+      $scope.loadingPost = false;
     });
   };
 
@@ -646,7 +641,7 @@ dondev2App.config(function($interpolateProvider, $locationProvider) {
   $rootScope.onlyBadGeo = true;
   $rootScope.onlyGoodGeo = true;
 
-  $scope.filterAllPlaces = $rootScope.filterAllplaces = function(q){
+  $rootScope.filterAllplaces = function(q){
 
     var result = [];
     var filterPlaces = [];

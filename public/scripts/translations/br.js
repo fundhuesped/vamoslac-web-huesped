@@ -151,6 +151,12 @@ var translations_br = {
   "about_li_thank_to_7": "Colectivas de Socorristas en Red, Red de profesionales de la salud por el derecho a decidir, Colectivo de Salud Feminista - Comohacerseunaborto.com.",
   "next": "Próximo",
   "previous": "Anterior",
+  "page_results":"Página [[value]]",
+  "panel_establishment":"Establecimiento",
+  "panel_city":"Ciudad",
+  "panel_district":"Departamento",
+  "panel_state":"Provincia",
+  "panel_country":"País",
   "page_title": "Vamos | IPPF",
   "form_intro_text": "Em seguida, preencha o formulário com o novo estabelecimento. Os campos com * são obrigatórios.",
   "form_establishment_name": "Nome da propriedade *",
@@ -509,5 +515,7 @@ var translations_br = {
   "edit": "Editar",
   "reply": "Responder",
   "unselect": "Desmarcar",
-  "max_characters": "Máximo de 500 caracteres"
+  "max_characters": "Máximo de 500 caracteres",
+  "panel_table_filter": "Escreva aqui uma consulta para filtrar os resultados",
+  "total_results": "Filtrando: [[values]] resultados obtidos",
 }
