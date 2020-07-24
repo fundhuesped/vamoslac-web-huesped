@@ -21,6 +21,7 @@ dondev2App.controller('evaluationController',
     $scope.email = "";
     $scope.name = "";
     $scope.tel = "";
+    $translate.use($rootScope.selectedLanguage);
 
     $http.get('api/v2/places/' + $routeParams.id).then(function(data) {
 

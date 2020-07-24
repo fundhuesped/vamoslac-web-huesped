@@ -509,4 +509,5 @@ var translations_br = {
   "edit": "Editar",
   "reply": "Responder",
   "unselect": "Desmarcar",
+  "max_characters": "Máximo de 500 caracteres"
 }

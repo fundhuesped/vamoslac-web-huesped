@@ -676,4 +676,5 @@ var translations_en =
    "edit": "Edit",
    "reply": "Reply",
    "unselect": "Unselect",
+   "max_characters": "Maximum of 500 characters"
 }
