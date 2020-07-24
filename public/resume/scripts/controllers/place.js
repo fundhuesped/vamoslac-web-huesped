@@ -25,7 +25,7 @@ angular.module('dondeDataVizApp').controller('placeCtrl',
       window.location ='/share/' + idPlace;
     };
 
-    $scope.places = [];
+    $rootScope.places = [];
     $http.get('pais/' + $scope.nameCountry + '/provincia/' + $scope.nameProvince + '/partido/' + $scope.nameParty + '/ciudad/' + $scope.nameCity + '/servicio/' + $scope.serviceCode)
       .success(function(places) {
         $scope.places = places.lugares;

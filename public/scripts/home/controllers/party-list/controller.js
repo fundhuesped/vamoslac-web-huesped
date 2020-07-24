@@ -8,6 +8,7 @@ dondev2App.controller('partyListController',
     $rootScope.geo = false;
     $scope.legal = true;
     $scope.events = "rateReal";
+    $rootScope.places = [];
 
     try {
       try {

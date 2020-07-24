@@ -5,7 +5,7 @@ dondev2App.controller('locateListController',
     $scope.service = copyService.getFor($routeParams.servicio);
     $rootScope.serviceCode = $scope.service.code;
     $rootScope.navBar = $scope.service;
-    $scope.places = [];
+    $rootScope.places = [];
     $scope.main = true;
     $rootScope.geo = true;
     $scope.loading = true;

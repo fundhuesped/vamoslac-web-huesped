@@ -58,7 +58,7 @@ angular.module('dondeDataVizApp').controller('HomeCtrl',
       $scope.ranking = d.data;
     });
 
-    $scope.places = [];
+    $rootScope.places = [];
     var preData = [];
     var getStats = function() {
       var onPageFinished = function() {

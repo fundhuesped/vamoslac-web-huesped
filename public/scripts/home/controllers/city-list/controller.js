@@ -7,6 +7,7 @@ dondev2App.controller('cityListController',
     $rootScope.geo = false;
     $scope.legal = true;
     $scope.events = "rateReal";
+    $rootScope.places = [];
 
     try {
 
