@@ -447,16 +447,14 @@
 
 			<!-- TERMS AND CONDITIONS CHECK -->
 			<div class="row">
-				<div class="input-field col s12">
-					<p>
-						<input type="checkbox" name="acepta_terminos" required
-						class="filled-in" id="terminosCheck"
-						ng-change="formChange()"
-						ng-model="aceptaTerminos"/>
-						<label for="terminosCheck">
-							<a href="/terms" translate="terms_and_conditions1"></a> <span translate="terms_and_conditions2"></span>
-						</label>
-					</p>
+				<div class="input-field col s12 mt-3">
+					<input type="checkbox" name="acepta_terminos" required
+					class="filled-in" id="terminosCheck"
+					ng-change="formChange()"
+					ng-model="aceptaTerminos"/>
+					<label for="terminosCheck">
+						<a href="/terms" translate="terms_and_conditions1"></a> <span translate="terms_and_conditions2"></span>
+					</label>
 				</div>
 			</div>
 		</div>
@@ -522,6 +520,9 @@
 	$(document).ready(function() {
 		$('select').material_select();
 		$('.modal-trigger').leanModal();
+		//esto sirve para cuando se "vuelve atrás", los campos 'input' se muestren bien con los 'label'
+		// Materialize.updateTextFields();
+		setTimeout(function(){ $('.input-field label').addClass('active'); }, 1);
 	});
 	$(".button-collapse").sideNav();
 
