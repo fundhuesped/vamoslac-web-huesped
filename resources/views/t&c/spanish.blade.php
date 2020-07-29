@@ -1,7 +1,5 @@
 <h4 class="text-center">Gracias por utilizar VAMOS.</h4>
 
-<br/>
-
 <p>
 	VAMOS permite buscar y ver en un mapa, lugares que ofrecen diferentes servicios de salud sexual y reproductiva. De cada lugar, se puede encontrar información sobre los servicios que ofrece: tipo de servicio, dirección, teléfono, correo electrónico, sitio web, entre otros datos de las Asociaciones Miembro de IPPF/RHO, sus clínicas asociadas, organizaciones aliadas y servicios del sector público.
 </p>

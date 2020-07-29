@@ -77,6 +77,7 @@ $lang = \Session::get('lang');
 
 {!!Html::script('scripts/home/app.js')!!}
 {!!Html::script('scripts/home/controllers/nav/nav-controller.js')!!}
+{!!Html::script('scripts/home/controllers/terms/terms-controller.js')!!}
 
 {!!Html::script('scripts/home/controllers/home/controller.js')!!}
 {!!Html::script('scripts/home/controllers/acerca/controller.js')!!}

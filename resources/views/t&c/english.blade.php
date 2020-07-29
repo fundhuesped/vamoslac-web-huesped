@@ -1,7 +1,5 @@
 <h4 class="text-center">Thank you for using VAMOS.</h4>
 
-<br/>
-
 <p>
 	VAMOS allows you to search and locate places that offer sexual and reproductive health services on a map. You can also find information about the services offered at each location: type of service, address, telephone number, e-mail, website, and other information about IPPF/WHR Member Associations, associated clinics, partner organizations and sevices form the public sector.
 </p>

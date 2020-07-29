@@ -1,13 +1,13 @@
 <div class="home full new-home">
 	<div id='suggest' class="row">
 		<div class="card col s12 m12">
-			<div class="col s3 m3"  style="padding: 0"  >
-				<img class='responsive-image' src="images/logo app.png" alt="Logo App" width="100%" />
+			<div class="col s3 m3"  style="padding: 0">
+				<img class='responsive-image' src="/images/logo app.png" alt="Logo App" width="100%" />
 			</div>
 			<div class="col s9 m9 responsive-text" style="text-align: left; padding: 10px">
 				<p>
-					<span class="card-title red-text  responsive-text">VAMOS</span><br>
-					<span class="grey-text " translate="app-down"></span>
+					<span class="card-title red-text responsive-text">VAMOS</span><br>
+					<span class="grey-text" translate="app-down"></span>
 				</p>
 				<a href="https://play.google.com/store/apps/details?id=com.vamoslac.myapp" target="_blank" class="waves-effect waves-light btn " style="width: 60%;line-height: 2em; height: 2em; font-size: 14px;margin-top: 0.8em;display: inherit;position: inherit;" translate="install"></a>
 			</div>
@@ -18,7 +18,7 @@
 	</div>
 
 	<div class="description wow description-home" ng-cloak ng-show="main">
-		<img class="logo" src="images/logo.svg">
+		<img class="logo" src="/images/logo.svg">
 
 		<div class="container container-home" ng-show="main">
 			<table class="highlight centered">
@@ -69,7 +69,11 @@
 				</div>
 			</div>
 
-			<p style="margin-bottom: 0; background-color: #e6354d; border-radius: 5px"><a style="color: #fff;" href="terms" target="_blank" translate="terms"></a></p>
+			<a href="/terms">
+				<p style="margin-bottom: 0; background-color: #e6354d; border-radius: 5px">
+					<span translate="terms" style="color: #fff;"></span>
+				</p>
+			</a>
 
 		</div>
 	</div>
@@ -80,7 +84,7 @@
 	</footer>
 </div>
 
-<script >
+<script>
 	$(document).ready(function () {
 		$('#closer').click(function(){
 			$('#suggest').fadeOut();

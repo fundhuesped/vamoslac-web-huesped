@@ -97,10 +97,6 @@ config(['$routeProvider', function($routeProvider) {
     templateUrl: 'scripts/home/controllers/evaluation/completed.html',
     controller: 'evaluationController'
   })
-  .when('/terminos&condiciones', {
-    templateUrl: 'scripts/home/controllers/tyc/view.html',
-    controller: 'tycController'
-  })
   .otherwise({
     redirectTo: '/'
   });
