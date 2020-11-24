@@ -32,9 +32,9 @@
 		<div class="row mt-1">
 			<div class="col s12 offset-m2 m8">
 				<a style="float: left; width: 50%" href='https://www.ippfwhr.org/' target="_blank">
-					<img src="images/logo_ippf.png" width="80%" />
+					<img src="images/logo-ippf-2020.png" width="40%" />
 				</a>
-				<a style="float: right; width: 50%;text-align: right;" href='https://www.huesped.org.ar/' target="_blank">
+				<a style="float: right; width: 50%;" href='https://www.huesped.org.ar/' target="_blank">
 					<img src="images/logo_huesped.png" width="60%" />
 				</a>
 			</div>

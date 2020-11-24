@@ -1,4 +1,4 @@
-<div class="collapsible-header service-header row" ng-class="{ active : serviceCode == 'condones' ||  serviceCode == 'resume'}">
+<div class="collapsible-header service-header row active" ng-class="{ active : serviceCode == 'condones' ||  serviceCode == 'resume'}">
     <h4 class="service-header-text col s11 l11">
         <img ng-show="currentMarker.friendly_condones" class="home-icon-responsive" alt="Este lugar distribuye condones" src="images/condones_friendly.svg">
         <img ng-show="!(currentMarker.friendly_condones)" class="home-icon-responsive" alt="Este lugar distribuye condones" src="images/condones.svg">
@@ -7,7 +7,7 @@
     <i class="mdi-hardware-keyboard-arrow-down col s1 l1"></i>
 </div>
 
-<div class="collapsible-body">
+<div class="collapsible-body" id="detail">
     <div class="col s12 m12" ng-cloak ng-show="isValidAttr(currentMarker.servicetype_condones)">
         <span translate="form_select_service_type_title"></span>&nbsp;[[currentMarker.servicetype_condones]]
     </div>
@@ -36,3 +36,6 @@
         </a>
     </div>
 </div>
+<script type="text/javascript">
+    $('#detail').attr('style', 'display: block;');
+</script>
