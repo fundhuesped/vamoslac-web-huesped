@@ -1,6 +1,9 @@
 dondev2App.controller('navController', function($scope, $rootScope, $http, $translate) {
 
 	initLang();
+	window.onload = function() {
+		$scope.changeLanguage();
+	};
 
 	function initLang(){
 		var lang = localStorage.getItem("lang");
