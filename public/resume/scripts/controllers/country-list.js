@@ -20,6 +20,7 @@ angular.module('dondeDataVizApp').controller('countryListController',
         localStorage.setItem("lang", 'es');
         $translate.use('es');
         $rootScope.selectedLanguage = 'es';
+        $rootScope.changeLanguage();
       }
       $http.get('changelang/' + localStorage.lang)
       .then(

@@ -2,6 +2,10 @@ angular.module('dondeDataVizApp').controller('navController', function($scope, $
 
 	initLang();
 
+	window.onload = function() {
+		$scope.changeLanguage();
+	};
+
 	function initLang(){
 		var lang = localStorage.getItem("lang");
 		if(lang === undefined || lang === null || lang == ""){
