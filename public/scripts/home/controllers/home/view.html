@@ -6,7 +6,7 @@
 			<table class="highlight centered">
 				<!-- ZENDESK CHAT TRIGGER -->
 				<div class="col s12 m12 l12 grid-home tooltip" class="collection-item avatar">
-					<a class="services-home red-background" id="live_chat_button" zendesk-chat-trigger zendesk-notes="zendeskTriggerNotes" href="">
+					<a class="services-home red-background" id="live_chat_button" onclick="initWebchat()">
 						<div class="center promo">
 							<img class="home-icon-responsive" src="images/chat.svg">
 							<p class="item-home home-font" translate="talk_to_someone"></p>
@@ -68,7 +68,7 @@
 
 <!-- START Botmaker WebChat-->
 <script>
-	(function () {
+	function initWebchat() {
 		let bot = document.childNodes[1].lastChild.lastElementChild.innerHTML;
 	
 		if (bot == "") {
@@ -79,6 +79,8 @@
         	document.body.appendChild(js);
 			readyExecuted = true;
 		}
-	})();
+	};
+
+	initWebchat();
 </script>
 <!-- END Botmaker WebChat-->
