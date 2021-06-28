@@ -4,16 +4,6 @@
 
 		<div class="container container-home" ng-show="main">
 			<table class="highlight centered">
-				<!-- ZENDESK CHAT TRIGGER -->
-				<div class="col s12 m12 l12 grid-home tooltip" class="collection-item avatar">
-					<a class="services-home red-background" id="live_chat_button" onclick="initWebchat()" style="cursor: pointer;">
-						<div class="center promo">
-							<img class="home-icon-responsive" src="images/chat.svg">
-							<p class="item-home home-font" translate="talk_to_someone"></p>
-							<!-- <div class="tooltiptext tooltip-bottom" translate=""></div> -->
-						</div>
-					</a>
-				</div>
 				<div class="col s6 m6 l6 grid-home tooltip" ng-repeat="single in collapsibleElements" class="collection-item avatar" ng-show="single.show_on_home">
 					<a class="services-home" id="[[single.code]]" href="#/como-buscas/[[single.code]]">
 						<div class="center promo">
@@ -34,8 +24,6 @@
 				</div>
 			</table>
 		</div>
-
-
 		<div class="container container-logos">
 			<div class="row">
 				<div class="col s6  center-align">

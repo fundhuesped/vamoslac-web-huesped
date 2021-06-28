@@ -40,15 +40,6 @@
 			<!-- No results -->
 			<div class="row" ng-cloak ng-hide="loading">
 				<div ng-show="cantidad == 0">
-					<!-- ZENDESK CHAT TRIGGER -->
-					<div class="interactive-box red-background zendesk-trigger medium-size" zendesk-chat-trigger zendesk-notes="zendeskTriggerNotes">
-						<div class="box-image">
-							<img class="responsive-img" src="images/chat.svg">
-						</div>
-						<div class="box-text">
-							<p translate="have_any_doubts"></p>
-						</div>
-					</div>
 					<!-- SUGGEST ONE NEW PLACE -->
 					<div class="container">
 						<div class="card-panel hoverable">
@@ -78,15 +69,6 @@
 				<input type="checkbox" ng-checked="onlyFriendly" name="onlyFriendly" ng-click="toggleFriendly()"/>
 				<label for="onlyFriendly" translate="only_teenager_friendly"></label>
 
-				<!-- ZENDESK CHAT TRIGGER -->
-				<div class="interactive-box red-background zendesk-trigger" zendesk-chat-trigger zendesk-notes="zendeskTriggerNotes">
-					<div class="box-image">
-						<img class="responsive-img" src="images/chat.svg">
-					</div>
-					<div class="box-text">
-						<p translate="have_any_doubts"></p>
-					</div>
-				</div>
 				<ul class="collection">
 					<li class="collection-item center" ng-repeat="item in places | orderBy: events: '!null' | filter:esFriendly()">
 						<div class="row col-container">
