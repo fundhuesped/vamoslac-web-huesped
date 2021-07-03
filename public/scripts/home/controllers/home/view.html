@@ -57,9 +57,9 @@
 <!-- START Botmaker WebChat-->
 <script>
 	function initWebchat() {
-		let bot = document.childNodes[1].lastChild.lastElementChild.innerHTML;
-	
-		if (bot == "") {
+		let bot = document.getElementsByName("Botmaker").length == 0;
+    
+      	if (bot) {
 			let js = document.createElement('script');
         	js.type = 'text/javascript';
         	js.async = 1;
